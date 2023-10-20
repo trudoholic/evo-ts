@@ -1,6 +1,6 @@
 import { useAppContext } from "../context"
-import Intro from "./Intro";
-import Game from "./Game";
+import Intro from "./Intro"
+import Game from "./Game"
 
 const Main = () => {
   const { state } = useAppContext()
@@ -8,7 +8,7 @@ const Main = () => {
 
   return (
     <>
-      <h1>Evolution Game</h1>
+      <h2>Evolution Game</h2>
       { isGameOver? <Intro/>: <Game/> }
     </>
   )
