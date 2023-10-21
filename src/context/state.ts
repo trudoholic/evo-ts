@@ -7,16 +7,19 @@ export interface IPlayer {
 
 export interface IState {
   isGameOver: boolean
+  nPlayers: number
   players: IPlayer[]
 }
 
-const data: IPlayer[] = [
-  { id: 1, name: 'A', value: 0, status: true },
-  { id: 2, name: 'B', value: 0, status: false },
-  { id: 3, name: 'C', value: 0, status: false },
+export const data: IPlayer[] = [
+  { id: 1, name: 'Anna', value: 0, status: true },
+  { id: 2, name: 'Beth', value: 0, status: false },
+  { id: 3, name: 'Ciri', value: 0, status: true },
+  { id: 4, name: 'Dana', value: 0, status: false },
 ];
 
 export const defaultState: IState = {
   isGameOver: true,
-  players: data,
+  nPlayers: 0,
+  players: [],
 }
