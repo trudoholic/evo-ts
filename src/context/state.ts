@@ -7,6 +7,8 @@ export interface IPlayer {
 
 export interface IState {
   isGameOver: boolean
+  curHand: number
+  curTurn: number
   nPlayers: number
   players: IPlayer[]
 }
@@ -20,6 +22,8 @@ export const data: IPlayer[] = [
 
 export const defaultState: IState = {
   isGameOver: true,
+  curHand: 0,
+  curTurn: 0,
   nPlayers: 0,
   players: [],
 }

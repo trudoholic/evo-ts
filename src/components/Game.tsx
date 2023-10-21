@@ -4,11 +4,20 @@ import Player from "./Player"
 
 const Game = () => {
   const { state, dispatch } = useAppContext()
-  const { isGameOver, players } = state
+  const { curHand, curTurn, nPlayers, players } = state
 
-  const foo = () => {
-    console.log("Game", isGameOver, players)
+  const handleEndGame = () => {
     dispatch({type: Actions.EndGame})
+  }
+
+  const handleNextHand = () => {
+    const  nextHand = (curHand + 1) % nPlayers
+    dispatch({type: Actions.NextHand, payload: nextHand})
+  }
+
+  const handleNextTurn = () => {
+    const  nextTurn = (curTurn + 1) % nPlayers
+    dispatch({type: Actions.NextTurn, payload: nextTurn})
   }
 
   const styles = {
@@ -21,7 +30,13 @@ const Game = () => {
   return (
     <>
       <h2>Game</h2>
-      <button onClick={foo}>
+      <button onClick={handleNextHand}>
+        Next Hand
+      </button>
+      <button onClick={handleNextTurn}>
+        Next Turn
+      </button>
+      <button onClick={handleEndGame}>
         End Game
       </button>
       <div style={styles.flex}>

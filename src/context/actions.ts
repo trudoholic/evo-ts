@@ -1,6 +1,7 @@
 export enum Actions {
   BeginGame,
   EndGame,
-  // ResetGame,
+  NextHand,
+  NextTurn,
 }
 

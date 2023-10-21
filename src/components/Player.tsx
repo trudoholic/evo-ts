@@ -7,13 +7,13 @@ interface IProps {
 
 const Player = ({idx}: IProps) => {
   const { state } = useAppContext()
-  const { players } = state
+  const { curHand, curTurn, players } = state
   const player: IPlayer = players[idx]
 
   const styles = {
     box: {
-      border: (idx? "1px solid #369": "1px solid #fff"),
-      color: (idx? "#369": "#fff"),
+      border: (idx === curHand? "1px solid #fff": "1px solid #369"),
+      color: (idx === curTurn? "#fff": "#369"),
       fontSize: "24px",
       display: "flex",
       justifyContent: "center",
