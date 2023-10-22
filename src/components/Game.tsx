@@ -1,23 +1,29 @@
 import { Actions } from "../context/actions"
 import { useAppContext } from "../context"
 import Player from "./Player"
+import useFlow from "../hooks/useFlow"
 
 const Game = () => {
   const { state, dispatch } = useAppContext()
-  const { curHand, curTurn, nPlayers, players } = state
-
-  const handleEndGame = () => {
-    dispatch({type: Actions.EndGame})
-  }
+  const { curHand, curTurn, isReverse, players } = state
+  const { nextIdx } = useFlow()
 
   const handleNextHand = () => {
-    const  nextHand = (curHand + 1) % nPlayers
+    const  nextHand = nextIdx(curHand)
     dispatch({type: Actions.NextHand, payload: nextHand})
   }
 
   const handleNextTurn = () => {
-    const  nextTurn = (curTurn + 1) % nPlayers
+    const  nextTurn = nextIdx(curTurn)
     dispatch({type: Actions.NextTurn, payload: nextTurn})
+  }
+
+  const handleReverse = () => {
+    dispatch({type: Actions.Reverse})
+  }
+
+  const handleEndGame = () => {
+    dispatch({type: Actions.EndGame})
   }
 
   const styles = {
@@ -29,12 +35,15 @@ const Game = () => {
 
   return (
     <>
-      <h2>Game</h2>
+      <h2>{`[Hand: ${curHand}] [Turn: ${curTurn}] [${isReverse}]`}</h2>
       <button onClick={handleNextHand}>
         Next Hand
       </button>
       <button onClick={handleNextTurn}>
         Next Turn
+      </button>
+      <button onClick={handleReverse}>
+        Reverse
       </button>
       <button onClick={handleEndGame}>
         End Game

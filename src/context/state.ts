@@ -7,6 +7,7 @@ export interface IPlayer {
 
 export interface IState {
   isGameOver: boolean
+  isReverse: boolean
   curHand: number
   curTurn: number
   nPlayers: number
@@ -22,6 +23,7 @@ export const data: IPlayer[] = [
 
 export const defaultState: IState = {
   isGameOver: true,
+  isReverse: false,
   curHand: 0,
   curTurn: 0,
   nPlayers: 0,

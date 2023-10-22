@@ -3,9 +3,10 @@ import { IState, data } from "./state"
 
 export type TAction =
   | { type: Actions.BeginGame, payload: number }
-  | { type: Actions.EndGame }
   | { type: Actions.NextHand, payload: number }
   | { type: Actions.NextTurn, payload: number }
+  | { type: Actions.Reverse }
+  | { type: Actions.EndGame }
 
 export const reducer = (state: IState, action: TAction): IState => {
   switch (action.type) {
@@ -15,12 +16,14 @@ export const reducer = (state: IState, action: TAction): IState => {
         nPlayers: action.payload,
         players: data.slice(0, action.payload),
       }
-    case Actions.EndGame:
-      return { ...state, isGameOver: true}
     case Actions.NextHand:
       return { ...state, curHand: action.payload}
     case Actions.NextTurn:
       return { ...state, curTurn: action.payload}
+    case Actions.Reverse:
+      return { ...state, isReverse: !state.isReverse}
+    case Actions.EndGame:
+      return { ...state, isGameOver: true}
     default:
       return state
   }
