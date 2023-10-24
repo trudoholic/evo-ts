@@ -3,6 +3,7 @@ import { IState, data } from "./state"
 
 export type TAction =
   | { type: Actions.BeginGame, payload: number }
+  | { type: Actions.IncValue, payload: { idx: number, value: number } }
   | { type: Actions.NextHand, payload: number }
   | { type: Actions.NextTurn, payload: number }
   | { type: Actions.Reverse }
@@ -19,6 +20,13 @@ export const reducer = (state: IState, action: TAction): IState => {
         curTurn: rnd,
         nPlayers: action.payload,
         players: data.slice(0, action.payload),
+      }
+    case Actions.IncValue:
+      return { ...state,
+        players: state.players.map(
+          (p, i) => i === action.payload.idx?
+            {...p, value: p.value + action.payload.value}: p
+        )
       }
     case Actions.NextHand:
       return { ...state, curHand: action.payload}

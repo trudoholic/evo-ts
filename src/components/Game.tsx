@@ -14,6 +14,12 @@ const Game = () => {
   }
 
   const handleNextTurn = () => {
+    const rnd = Math.floor(Math.random() * 10)
+    dispatch({type: Actions.IncValue, payload: {idx: curTurn, value: rnd}})
+
+    const b = players.every(p => p.value >= 100)
+    if (b) console.log("Gotcha!")
+
     const  nextTurn = nextIdx(curTurn)
     dispatch({type: Actions.NextTurn, payload: nextTurn})
   }
