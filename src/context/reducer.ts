@@ -5,6 +5,7 @@ export type TAction =
   | { type: Actions.BeginGame, payload: number }
   | { type: Actions.IncValue, payload: { idx: number, value: number } }
   | { type: Actions.NextHand, payload: number }
+  | { type: Actions.NextHandPhase, payload: number }
   | { type: Actions.NextTurn, payload: number }
   | { type: Actions.Reverse }
   | { type: Actions.EndGame }
@@ -30,6 +31,8 @@ export const reducer = (state: IState, action: TAction): IState => {
       }
     case Actions.NextHand:
       return { ...state, curHand: action.payload}
+    case Actions.NextHandPhase:
+      return { ...state, curHandPhase: action.payload}
     case Actions.NextTurn:
       return { ...state, curTurn: action.payload}
     case Actions.Reverse:

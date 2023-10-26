@@ -9,6 +9,7 @@ export interface IState {
   isGameOver: boolean
   isReverse: boolean
   curHand: number
+  curHandPhase: number
   curTurn: number
   nPlayers: number
   players: IPlayer[]
@@ -22,10 +23,13 @@ export const data: IPlayer[] = [
 ];
 
 export const defaultState: IState = {
+  curHand: 0,
+  curHandPhase: 0,
+  curTurn: 0,
   isGameOver: true,
   isReverse: false,
-  curHand: 0,
-  curTurn: 0,
   nPlayers: 0,
   players: [],
 }
+
+export const phases = ["Phase_0", "Phase_1", "Phase_2", "Phase_3"]

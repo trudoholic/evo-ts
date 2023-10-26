@@ -3,6 +3,7 @@ export enum Actions {
   EndGame,
   IncValue,
   NextHand,
+  NextHandPhase,
   NextTurn,
   Reverse,
 }
