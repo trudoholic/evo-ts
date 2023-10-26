@@ -8,17 +8,16 @@ const Game = () => {
   const { curHand, curTurn, isReverse, players } = state
   const { nextIdx } = useFlow()
 
+  const phaseEnd = players.every(p => p.value >= 100)
+
   const handleNextHand = () => {
     const  nextHand = nextIdx(curHand)
     dispatch({type: Actions.NextHand, payload: nextHand})
   }
 
   const handleNextTurn = () => {
-    const rnd = Math.floor(Math.random() * 10)
+    const rnd = Math.floor(Math.random() * 10 + 1)
     dispatch({type: Actions.IncValue, payload: {idx: curTurn, value: rnd}})
-
-    const b = players.every(p => p.value >= 100)
-    if (b) console.log("Gotcha!")
 
     const  nextTurn = nextIdx(curTurn)
     dispatch({type: Actions.NextTurn, payload: nextTurn})
@@ -41,7 +40,9 @@ const Game = () => {
 
   return (
     <>
-      <h2>{`[Hand: ${curHand}] [Turn: ${curTurn}] [${isReverse}]`}</h2>
+      <h2>
+        {`[Hand: ${curHand}] [Turn: ${curTurn}] ${isReverse?"*":""} ${phaseEnd?"Gotcha!":""}`}
+      </h2>
       <button onClick={handleNextHand}>
         Next Hand
       </button>
