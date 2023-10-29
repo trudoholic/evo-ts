@@ -31,5 +31,3 @@ export const defaultState: IState = {
   nPlayers: 0,
   players: [],
 }
-
-export const phases = ["Phase_0", "Phase_1", "Phase_2", "Phase_3"]

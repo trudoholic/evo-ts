@@ -1,30 +1,22 @@
-import { Actions } from "../context/actions"
+import {Actions} from "../context/actions"
 import {useAppContext} from "../context"
 import Player from "./Player"
-import {phases} from "../context/state"
+import Phases from "./phases"
 import useFlow from "../hooks/useFlow"
 
 const Game = () => {
   const { state, dispatch } = useAppContext()
   const {
     curHand,
-    curHandPhase,
     curTurn,
     isReverse,
     players,
   } = state
   const { nextIdx } = useFlow()
 
-  const phaseEnd = players.every(p => p.value >= 100)
-
   const handleNextHand = () => {
     const  nextHand = nextIdx(curHand)
     dispatch({type: Actions.NextHand, payload: nextHand})
-  }
-
-  const handleNextHandPhase = () => {
-    const  nextHandPhase = (curHandPhase + 1) % phases.length
-    dispatch({type: Actions.NextHandPhase, payload: nextHandPhase})
   }
 
   const handleNextTurn = () => {
@@ -52,17 +44,12 @@ const Game = () => {
 
   return (
     <>
+      <Phases/>
       <h2>
-        {`[Hand: ${curHand}] [Turn: ${curTurn}] ${isReverse?"*":""} ${phaseEnd?"Gotcha!":""}`}
-      </h2>
-      <h2>
-        {`[${phases[curHandPhase]}]`}
+        {`[Hand: ${curHand}] [Turn: ${curTurn}] ${isReverse?"*":""}`}
       </h2>
       <button onClick={handleNextHand}>
         Next Hand
-      </button>
-      <button onClick={handleNextHandPhase}>
-        Next Phase
       </button>
       <button onClick={handleNextTurn}>
         Next Turn
