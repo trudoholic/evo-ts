@@ -8,7 +8,6 @@ const Game = () => {
   const { state, dispatch } = useAppContext()
   const {
     curHand,
-    curTurn,
     isReverse,
     players,
   } = state
@@ -17,14 +16,6 @@ const Game = () => {
   const handleNextHand = () => {
     const  nextHand = nextIdx(curHand)
     dispatch({type: Actions.NextHand, payload: nextHand})
-  }
-
-  const handleNextTurn = () => {
-    const rnd = Math.floor(Math.random() * 10 + 1)
-    dispatch({type: Actions.IncValue, payload: {idx: curTurn, value: rnd}})
-
-    const  nextTurn = nextIdx(curTurn)
-    dispatch({type: Actions.NextTurn, payload: nextTurn})
   }
 
   const handleReverse = () => {
@@ -46,13 +37,10 @@ const Game = () => {
     <>
       <Phases/>
       <h2>
-        {`[Hand: ${curHand}] [Turn: ${curTurn}] ${isReverse?"*":""}`}
+        {`[Hand: ${curHand}] ${isReverse?"*":""}`}
       </h2>
       <button onClick={handleNextHand}>
         Next Hand
-      </button>
-      <button onClick={handleNextTurn}>
-        Next Turn
       </button>
       <button onClick={handleReverse}>
         Reverse
