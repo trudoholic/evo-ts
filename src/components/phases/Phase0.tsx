@@ -1,14 +1,19 @@
 import {Actions} from "../../context/actions"
 import {useAppContext} from "../../context"
-import useFlow from "../../hooks/useFlow";
+import useFlow from "../../hooks/useFlow"
 
 const Phase0 = () => {
   const { state, dispatch } = useAppContext()
+
   const {
     curTurn,
     players,
   } = state
-  const { nextIdx } = useFlow()
+
+  const {
+    handleNextHandPhase,
+    nextIdx,
+  } = useFlow()
 
   const phaseEnd = players.every(p => p.value >= 100)
 
@@ -20,10 +25,6 @@ const Phase0 = () => {
     dispatch({type: Actions.NextTurn, payload: nextTurn})
   }
 
-  const handleNextHandPhase = () => {
-    dispatch({type: Actions.NextHandPhase, payload: 1})
-  }
-
   return (
     <>
       <h2>
@@ -32,8 +33,8 @@ const Phase0 = () => {
       <button onClick={handleNextTurn}>
         Next Turn
       </button>
-      <button onClick={handleNextHandPhase}>
-        # Next Phase
+      <button onClick={() => handleNextHandPhase(1)}>
+        Next Phase
       </button>
     </>
   )

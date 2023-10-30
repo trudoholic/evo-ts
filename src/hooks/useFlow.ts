@@ -1,8 +1,13 @@
-import { useAppContext } from "../context"
+import {useAppContext} from "../context"
+import {Actions} from "../context/actions"
 
 const useFlow = () => {
-  const { state } = useAppContext()
-  const { nPlayers, isReverse } = state
+  const { state, dispatch } = useAppContext()
+  const {
+    curHandPhase,
+    isReverse,
+    nPlayers,
+  } = state
 
   const nextIdx = (idx: number) => {
     return isReverse?
@@ -10,7 +15,14 @@ const useFlow = () => {
       (idx + 1) % nPlayers
   }
 
+  const handleNextHandPhase = (phase: number) => {
+    console.log(`On End Phase: ${curHandPhase}`)
+    dispatch({type: Actions.NextHandPhase, payload: phase})
+    console.log(`> On Begin Phase: ${phase}`)
+  }
+
   return {
+    handleNextHandPhase,
     nextIdx,
   }
 }

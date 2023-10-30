@@ -1,17 +1,17 @@
 import useFlow from "../../hooks/useFlow"
 
-const Phase1 = () => {
+const Phase2 = () => {
   const {
     handleNextHandPhase,
   } = useFlow()
 
   return (
     <>
-      <button onClick={() => handleNextHandPhase(2)}>
+      <button onClick={() => handleNextHandPhase(3)}>
         Next Phase
       </button>
     </>
   )
 }
 
-export default Phase1
+export default Phase2
