@@ -27,8 +27,16 @@ const Player = ({idx}: IProps) => {
 
   return (
     <>
-      <div style={styles.box}>
-        {`Player ${player.name}: ${player.value}`}
+      <div>
+        <div style={styles.box}>
+          {`Player ${player.name}: ${player.value}`}
+        </div>
+        <details open>
+          <summary>ZONE</summary>
+          <div>[1]</div>
+          <div>[2]</div>
+          <div>[3]</div>
+        </details>
       </div>
     </>
   )

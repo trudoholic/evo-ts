@@ -17,7 +17,9 @@ const useFlow = () => {
 
   const handleNextHandPhase = (phase: number) => {
     console.log(`On End Phase: ${curHandPhase}`)
+    // console.groupEnd()
     dispatch({type: Actions.NextHandPhase, payload: phase})
+    // console.group(`Phase: ${phase}`)
     console.log(`> On Begin Phase: ${phase}`)
   }
 
