@@ -1,5 +1,7 @@
 import {useAppContext} from "../context"
 import {IPlayer} from "../context/state"
+import {zones} from "../data/zones"
+import Zone from "./Zone"
 
 interface IProps {
   idx: number
@@ -18,8 +20,8 @@ const Player = ({idx}: IProps) => {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      margin: "20px",
-      // padding: "20px",
+      margin: "16px",
+      // padding: "8px",
       width: "250px",
       height: "50px",
     }
@@ -31,12 +33,7 @@ const Player = ({idx}: IProps) => {
         <div style={styles.box}>
           {`Player ${player.name}: ${player.value}`}
         </div>
-        <details open>
-          <summary>ZONE</summary>
-          <div>[1]</div>
-          <div>[2]</div>
-          <div>[3]</div>
-        </details>
+        {zones.map((z) => <Zone key={z.id} name={z.name} />)}
       </div>
     </>
   )

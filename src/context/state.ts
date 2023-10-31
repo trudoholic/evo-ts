@@ -1,6 +1,6 @@
 export interface IPlayer {
-  name: string
   id: number
+  name: string
   status: boolean
   value: number
 }
@@ -20,7 +20,7 @@ export const data: IPlayer[] = [
   { id: 2, name: 'Beth', value: 0, status: false },
   { id: 3, name: 'Ciri', value: 0, status: true },
   { id: 4, name: 'Dana', value: 0, status: false },
-];
+]
 
 export const defaultState: IState = {
   curHand: 0,
