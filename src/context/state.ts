@@ -1,3 +1,5 @@
+import {cards, ICard} from "../data/cards";
+
 export interface IPlayer {
   id: number
   name: string
@@ -13,6 +15,7 @@ export interface IState {
   curTurn: number
   nPlayers: number
   players: IPlayer[]
+  cards: ICard[]
 }
 
 export const data: IPlayer[] = [
@@ -30,4 +33,5 @@ export const defaultState: IState = {
   isReverse: false,
   nPlayers: 0,
   players: [],
+  cards: cards,
 }

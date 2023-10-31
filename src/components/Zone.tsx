@@ -1,6 +1,6 @@
 import {IZone} from "../data/zones"
 
-const Zone = ({name}: IZone) => {
+const Zone = ({cards, name}: IZone) => {
   const styles = {
     box: {
       border: "1px solid #369",
@@ -12,12 +12,14 @@ const Zone = ({name}: IZone) => {
   return (
     <>
       <div style={styles.box}>
-        <details open>
-          <summary>{name}</summary>
-          <div>[1]</div>
-          <div>[2]</div>
-          <div>[3]</div>
-        </details>
+        {
+          cards.length ?
+          <details open>
+            <summary>{`${name} [${cards.length}]`}</summary>
+            {cards.map((c) => (<div>{c.id}</div>))}
+          </details>
+          : <div>{`${name}`}</div>
+        }
       </div>
     </>
   )

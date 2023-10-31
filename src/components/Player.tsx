@@ -9,8 +9,10 @@ interface IProps {
 
 const Player = ({idx}: IProps) => {
   const { state } = useAppContext()
-  const { curHand, curTurn, players } = state
+  const { curHand, curTurn, cards, players } = state
+
   const player: IPlayer = players[idx]
+  const playerCards = cards.filter(card => card.idPlayer === player.id)
 
   const styles = {
     box: {
@@ -33,7 +35,12 @@ const Player = ({idx}: IProps) => {
         <div style={styles.box}>
           {`Player ${player.name}: ${player.value}`}
         </div>
-        {zones.map((z) => <Zone key={z.id} name={z.name} />)}
+        {
+          zones.map((z) =>
+          <Zone key={z.id} id={z.id} name={z.name}
+                cards={playerCards.filter(card => card.idZone === z.id)}
+          />)
+        }
       </div>
     </>
   )
