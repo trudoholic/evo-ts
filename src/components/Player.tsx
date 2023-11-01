@@ -27,7 +27,7 @@ const Player = ({idx}: IProps) => {
       width: "250px",
       height: "50px",
     }
-  };
+  }
 
   return (
     <>

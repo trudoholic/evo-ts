@@ -11,3 +11,9 @@ export const zones: IZone[] = [
   { id: 2, cards: [], name: 'Play area' },
   { id: 3, cards: [], name: 'Discard Pile' },
 ]
+
+export const commonZones: IZone[] = [
+  { id: 1, cards: [], name: 'Draw Pile' },
+  // { id: 2, cards: [], name: 'Play area' },
+  // { id: 3, cards: [], name: 'Discard Pile' },
+]

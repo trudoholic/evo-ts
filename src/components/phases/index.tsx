@@ -14,6 +14,7 @@ const Phases = () => {
 
   return (
     <>
+      <hr/>
       <h2>
         {`Phases: [${phases[curHandPhase]}]`}
       </h2>
@@ -23,6 +24,7 @@ const Phases = () => {
         3 === curHandPhase? <Phase3/>:
           <h2>Error</h2>
       }
+      <hr/>
     </>
   )
 }

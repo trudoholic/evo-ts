@@ -1,5 +1,6 @@
 import {Actions} from "../context/actions"
 import {useAppContext} from "../context"
+import Common from "./Common"
 import Player from "./Player"
 import Phases from "./phases"
 import useFlow from "../hooks/useFlow"
@@ -37,7 +38,7 @@ const Game = () => {
     <>
       <Phases/>
       <h2>
-        {`[Hand: ${curHand}] ${isReverse?"*":""}`}
+        {`Game: [Hand: ${curHand}] ${isReverse?"*":""}`}
       </h2>
       <button onClick={handleNextHand}>
         Next Hand
@@ -48,6 +49,7 @@ const Game = () => {
       <button onClick={handleEndGame}>
         End Game
       </button>
+      <Common/>
       <div style={styles.flex}>
         {players.map((p, i) => <Player key={p.id} idx={i} />)}
       </div>
