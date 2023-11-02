@@ -11,9 +11,9 @@ const Common = () => {
   return (
     <>
       {
-        commonZones.map((z) =>
-          <Zone key={z.id} id={z.id} name={z.name}
-                cards={commonCards.filter(card => card.idZone === z.id)}
+        commonZones.map((zone) =>
+          <Zone {...zone} key={zone.id}
+                cards={commonCards.filter(card => card.idZone === zone.id)}
           />)
       }
     </>

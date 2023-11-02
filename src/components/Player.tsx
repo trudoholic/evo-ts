@@ -36,9 +36,9 @@ const Player = ({idx}: IProps) => {
           {`Player ${player.name}: ${player.value}`}
         </div>
         {
-          zones.map((z) =>
-          <Zone key={z.id} id={z.id} name={z.name}
-                cards={playerCards.filter(card => card.idZone === z.id)}
+          zones.map((zone) =>
+          <Zone {...zone} key={zone.id}
+                cards={playerCards.filter(card => card.idZone === zone.id)}
           />)
         }
       </div>
