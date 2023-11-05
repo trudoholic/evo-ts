@@ -18,7 +18,7 @@ const Player = ({idx}: IProps) => {
     box: {
       border: (idx === curHand? "1px solid #fff": "1px solid #369"),
       color: (idx === curTurn? "#fff": "#369"),
-      fontSize: "24px",
+      fontSize: "2.4rem",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
