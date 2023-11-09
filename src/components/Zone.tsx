@@ -1,5 +1,5 @@
 import {IZone} from "../data/zones"
-import Card, {CardRow} from "./Card";
+import Card, {CardContainer} from "./Card";
 
 const Zone = ({cards, name}: IZone) => {
   const styles = {
@@ -21,9 +21,9 @@ const Zone = ({cards, name}: IZone) => {
           cards.length ?
           <details open>
             <summary>{`${name} [${cards.length}]`}</summary>
-            <CardRow>
+            <CardContainer>
               {cards.map((card) => (<Card {...card} key={card.id}/>))}
-            </CardRow>
+            </CardContainer>
           </details>
           : <div style={styles.box0}>{`${name}`}</div>
         }
