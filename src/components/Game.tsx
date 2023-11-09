@@ -1,7 +1,7 @@
 import {Actions} from "../context/actions"
 import {useAppContext} from "../context"
 import Common from "./Common"
-import Player from "./Player"
+import Player, {PlayerContainer} from "./Player"
 import Phases from "./phases"
 import useFlow from "../hooks/useFlow"
 
@@ -27,13 +27,6 @@ const Game = () => {
     dispatch({type: Actions.EndGame})
   }
 
-  const styles = {
-    flex: {
-      display: "flex",
-      // gap: "50px",
-    }
-  }
-
   return (
     <>
       <Phases/>
@@ -49,10 +42,11 @@ const Game = () => {
       <button onClick={handleEndGame}>
         End Game
       </button>
-      <Common/>
-      <div style={styles.flex}>
+      {/*<Common/>*/}
+      <PlayerContainer>
+        <Common/>
         {players.map((p, i) => <Player key={p.id} idx={i} />)}
-      </div>
+      </PlayerContainer>
     </>
   )
 }

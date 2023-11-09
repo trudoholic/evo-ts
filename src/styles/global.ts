@@ -33,10 +33,13 @@ export default createGlobalStyle`
       min-width: 320px;
       min-height: 100vh;
       user-select: none;
+      //background-color: #369;
     }
 
     #root {
-      max-width: 1280px;
+      width: 100vw;
+      height: 100vh;
+      //max-width: 1280px;
       margin: 0 auto;
       padding: 2rem;
       text-align: center;

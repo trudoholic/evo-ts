@@ -9,14 +9,14 @@ export const CardContainer = styled.div`
   //justify-content: center;
 `
 
-interface CardProps {
+interface ICardProps {
   open: boolean;
 }
 
-export const StyledCard = styled.div<CardProps>`
+export const StyledCard = styled.div<ICardProps>`
   border: 1px solid #369;
   font-size: 1.8rem;
-  min-width: 15rem;
+  min-width: 5rem;
   margin: 0.2rem;
   padding: 0.3rem 0.5rem;
   background: ${({open}) => open ? "blue" : "green"};

@@ -1,48 +1,69 @@
+import styled from "styled-components"
 import {useAppContext} from "../context"
 import {IPlayer} from "../context/state"
 import {zones} from "../data/zones"
 import Zone from "./Zone"
 
-interface IProps {
+export const PlayerContainer = styled.div`
+  //background: olive;
+  border: 1px solid #ff0;
+  display: flex;
+  flex-direction: row;
+  //width: 100%;
+`
+
+interface IPlayerInfoProps {
+  curHand: boolean;
+  curTurn: boolean;
+}
+
+const StyledPlayerInfo = styled.div<IPlayerInfoProps>`
+  //background: olive;
+  border: ${({curHand}) => curHand ? "1px solid #fff": "1px solid #369"};
+  color: ${({curTurn}) => curTurn ? "#fff": "#369"};
+  font-size: 2.4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1.6rem;
+  padding: 0.8rem;
+  //width: 25rem;
+  height: 5rem;
+`
+
+export const StyledPlayer = styled.div`
+  //background: olive;
+  border: 1px solid #f0f;
+  flex: 1 0 0;
+  //font-size: 1.8rem;
+  //min-width: 15rem;
+  margin: 0.2rem;
+  //padding: 0.3rem 0.5rem;
+`
+
+interface IPlayerProps {
   idx: number
 }
 
-const Player = ({idx}: IProps) => {
+const Player = ({idx}: IPlayerProps) => {
   const { state } = useAppContext()
   const { curHand, curTurn, cards, players } = state
 
   const player: IPlayer = players[idx]
   const playerCards = cards.filter(card => card.idPlayer === player.id)
 
-  const styles = {
-    box: {
-      border: (idx === curHand? "1px solid #fff": "1px solid #369"),
-      color: (idx === curTurn? "#fff": "#369"),
-      fontSize: "2.4rem",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      margin: "16px",
-      // padding: "8px",
-      width: "250px",
-      height: "50px",
-    }
-  }
-
   return (
-    <>
-      <div>
-        <div style={styles.box}>
-          {`Player ${player.name}: ${player.value}`}
-        </div>
-        {
-          zones.map((zone) =>
+    <StyledPlayer>
+      <StyledPlayerInfo curHand={idx === curHand} curTurn={idx === curTurn}>
+        {`${player.name}: ${player.value}`}
+      </StyledPlayerInfo>
+      {
+        zones.map((zone) =>
           <Zone {...zone} key={zone.id}
                 cards={playerCards.filter(card => card.idZone === zone.id)}
           />)
-        }
-      </div>
-    </>
+      }
+    </StyledPlayer>
   )
 }
 
