@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import {useAppContext} from "../context"
-import {IPlayer} from "../context/state"
+import {IPlayer} from "../data/players"
 import {zones} from "../data/zones"
 import Zone from "./Zone"
 

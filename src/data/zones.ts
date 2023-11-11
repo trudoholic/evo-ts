@@ -1,4 +1,4 @@
-import {ICard} from "./cards";
+import {ICard} from "./cards"
 
 export interface IZone {
   id: number
