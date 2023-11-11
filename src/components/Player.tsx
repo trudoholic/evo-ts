@@ -13,14 +13,14 @@ export const PlayerContainer = styled.div`
 `
 
 interface IPlayerInfoProps {
-  curHand: boolean;
-  curTurn: boolean;
+  $hand: boolean;
+  $turn: boolean;
 }
 
 const StyledPlayerInfo = styled.div<IPlayerInfoProps>`
   //background: olive;
-  border: ${({curHand}) => curHand ? "1px solid #fff": "1px solid #369"};
-  color: ${({curTurn}) => curTurn ? "#fff": "#369"};
+  border: ${({$hand}) => $hand ? "1px solid #fff": "1px solid #369"};
+  color: ${({$turn}) => $turn ? "#fff": "#369"};
   font-size: 2.4rem;
   display: flex;
   justify-content: center;
@@ -54,7 +54,7 @@ const Player = ({idx}: IPlayerProps) => {
 
   return (
     <StyledPlayer>
-      <StyledPlayerInfo curHand={idx === curHand} curTurn={idx === curTurn}>
+      <StyledPlayerInfo $hand={idx === curHand} $turn={idx === curTurn}>
         {`${player.name}: ${player.value}`}
       </StyledPlayerInfo>
       {
