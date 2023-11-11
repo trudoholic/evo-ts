@@ -1,6 +1,8 @@
 import {Actions} from "../../context/actions"
 import {useAppContext} from "../../context"
 import useFlow from "../../hooks/useFlow"
+import {commonId} from "../../data/players"
+import {Zone} from "../../data/zones"
 
 const Phase0 = () => {
   const { state, dispatch } = useAppContext()
@@ -19,11 +21,11 @@ const Phase0 = () => {
   const phaseEnd = players.every(p => p.value >= 100)
 
   const handleNextTurn = () => {
-    const drawPile = cards.filter(card => card.idPlayer === "0" && card.idZone === "1") // <--- XXX
+    const drawPile = cards.filter(card => card.idPlayer === commonId && card.idZone === Zone.DrawPile)
     if (drawPile.length) {
       const card = {...drawPile[0]}
-      card.idPlayer = `${curTurn +1}` // <--- XXX
-      card.idZone = "1" // <--- XXX
+      card.idPlayer = players.at(curTurn).id
+      card.idZone = Zone.Hand
       dispatch({type: Actions.DrawCard, payload: card})
     }
 

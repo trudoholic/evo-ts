@@ -5,6 +5,8 @@ export interface IPlayer {
   value: number
 }
 
+export const commonId = "_"
+
 export const players: IPlayer[] = [
   { id: "1", name: 'Anna', value: 0, status: true },
   { id: "2", name: 'Beth', value: 0, status: false },

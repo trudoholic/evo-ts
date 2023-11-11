@@ -1,7 +1,8 @@
 import {Actions} from "./actions"
 import {IState} from "./state"
 import {ICard} from "../data/cards"
-import {players} from "../data/players"
+import {commonId, players} from "../data/players"
+import {Zone} from "../data/zones"
 
 export type TAction =
   | { type: Actions.BeginGame, payload: number }
@@ -24,7 +25,7 @@ export const reducer = (state: IState, action: TAction): IState => {
         curHand: rnd,
         curTurn: rnd,
         nPlayers: action.payload,
-        cards: state.cards.map(card => ({...card, idPlayer: "0", idZone: "1"})), // <--- XXX
+        cards: state.cards.map(card => ({...card, idPlayer: commonId, idZone: Zone.DrawPile})),
         players: players.slice(0, action.payload),
       }
 

@@ -6,14 +6,19 @@ export interface IZone {
   name: string
 }
 
+export const Zone = {
+  Hand: "Hand",
+  PlayArea: "Play Area",
+  DiscardPile: "Discard Pile",
+  DrawPile: "Draw Pile",
+}
+
 export const zones: IZone[] = [
-  { id: "1", cards: [], name: 'Hand' },
-  { id: "2", cards: [], name: 'Play area' },
-  { id: "3", cards: [], name: 'Discard Pile' },
+  { id: Zone.Hand, cards: [], name: 'Hand' },
+  { id: Zone.PlayArea, cards: [], name: 'Play Area' },
+  { id: Zone.DiscardPile, cards: [], name: 'Discard Pile' },
 ]
 
 export const commonZones: IZone[] = [
-  { id: "1", cards: [], name: 'Draw Pile' },
-  // { id: "2", cards: [], name: 'Play area' },
-  // { id: "3", cards: [], name: 'Discard Pile' },
+  { id: Zone.DrawPile, cards: [], name: 'Draw Pile' },
 ]

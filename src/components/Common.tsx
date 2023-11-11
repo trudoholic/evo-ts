@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import {useAppContext} from "../context"
+import {commonId} from "../data/players"
 import {commonZones} from "../data/zones"
 import Zone from "./Zone"
 
@@ -17,7 +18,7 @@ const Common = () => {
   const { state } = useAppContext()
   const { cards } = state
 
-  const commonCards = cards.filter(card => card.idPlayer === "0") // <--- XXX
+  const commonCards = cards.filter(card => card.idPlayer === commonId)
 
   return (
     <StyledCommon>
