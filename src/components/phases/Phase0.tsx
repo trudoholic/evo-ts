@@ -19,11 +19,11 @@ const Phase0 = () => {
   const phaseEnd = players.every(p => p.value >= 100)
 
   const handleNextTurn = () => {
-    const drawPile = cards.filter(card => card.idPlayer === 0 && card.idZone === 1)
+    const drawPile = cards.filter(card => card.idPlayer === "0" && card.idZone === "1") // <--- XXX
     if (drawPile.length) {
       const card = {...drawPile[0]}
-      card.idPlayer = (curTurn +1)
-      card.idZone = 1
+      card.idPlayer = `${curTurn +1}` // <--- XXX
+      card.idZone = "1" // <--- XXX
       dispatch({type: Actions.DrawCard, payload: card})
     }
 

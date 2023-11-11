@@ -17,7 +17,7 @@ const Common = () => {
   const { state } = useAppContext()
   const { cards } = state
 
-  const commonCards = cards.filter(card => card.idPlayer === 0)
+  const commonCards = cards.filter(card => card.idPlayer === "0") // <--- XXX
 
   return (
     <StyledCommon>

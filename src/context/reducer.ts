@@ -24,7 +24,7 @@ export const reducer = (state: IState, action: TAction): IState => {
         curHand: rnd,
         curTurn: rnd,
         nPlayers: action.payload,
-        cards: state.cards.map(card => ({...card, idPlayer: 0})),
+        cards: state.cards.map(card => ({...card, idPlayer: "0", idZone: "1"})), // <--- XXX
         players: players.slice(0, action.payload),
       }
 
