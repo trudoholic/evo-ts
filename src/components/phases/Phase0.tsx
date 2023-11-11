@@ -38,9 +38,8 @@ const Phase0 = () => {
 
   return (
     <>
-      <h2>
-        {` [Turn: ${curTurn}] Phase End: [${phaseEnd?"Gotcha!":""}]`}
-      </h2>
+      <h2>{`Turn: [${curTurn}]`}</h2>
+      <h2>{`${phaseEnd?"Phase End":"*"}`}</h2>
       <button onClick={handleNextTurn}>
         Next Turn
       </button>

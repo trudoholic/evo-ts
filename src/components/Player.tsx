@@ -6,9 +6,10 @@ import Zone from "./Zone"
 
 export const PlayerContainer = styled.div`
   //background: olive;
-  border: 1px solid #ff0;
+  //border: 1px solid #ff0;
   display: flex;
   flex-direction: row;
+  margin: 1.6rem 0;
   //width: 100%;
 `
 
@@ -33,7 +34,7 @@ const StyledPlayerInfo = styled.div<IPlayerInfoProps>`
 
 export const StyledPlayer = styled.div`
   //background: olive;
-  border: 1px solid #f0f;
+  //border: 1px solid #f0f;
   flex: 1 0 0;
   //font-size: 1.8rem;
   //min-width: 15rem;

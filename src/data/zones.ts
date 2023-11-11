@@ -11,7 +11,7 @@ export const Zone = {
   PlayArea: "Play Area",
   DiscardPile: "Discard Pile",
   DrawPile: "Draw Pile",
-}
+} as const
 
 export const zones: IZone[] = [
   { id: Zone.Hand, cards: [], name: 'Hand' },

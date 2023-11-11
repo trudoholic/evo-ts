@@ -47,29 +47,32 @@ export default createGlobalStyle`
     }
 
     h2 {
-      font-size: 2.4rem;
+      color: #369;
+      font-size: 1.8rem;
       line-height: 1.1;
     }
 
     button {
       border-radius: 8px;
       border: 1px solid transparent;
-      margin: 0 1.92rem;
-      padding: 0.96rem 1.92rem;
+      margin: 0.8rem 1.6rem;
+      padding: 0.8rem 1.6rem;
       font-size: 1.6rem;
       font-weight: 500;
       font-family: inherit;
+      color: #ccc;
       background-color: #1a1a1a;
       cursor: pointer;
       transition: border-color 0.25s;
     }
     button:hover {
+      color: #646cff;
       border-color: #646cff;
     }
-    button:focus,
-    button:focus-visible {
-      outline: 4px auto -webkit-focus-ring-color;
-    }
+    //button:focus,
+    //button:focus-visible {
+    //  outline: 4px auto -webkit-focus-ring-color;
+    //}
 
     details summary {
       color: #ccc;

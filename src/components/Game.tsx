@@ -1,9 +1,10 @@
 import {Actions} from "../context/actions"
 import {useAppContext} from "../context"
+// import Phases from "./phases"
+import useFlow from "../hooks/useFlow"
+import Commands from "./Commands"
 import Common from "./Common"
 import Player, {PlayerContainer} from "./Player"
-import Phases from "./phases"
-import useFlow from "../hooks/useFlow"
 
 const Game = () => {
   const { state, dispatch } = useAppContext()
@@ -29,9 +30,9 @@ const Game = () => {
 
   return (
     <>
-      <Phases/>
+      {/*<Phases/>*/}
       <h2>
-        {`Game: [Hand: ${curHand}] ${isReverse?"*":""}`}
+        {`Hand: [${curHand}] ${isReverse?"(R)":""}`}
       </h2>
       <button onClick={handleNextHand}>
         Next Hand
@@ -46,6 +47,7 @@ const Game = () => {
       <PlayerContainer>
         <Common/>
         {players.map((p, i) => <Player key={p.id} idx={i} />)}
+        <Commands/>
       </PlayerContainer>
     </>
   )

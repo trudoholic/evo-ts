@@ -6,7 +6,7 @@ export const CardContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  //justify-content: center;
+  justify-content: center;
 `
 
 interface ICardProps {
