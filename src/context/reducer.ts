@@ -43,7 +43,12 @@ export const reducer = (state: IState, action: TAction): IState => {
       return { ...state, curHand: action.payload}
 
     case Actions.NextHandPhase:
-      return { ...state, curHandPhase: action.payload}
+      return { ...state,
+        curHandPhase: action.payload,
+        players: state.players.map(
+          p => ({...p, pass: false})
+        )
+      }
 
     case Actions.NextTurn:
       return { ...state, curTurn: action.payload}
