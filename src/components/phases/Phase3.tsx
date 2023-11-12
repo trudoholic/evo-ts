@@ -1,26 +1,11 @@
-import {Actions} from "../../context/actions"
-import {useAppContext} from "../../context"
 import useFlow from "../../hooks/useFlow"
 
 const Phase3 = () => {
-  const { state, dispatch } = useAppContext()
-  const {
-    curHand,
-  } = state
-
   const {
     handleNextHandPhase,
-    nextIdx,
+    handleNextHand,
+    handleEndGame,
   } = useFlow()
-
-  const handleNextHand = () => {
-    const  nextHand = nextIdx(curHand)
-    dispatch({type: Actions.NextHand, payload: nextHand})
-  }
-
-  const handleEndGame = () => {
-    dispatch({type: Actions.EndGame})
-  }
 
   return (
     <>

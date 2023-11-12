@@ -1,12 +1,9 @@
-import { Actions } from "../context/actions"
-import { useAppContext } from "../context"
+import useFlow from "../hooks/useFlow"
 
 const Intro = () => {
-  const { dispatch } = useAppContext()
-
-  const handleBeginGame = (n: number) => {
-    dispatch({type: Actions.BeginGame, payload: n})
-  }
+  const {
+    handleBeginGame,
+  } = useFlow()
 
   return (
     <>
