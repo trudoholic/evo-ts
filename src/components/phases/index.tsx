@@ -3,6 +3,7 @@ import Phase0 from "./Phase0"
 import Phase1 from "./Phase1"
 import Phase2 from "./Phase2"
 import Phase3 from "./Phase3"
+import GameActions from "./GameActions"
 
 const phases = ["Phase_0", "Phase_1", "Phase_2", "Phase_3"]
 
@@ -23,6 +24,7 @@ const Phases = () => {
         3 === curHandPhase? <Phase3/>:
           <h2>Error</h2>
       }
+      <GameActions/>
     </>
   )
 }
