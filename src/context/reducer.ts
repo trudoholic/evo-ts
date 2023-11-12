@@ -15,15 +15,11 @@ export type TAction =
   | { type: Actions.EndGame }
 
 export const reducer = (state: IState, action: TAction): IState => {
-  let rnd = 0
   switch (action.type) {
 
     case Actions.BeginGame:
-      rnd = Math.floor(Math.random() * action.payload)
       return { ...state,
         isGameOver: false,
-        curHand: rnd,
-        curTurn: rnd,
         nPlayers: action.payload,
         cards: state.cards.map(card => ({...card, idPlayer: commonId, idZone: Zone.DrawPile})),
         players: players.slice(0, action.payload),

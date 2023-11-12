@@ -21,6 +21,7 @@ const Phase0 = () => {
   const phaseEnd = players.every(p => p.value >= 100)
 
   const handleNextTurn = () => {
+    console.log(`--- Turn: ${curTurn}`)
     const drawPile = cards.filter(card => card.idPlayer === commonId && card.idZone === Zone.DrawPile)
     if (drawPile.length) {
       const card = {...drawPile[0]}
