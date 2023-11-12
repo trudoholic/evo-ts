@@ -11,6 +11,7 @@ export type TAction =
   | { type: Actions.NextHand, payload: number }
   | { type: Actions.NextHandPhase, payload: number }
   | { type: Actions.NextTurn, payload: number }
+  | { type: Actions.Pass, payload: number }
   | { type: Actions.Reverse }
   | { type: Actions.EndGame }
 
@@ -46,6 +47,15 @@ export const reducer = (state: IState, action: TAction): IState => {
 
     case Actions.NextTurn:
       return { ...state, curTurn: action.payload}
+
+    case Actions.Pass: {
+      return { ...state,
+        players: state.players.map(
+          (p, i) => i === action.payload?
+            {...p, pass: true}: p
+        )
+      }
+    }
 
     case Actions.Reverse:
       return { ...state, isReverse: !state.isReverse}

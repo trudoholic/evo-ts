@@ -5,15 +5,25 @@ const useFlow = () => {
   const { state, dispatch } = useAppContext()
   const {
     curHand,
-    // curHandPhase,
+    curTurn,
     isReverse,
     nPlayers,
+    players,
   } = state
 
   const nextIdx = (idx: number) => {
     return isReverse?
       (idx + nPlayers - 1) % nPlayers:
       (idx + 1) % nPlayers
+  }
+  //-------------------------------------------------------
+
+  const handleNextTurn = () => {
+    let nextTurn = nextIdx(curTurn)
+    while (players.at(nextTurn).pass) {
+      nextTurn = nextIdx(nextTurn)
+    }
+    dispatch({type: Actions.NextTurn, payload: nextTurn})
   }
   //-------------------------------------------------------
 
@@ -72,6 +82,7 @@ const useFlow = () => {
   //-------------------------------------------------------
 
   return {
+    handleNextTurn,
     handleNextHandPhase,
     handleNextHand,
     handleBeginGame,

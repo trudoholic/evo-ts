@@ -14,14 +14,14 @@ const Phase0 = () => {
   } = state
 
   const {
+    handleNextTurn,
     handleNextHandPhase,
-    nextIdx,
   } = useFlow()
 
-  const phaseEnd = players.every(p => p.value >= 100)
+  const phaseEnd = players.every(p => p.pass)
 
-  const handleNextTurn = () => {
-    console.log(`--- Turn: ${curTurn}`)
+  const handlePlay = () => {
+    console.log(`- Turn: ${curTurn}`)
     const drawPile = cards.filter(card => card.idPlayer === commonId && card.idZone === Zone.DrawPile)
     if (drawPile.length) {
       const card = {...drawPile[0]}
@@ -33,20 +33,34 @@ const Phase0 = () => {
     const rnd = Math.floor(Math.random() * 25 + 1)
     dispatch({type: Actions.IncValue, payload: {idx: curTurn, value: rnd}})
 
-    const  nextTurn = nextIdx(curTurn)
-    dispatch({type: Actions.NextTurn, payload: nextTurn})
+    handleNextTurn()
+  }
+
+  const handlePass = () => {
+    console.log(`--- Pass: ${curTurn}`)
+    dispatch({type: Actions.Pass, payload: curTurn})
+    handleNextTurn()
   }
 
   return (
     <>
       <h2>{`Turn: [${curTurn}]`}</h2>
       <h2>{`${phaseEnd?"Phase End":"*"}`}</h2>
-      <button onClick={handleNextTurn}>
-        Next Turn
-      </button>
-      <button onClick={() => handleNextHandPhase(1)}>
-        Next Phase
-      </button>
+      {
+        phaseEnd?
+          <>
+            <button onClick={() => handleNextHandPhase(1)}>
+              Next Phase
+            </button>
+          </>:<>
+            <button onClick={handlePlay}>
+              Play
+            </button>
+            <button onClick={handlePass}>
+              Pass
+            </button>
+          </>
+      }
     </>
   )
 }

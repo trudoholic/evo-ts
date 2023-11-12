@@ -6,6 +6,6 @@ export enum Actions {
   NextHand,
   NextHandPhase,
   NextTurn,
+  Pass,
   Reverse,
 }
-

@@ -16,10 +16,11 @@ export const PlayerContainer = styled.div`
 interface IPlayerInfoProps {
   $hand: boolean;
   $turn: boolean;
+  $pass: boolean;
 }
 
 const StyledPlayerInfo = styled.div<IPlayerInfoProps>`
-  //background: olive;
+  background: ${({$pass}) => $pass ? "#999": "#242424"};
   border: ${({$hand}) => $hand ? "1px solid #fff": "1px solid #369"};
   color: ${({$turn}) => $turn ? "#fff": "#369"};
   font-size: 2.4rem;
@@ -55,13 +56,19 @@ const Player = ({idx}: IPlayerProps) => {
 
   return (
     <StyledPlayer>
-      <StyledPlayerInfo $hand={idx === curHand} $turn={idx === curTurn}>
+      <StyledPlayerInfo
+        $hand={idx === curHand}
+        $turn={idx === curTurn}
+        $pass={player.pass}
+      >
         {`${player.name}: ${player.value}`}
       </StyledPlayerInfo>
       {
         zones.map((zone) =>
-          <Zone {...zone} key={zone.id}
-                cards={playerCards.filter(card => card.idZone === zone.id)}
+          <Zone
+            {...zone}
+            key={zone.id}
+            cards={playerCards.filter(card => card.idZone === zone.id)}
           />)
       }
     </StyledPlayer>
