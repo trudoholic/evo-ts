@@ -46,6 +46,8 @@ const useFlow = () => {
     dispatch({type: Actions.NextHand, payload: hand})
     console.group(`Hand: ${hand}`)
 
+    onBeginPhase(0)
+
     dispatch({type: Actions.NextTurn, payload: hand})
   }
 
@@ -68,7 +70,6 @@ const useFlow = () => {
     const  eldestHand = Math.floor(Math.random() * n)
     console.log(`* Eldest Hand: ${eldestHand} *`)
     onBeginHand(eldestHand)
-    onBeginPhase(0)
   }
 
   const handleEndGame = () => {
