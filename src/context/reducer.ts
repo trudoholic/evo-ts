@@ -7,6 +7,7 @@ import {Zone} from "../data/zones"
 export type TAction =
   | { type: Actions.BeginGame, payload: number }
   | { type: Actions.DrawCard, payload: ICard }
+  | { type: Actions.DrawRound, payload: { hand: number, nDraw: number } }
   | { type: Actions.IncValue, payload: { idx: number, value: number } }
   | { type: Actions.NextHand, payload: number }
   | { type: Actions.NextHandPhase, payload: number }
@@ -26,10 +27,30 @@ export const reducer = (state: IState, action: TAction): IState => {
         players: players.slice(0, action.payload),
       }
 
-    case Actions.DrawCard:
+    case Actions.DrawCard: {
       return { ...state,
         cards: state.cards.map(card => card.id === action.payload.id ? action.payload: card)
       }
+    }
+
+    case Actions.DrawRound: {
+      const nDraw = action.payload.nDraw
+      const getIdx = (i: number) => (action.payload.hand + Math.floor(i / nDraw)) % state.nPlayers
+      const deck = state.cards.filter(c => c.idPlayer === commonId && c.idZone === Zone.DrawPile)
+      const rest = state.cards.filter(c => c.idPlayer !== commonId || c.idZone !== Zone.DrawPile)
+
+      const newDeck = deck.map(
+        (card, i) => i < nDraw * state.nPlayers ?
+          {
+            ...card,
+            idPlayer: state.players.at(getIdx(i)).id,
+            idZone: Zone.Hand
+          }
+          : card
+      )
+
+      return { ...state, cards: [...rest, ...newDeck] }
+    }
 
     case Actions.IncValue:
       return { ...state,

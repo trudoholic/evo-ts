@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import {useAppContext} from "../context"
 import {IPlayer} from "../data/players"
+import {IState} from "../context/state"
 import {zones} from "../data/zones"
 import Zone from "./Zone"
 
@@ -49,7 +50,12 @@ interface IPlayerProps {
 
 const Player = ({idx}: IPlayerProps) => {
   const { state } = useAppContext()
-  const { curHand, curTurn, cards, players } = state
+  const {
+    curHand,
+    curTurn,
+    cards,
+    players
+  } = state as IState
 
   const player: IPlayer = players[idx]
   const playerCards = cards.filter(card => card.idPlayer === player.id)

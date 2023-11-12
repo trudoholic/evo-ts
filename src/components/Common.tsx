@@ -2,6 +2,7 @@ import styled from "styled-components"
 import {useAppContext} from "../context"
 import {commonId} from "../data/players"
 import {commonZones} from "../data/zones"
+import {IState} from "../context/state"
 import Zone from "./Zone"
 
 export const StyledCommon = styled.div`
@@ -16,7 +17,7 @@ export const StyledCommon = styled.div`
 
 const Common = () => {
   const { state } = useAppContext()
-  const { cards } = state
+  const { cards } = state as IState
 
   const commonCards = cards.filter(card => card.idPlayer === commonId)
 
