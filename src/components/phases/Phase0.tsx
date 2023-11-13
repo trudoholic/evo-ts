@@ -1,34 +1,26 @@
 import {Actions} from "../../context/actions"
 import {useAppContext} from "../../context"
 import useFlow from "../../hooks/useFlow"
-// import {commonId} from "../../data/players"
-import {Zone} from "../../data/zones"
 
 const Phase0 = () => {
   const { state, dispatch } = useAppContext()
   const {
-    cards,
     curTurn,
     players,
   } = state
 
   const {
+    getHand,
     handleNextTurn,
     handleNextHandPhase,
+    playCard,
   } = useFlow()
 
   const phaseEnd = players.every(p => p.pass)
 
   const handlePlay = () => {
     console.log(`- Play: ${curTurn}`)
-    const hand = cards.filter(c => c.idPlayer === players.at(curTurn).id && c.idZone === Zone.Hand)
-    console.log(hand)
-    if (hand.length) {
-      const card = {...hand[0]}
-      // card.idPlayer = players.at(curTurn).id
-      card.idZone = Zone.PlayArea
-      dispatch({type: Actions.UpdateCard, payload: card})
-    }
+    playCard(0)
 
     const rnd = Math.floor(Math.random() * 25 + 1)
     dispatch({type: Actions.IncValue, payload: {idx: curTurn, value: rnd}})
@@ -53,9 +45,13 @@ const Phase0 = () => {
               Next Phase
             </button>
           </>:<>
-            <button onClick={handlePlay}>
-              Play
-            </button>
+            {
+              getHand().length ?
+                <button onClick={handlePlay}>
+                  Play
+                </button>
+                : null
+            }
             <button onClick={handlePass}>
               Pass
             </button>

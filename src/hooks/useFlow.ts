@@ -1,9 +1,11 @@
 import {useAppContext} from "../context"
 import {Actions} from "../context/actions"
+import {Zone} from "../data/zones";
 
 const useFlow = () => {
   const { state, dispatch } = useAppContext()
   const {
+    cards,
     curHand,
     curTurn,
     isReverse,
@@ -83,13 +85,30 @@ const useFlow = () => {
   }
   //-------------------------------------------------------
 
+  const getHand = () => {
+    return  cards.filter(c => c.idPlayer === players.at(curTurn).id && c.idZone === Zone.Hand)
+  }
+
+  const playCard = (idx: number) => {
+    const hand = getHand()
+    if (hand.length) {
+      const card = {...hand[idx]}
+      // card.idPlayer = players.at(curTurn).id
+      card.idZone = Zone.PlayArea
+      dispatch({type: Actions.UpdateCard, payload: card})
+    }
+  }
+  //-------------------------------------------------------
+
   return {
+    getHand,
     handleNextTurn,
     handleNextHandPhase,
     handleNextHand,
     handleBeginGame,
     handleEndGame,
     nextIdx,
+    playCard,
   }
 }
 
