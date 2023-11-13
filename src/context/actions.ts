@@ -1,6 +1,7 @@
 export enum Actions {
   BeginGame,
   DrawRound,
+  DropCards,
   EndGame,
   IncValue,
   NextHand,

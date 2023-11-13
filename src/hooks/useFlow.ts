@@ -55,6 +55,7 @@ const useFlow = () => {
   }
 
   const onEndHand = () => {
+    dispatch({type: Actions.DropCards})
     console.groupEnd()
   }
 

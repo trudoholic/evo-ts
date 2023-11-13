@@ -7,6 +7,7 @@ import {Zone} from "../data/zones"
 export type TAction =
   | { type: Actions.BeginGame, payload: number }
   | { type: Actions.DrawRound, payload: { hand: number, nDraw: number } }
+  | { type: Actions.DropCards }
   | { type: Actions.EndGame }
   | { type: Actions.IncValue, payload: { idx: number, value: number } }
   | { type: Actions.NextHand, payload: number }
@@ -45,6 +46,14 @@ export const reducer = (state: IState, action: TAction): IState => {
       )
 
       return { ...state, cards: [...rest, ...newDeck] }
+    }
+
+    case Actions.DropCards: {
+      return { ...state,
+        cards: state.cards.map(
+          c => c.idZone === Zone.PlayArea ? {...c, idZone: Zone.DiscardPile}: c
+        )
+      }
     }
 
     case Actions.EndGame: {
