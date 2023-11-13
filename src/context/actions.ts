@@ -1,6 +1,5 @@
 export enum Actions {
   BeginGame,
-  DrawCard,
   DrawRound,
   EndGame,
   IncValue,
@@ -9,4 +8,5 @@ export enum Actions {
   NextTurn,
   Pass,
   Reverse,
+  UpdateCard,
 }
