@@ -1,4 +1,5 @@
 import {useAppContext} from "../../context"
+import {IState} from "../../context/state"
 import useFlow from "../../hooks/useFlow"
 import {commonId} from "../../data/players"
 import {Zone} from "../../data/zones"
@@ -7,7 +8,7 @@ const Phase3 = () => {
   const { state } = useAppContext()
   const {
     cards,
-  } = state
+  } = state as IState
 
   const deck = cards.filter(card => card.idPlayer === commonId && card.idZone === Zone.DrawPile)
   const gameEnd = !deck.length

@@ -51,7 +51,7 @@ export const reducer = (state: IState, action: TAction): IState => {
     case Actions.DropCards: {
       return { ...state,
         cards: state.cards.map(
-          c => c.idZone === Zone.PlayArea ? {...c, idZone: Zone.DiscardPile}: c
+          c => c.idZone === Zone.Keep ? {...c, idZone: Zone.DiscardPile}: c
         )
       }
     }

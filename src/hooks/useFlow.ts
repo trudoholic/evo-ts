@@ -1,5 +1,6 @@
 import {useAppContext} from "../context"
 import {Actions} from "../context/actions"
+import {IState} from "../context/state"
 import {Zone} from "../data/zones";
 
 const useFlow = () => {
@@ -11,7 +12,7 @@ const useFlow = () => {
     isReverse,
     nPlayers,
     players,
-  } = state
+  } = state as IState
 
   const nextIdx = (idx: number) => {
     return isReverse?
@@ -90,19 +91,42 @@ const useFlow = () => {
     return  cards.filter(c => c.idPlayer === players.at(curTurn).id && c.idZone === Zone.Hand)
   }
 
+  const getKeep = () => {
+    return  cards.filter(c => c.idPlayer === players.at(curTurn).id && c.idZone === Zone.Keep)
+  }
+
+  const getPerks = (cardId: string) => {
+    return  cards.filter(c => c.idZone === cardId)
+  }
+
   const playCard = (idx: number) => {
     const hand = getHand()
     if (hand.length) {
       const card = {...hand[idx]}
       // card.idPlayer = players.at(curTurn).id
-      card.idZone = Zone.PlayArea
+      card.idZone = Zone.Keep
       dispatch({type: Actions.UpdateCard, payload: card})
+    }
+  }
+
+  const playPerk = (idx: number, dst: number) => {
+    const hand = getHand()
+    if (hand.length) {
+      const keep = getKeep()
+      if (keep.length) {
+        const card = {...hand.at(idx)}
+        const dstCard = {...keep.at(dst)}
+        card.idZone = dstCard.id
+        dispatch({type: Actions.UpdateCard, payload: card})
+      }
     }
   }
   //-------------------------------------------------------
 
   return {
     getHand,
+    getKeep,
+    getPerks,
     handleNextTurn,
     handleNextHandPhase,
     handleNextHand,
@@ -110,6 +134,7 @@ const useFlow = () => {
     handleEndGame,
     nextIdx,
     playCard,
+    playPerk,
   }
 }
 

@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import {ICard} from "../data/cards"
+import useFlow from "../hooks/useFlow"
 
 export const CardContainer = styled.div`
   //background: olive;
@@ -10,7 +11,7 @@ export const CardContainer = styled.div`
 `
 
 interface ICardProps {
-  open: boolean;
+  $b: boolean;
 }
 
 export const StyledCard = styled.div<ICardProps>`
@@ -23,9 +24,15 @@ export const StyledCard = styled.div<ICardProps>`
 `
 
 const Card = ({id}: ICard) => {
+  const {
+    getPerks,
+  } = useFlow()
+
+  const perks = getPerks(id)
+
   return (
-    <StyledCard open={7 === id}>
-      {id}
+    <StyledCard $b={perks.length > 0}>
+      {`${id}:${perks.length}`}
     </StyledCard>
   )
 }

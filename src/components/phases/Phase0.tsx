@@ -1,29 +1,40 @@
 import {Actions} from "../../context/actions"
+import {IState} from "../../context/state"
 import {useAppContext} from "../../context"
 import useFlow from "../../hooks/useFlow"
 
 const Phase0 = () => {
   const { state, dispatch } = useAppContext()
   const {
+    // cards,
     curTurn,
     players,
-  } = state
+  } = state as IState
 
   const {
     getHand,
+    getKeep,
     handleNextTurn,
     handleNextHandPhase,
     playCard,
+    playPerk,
   } = useFlow()
 
   const phaseEnd = players.every(p => p.pass)
 
-  const handlePlay = () => {
-    console.log(`- Play: ${curTurn}`)
+  const handlePlayCard = () => {
+    console.log(`- Play Card: ${curTurn}`)
     playCard(0)
 
     const rnd = Math.floor(Math.random() * 25 + 1)
     dispatch({type: Actions.IncValue, payload: {idx: curTurn, value: rnd}})
+
+    handleNextTurn()
+  }
+
+  const handlePlayPerk = () => {
+    console.log(`- Play Perk: ${curTurn}`)
+    playPerk(0, -1)
 
     handleNextTurn()
   }
@@ -47,14 +58,26 @@ const Phase0 = () => {
           </>:<>
             {
               getHand().length ?
-                <button onClick={handlePlay}>
-                  Play
-                </button>
+                <>
+                  <button onClick={handlePlayCard}>
+                    Play Card
+                  </button>
+                  {
+                    getKeep().length ?
+                      <>
+                        <button onClick={handlePlayPerk}>
+                          Play Perk
+                        </button>
+                      </>
+                      : null
+                  }
+                </>
                 : null
             }
             <button onClick={handlePass}>
               Pass
             </button>
+            {/*<p>{JSON.stringify(cards)}</p>*/}
           </>
       }
     </>
