@@ -1,12 +1,9 @@
-import {Actions} from "../../context/actions"
-import {useAppContext} from "../../context"
+import useFlow from "../../hooks/useFlow"
 
 const GameActions = () => {
-  const { dispatch } = useAppContext()
-
-  const handleReverse = () => {
-    dispatch({type: Actions.Reverse})
-  }
+  const {
+    handleReverse,
+  } = useFlow()
 
   return (
     <>

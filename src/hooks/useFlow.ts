@@ -1,5 +1,5 @@
 import {useAppContext} from "../context"
-import {Actions} from "../context/actions"
+import {Actions} from "../context/reducer"
 import {IState} from "../context/state"
 import {Zone} from "../data/zones";
 
@@ -18,6 +18,10 @@ const useFlow = () => {
     return isReverse?
       (idx + nPlayers - 1) % nPlayers:
       (idx + 1) % nPlayers
+  }
+
+  const handleReverse = () => {
+    dispatch({type: Actions.Reverse})
   }
   //-------------------------------------------------------
 
@@ -123,18 +127,43 @@ const useFlow = () => {
   }
   //-------------------------------------------------------
 
+  const handlePlayCard = () => {
+    console.log(`- Play Card: ${curTurn}`)
+    playCard(0)
+
+    const rnd = Math.floor(Math.random() * 25 + 1)
+    dispatch({type: Actions.IncValue, payload: {idx: curTurn, value: rnd}})
+
+    handleNextTurn()
+  }
+
+  const handlePlayPerk = () => {
+    console.log(`- Play Perk: ${curTurn}`)
+    playPerk(0, -1)
+
+    handleNextTurn()
+  }
+
+  const handlePass = () => {
+    console.log(`--- Pass: ${curTurn}`)
+    dispatch({type: Actions.Pass, payload: curTurn})
+    handleNextTurn()
+  }
+  //-------------------------------------------------------
+
   return {
     getHand,
     getKeep,
     getPerks,
-    handleNextTurn,
-    handleNextHandPhase,
-    handleNextHand,
     handleBeginGame,
     handleEndGame,
+    handleNextHandPhase,
+    handleNextHand,
+    handlePass,
+    handlePlayCard,
+    handlePlayPerk,
+    handleReverse,
     nextIdx,
-    playCard,
-    playPerk,
   }
 }
 

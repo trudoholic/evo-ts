@@ -1,8 +1,21 @@
-import {Actions} from "./actions"
 import {IState} from "./state"
 import {ICard} from "../data/cards"
 import {commonId, players} from "../data/players"
 import {Zone} from "../data/zones"
+
+export enum Actions {
+  BeginGame,
+  DrawRound,
+  DropCards,
+  EndGame,
+  IncValue,
+  NextHand,
+  NextHandPhase,
+  NextTurn,
+  Pass,
+  Reverse,
+  UpdateCard,
+}
 
 export type TAction =
   | { type: Actions.BeginGame, payload: number }

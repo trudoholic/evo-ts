@@ -1,10 +1,9 @@
-import {Actions} from "../../context/actions"
 import {IState} from "../../context/state"
 import {useAppContext} from "../../context"
 import useFlow from "../../hooks/useFlow"
 
 const Phase0 = () => {
-  const { state, dispatch } = useAppContext()
+  const { state } = useAppContext()
   const {
     // cards,
     curTurn,
@@ -14,36 +13,13 @@ const Phase0 = () => {
   const {
     getHand,
     getKeep,
-    handleNextTurn,
     handleNextHandPhase,
-    playCard,
-    playPerk,
+    handlePass,
+    handlePlayCard,
+    handlePlayPerk,
   } = useFlow()
 
   const phaseEnd = players.every(p => p.pass)
-
-  const handlePlayCard = () => {
-    console.log(`- Play Card: ${curTurn}`)
-    playCard(0)
-
-    const rnd = Math.floor(Math.random() * 25 + 1)
-    dispatch({type: Actions.IncValue, payload: {idx: curTurn, value: rnd}})
-
-    handleNextTurn()
-  }
-
-  const handlePlayPerk = () => {
-    console.log(`- Play Perk: ${curTurn}`)
-    playPerk(0, -1)
-
-    handleNextTurn()
-  }
-
-  const handlePass = () => {
-    console.log(`--- Pass: ${curTurn}`)
-    dispatch({type: Actions.Pass, payload: curTurn})
-    handleNextTurn()
-  }
 
   return (
     <>
