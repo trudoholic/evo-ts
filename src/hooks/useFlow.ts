@@ -37,6 +37,7 @@ const useFlow = () => {
   const onBeginPhase = (phase: number) => {
     dispatch({type: Actions.NextHandPhase, payload: phase})
     console.group(`Phase: ${phase}`)
+    dispatch({type: Actions.NextTurn, payload: curHand})
   }
 
   const onEndPhase = () => {
@@ -164,6 +165,7 @@ const useFlow = () => {
     handleEndGame,
     handleNextHandPhase,
     handleNextHand,
+    handleNextTurn,
     handlePass,
     handlePlayCard,
     handlePlayPerk,

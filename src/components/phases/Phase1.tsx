@@ -33,7 +33,6 @@ const Phase1 = () => {
             <button onClick={getTokens}>
               Get Tokens
             </button>
-            {/*<p>{JSON.stringify(cards)}</p>*/}
           </>
       }
     </>

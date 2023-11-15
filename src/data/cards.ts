@@ -20,4 +20,8 @@ export const cards: ICard[] = [
   { id: "10", idPlayer: "0", idZone: "1" },
   { id: "11", idPlayer: "0", idZone: "1" },
   { id: "12", idPlayer: "0", idZone: "1" },
+
+  { id: "13", idPlayer: "0", idZone: "1" },
+  { id: "14", idPlayer: "0", idZone: "1" },
+  { id: "15", idPlayer: "0", idZone: "1" },
 ]
