@@ -62,15 +62,19 @@ export const reducer = (state: IState, action: TAction): IState => {
     }
 
     case Actions.DropCards: {
+      const dropIds = state.cards
+        .filter(c => c.idZone === Zone.Keep)
+        .map(c => c.id)
+      const dropped = (c: ICard) => c.idZone === Zone.Keep || dropIds.includes(c.idZone)
       return { ...state,
         cards: state.cards.map(
-          c => c.idZone === Zone.Keep ? {...c, idZone: Zone.DiscardPile}: c
+          c => dropped(c) ? {...c, idZone: Zone.DiscardPile}: c
         )
       }
     }
 
     case Actions.EndGame: {
-      return { ...state, isGameOver: true}
+      return { ...state, isGameOver: true }
     }
 
     case Actions.IncValue: {
