@@ -61,6 +61,7 @@ const useFlow = () => {
 
   const onEndHand = () => {
     dispatch({type: Actions.DropCards})
+    handleUpdateTokens(0)
     console.groupEnd()
   }
 
@@ -149,6 +150,10 @@ const useFlow = () => {
     dispatch({type: Actions.Pass, payload: curTurn})
     handleNextTurn()
   }
+
+  const handleUpdateTokens = (n: number) => {
+    dispatch({type: Actions.UpdateTokens, payload: n})
+  }
   //-------------------------------------------------------
 
   return {
@@ -163,6 +168,7 @@ const useFlow = () => {
     handlePlayCard,
     handlePlayPerk,
     handleReverse,
+    handleUpdateTokens,
     nextIdx,
   }
 }

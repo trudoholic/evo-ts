@@ -15,6 +15,7 @@ export enum Actions {
   Pass,
   Reverse,
   UpdateCard,
+  UpdateTokens,
 }
 
 export type TAction =
@@ -29,6 +30,7 @@ export type TAction =
   | { type: Actions.Pass, payload: number }
   | { type: Actions.Reverse }
   | { type: Actions.UpdateCard, payload: ICard }
+  | { type: Actions.UpdateTokens, payload: number }
 
 export const reducer = (state: IState, action: TAction): IState => {
   switch (action.type) {
@@ -120,6 +122,10 @@ export const reducer = (state: IState, action: TAction): IState => {
       return { ...state,
         cards: state.cards.map(card => card.id === action.payload.id ? action.payload: card)
       }
+    }
+
+    case Actions.UpdateTokens: {
+      return { ...state, tokens: action.payload}
     }
 
     default: {
