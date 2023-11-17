@@ -20,18 +20,20 @@ export const StyledCard = styled.div<ICardProps>`
   min-width: 5rem;
   margin: 0.2rem;
   padding: 0.3rem 0.5rem;
-  background: ${({open}) => open ? "blue" : "green"};
+  background: ${({$b}) => $b ? "blue" : "green"};
 `
 
-const Card = ({id}: ICard) => {
+const Card = ({id, tokens}: ICard) => {
   const {
     getPerks,
   } = useFlow()
 
   const perks = getPerks(id)
+  const b = !!tokens
+  // const b = perks.length > 0
 
   return (
-    <StyledCard $b={perks.length > 0}>
+    <StyledCard $b={b}>
       {`${id}:${perks.length}`}
     </StyledCard>
   )

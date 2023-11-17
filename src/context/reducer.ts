@@ -70,7 +70,10 @@ export const reducer = (state: IState, action: TAction): IState => {
       const dropped = (c: ICard) => c.idZone === Zone.Keep || dropIds.includes(c.idZone)
       return { ...state,
         cards: state.cards.map(
-          c => dropped(c) ? {...c, idZone: Zone.DiscardPile}: c
+          c => dropped(c) ? { ...c,
+            idZone: Zone.DiscardPile,
+            tokens: null,
+          }: c
         )
       }
     }

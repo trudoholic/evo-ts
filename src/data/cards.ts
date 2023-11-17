@@ -1,27 +1,18 @@
+import {Tokens} from "./tokens"
+
 export interface ICard  {
   id: string
   idPlayer: string
   idZone: string
+  tokens: Tokens
 }
 
-export const cards: ICard[] = [
-  { id: "1", idPlayer: "0", idZone: "1" },
-  { id: "2", idPlayer: "0", idZone: "1" },
-  { id: "3", idPlayer: "0", idZone: "1" },
+export const cards: ICard[] = [...Array(16)]
+  .map((_, i) => ({
+    id: `${i + 1}`,
+    idPlayer: "0",
+    idZone: "1",
+    tokens: null,
+  }))
 
-  { id: "4", idPlayer: "0", idZone: "1" },
-  { id: "5", idPlayer: "0", idZone: "1" },
-  { id: "6", idPlayer: "0", idZone: "1" },
-
-  { id: "7", idPlayer: "0", idZone: "1" },
-  { id: "8", idPlayer: "0", idZone: "1" },
-  { id: "9", idPlayer: "0", idZone: "1" },
-
-  { id: "10", idPlayer: "0", idZone: "1" },
-  { id: "11", idPlayer: "0", idZone: "1" },
-  { id: "12", idPlayer: "0", idZone: "1" },
-
-  { id: "13", idPlayer: "0", idZone: "1" },
-  { id: "14", idPlayer: "0", idZone: "1" },
-  { id: "15", idPlayer: "0", idZone: "1" },
-]
+// console.log(cards)

@@ -1,7 +1,8 @@
 import {useAppContext} from "../context"
 import {Actions} from "../context/reducer"
 import {IState} from "../context/state"
-import {Zone} from "../data/zones";
+import {Token} from "../data/tokens"
+import {Zone} from "../data/zones"
 
 const useFlow = () => {
   const { state, dispatch } = useAppContext()
@@ -111,6 +112,7 @@ const useFlow = () => {
       const card = {...hand[idx]}
       // card.idPlayer = players.at(curTurn).id
       card.idZone = Zone.Keep
+      card.tokens = { [Token.R]: 0 }
       dispatch({type: Actions.UpdateCard, payload: card})
     }
   }
