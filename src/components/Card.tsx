@@ -24,7 +24,7 @@ export const StyledCard = styled.div<ICardProps>`
   margin: 0.2rem;
   padding: 0.3rem 0.5rem;
   background: ${({$disabled}) => $disabled ? "grey" : "green"};
-  cursor: ${({$disabled}) => $disabled ? "default" : "pointer"};
+  cursor: ${({$disabled}) => $disabled ? "not-allowed" : "pointer"};
 `
 
 // const Card = ({disabled, id, idPlayer, idZone, tokens}: ICard) => {

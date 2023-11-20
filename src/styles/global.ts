@@ -67,9 +67,13 @@ export default createGlobalStyle`
       cursor: pointer;
       transition: border-color 0.25s;
     }
-    button:hover {
+    button:enabled:hover {
       color: #646cff;
       border-color: #646cff;
+    }
+    button:disabled {
+      color: #369;
+      cursor: not-allowed;
     }
     //button:focus,
     //button:focus-visible {

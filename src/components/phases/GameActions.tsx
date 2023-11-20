@@ -7,7 +7,7 @@ const GameActions = () => {
 
   return (
     <>
-      <button onClick={handleReverse}>
+      <button disabled onClick={handleReverse}>
         Reverse
       </button>
     </>
