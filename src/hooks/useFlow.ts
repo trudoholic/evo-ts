@@ -27,6 +27,9 @@ const useFlow = () => {
   //-------------------------------------------------------
 
   const handleNextTurn = () => {
+    handleSetActive("")
+    handleSetTarget("")
+
     let nextTurn = nextIdx(curTurn)
     while (players.at(nextTurn).pass) {
       nextTurn = nextIdx(nextTurn)
