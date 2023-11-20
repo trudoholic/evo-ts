@@ -1,8 +1,9 @@
 import styled from "styled-components"
 import {useAppContext} from "../context"
+import useFlow from "../hooks/useFlow"
 import {ICard} from "../data/cards"
 import {IState} from "../context/state"
-import useFlow from "../hooks/useFlow"
+import {ZoneList} from "../data/zones"
 
 export const CardContainer = styled.div`
   //background: olive;
@@ -27,9 +28,10 @@ export const StyledCard = styled.div<ICardProps>`
 `
 
 // const Card = ({disabled, id, idPlayer, idZone, tokens}: ICard) => {
-const Card = ({disabled, id, idPlayer}: ICard) => {
+const Card = ({disabled, id, idPlayer, idZone}: ICard) => {
   const { state } = useAppContext()
   const {
+    curHandPhase,
     curTurn,
     players,
   } = state as IState
@@ -37,6 +39,7 @@ const Card = ({disabled, id, idPlayer}: ICard) => {
   const cardDisabled = disabled
     || (players.at(curTurn).id !== idPlayer)
     || (players.at(curTurn).pass)
+    || ZoneList[curHandPhase] !== idZone
 
   const {
     getPerks,
