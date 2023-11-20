@@ -10,6 +10,8 @@ export default createGlobalStyle`
     //}
     
     :root {
+      --table-color: #044d1c;
+      
       font-size: 62.5%;
       font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
       line-height: 1.5;
@@ -17,7 +19,7 @@ export default createGlobalStyle`
 
       color-scheme: light dark;
       color: rgba(255, 255, 255, 0.87);
-      background-color: #242424;
+      background-color: var(--table-color);
 
       font-synthesis: none;
       text-rendering: optimizeLegibility;

@@ -11,7 +11,7 @@ export const CardContainer = styled.div`
 `
 
 interface ICardProps {
-  $b: boolean;
+  $disabled: boolean;
 }
 
 export const StyledCard = styled.div<ICardProps>`
@@ -20,20 +20,20 @@ export const StyledCard = styled.div<ICardProps>`
   min-width: 5rem;
   margin: 0.2rem;
   padding: 0.3rem 0.5rem;
-  background: ${({$b}) => $b ? "blue" : "green"};
+  background: ${({$disabled}) => $disabled ? "grey" : "green"};
 `
 
-const Card = ({id, tokens}: ICard) => {
+const Card = ({disabled, id, idPlayer, idZone, tokens}: ICard) => {
+  console.log(disabled, id, idPlayer, idZone, tokens)
   const {
     getPerks,
   } = useFlow()
-
   const perks = getPerks(id)
-  const b = !!tokens
+  // const b = !!tokens
   // const b = perks.length > 0
 
   return (
-    <StyledCard $b={b}>
+    <StyledCard $disabled={disabled}>
       {`${id}:${perks.length}`}
     </StyledCard>
   )

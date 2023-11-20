@@ -4,6 +4,7 @@ import {IPlayer} from "../data/players"
 import {IState} from "../context/state"
 import {zones} from "../data/zones"
 import Zone from "./Zone"
+import {grey} from "../styles/colors"
 
 export const PlayerContainer = styled.div`
   //background: olive;
@@ -21,7 +22,7 @@ interface IPlayerInfoProps {
 }
 
 const StyledPlayerInfo = styled.div<IPlayerInfoProps>`
-  background: ${({$pass}) => $pass ? "#999": "#242424"};
+  background: ${({$pass}) => $pass ? grey[700]: "var(--table-color)"};
   border: ${({$hand}) => $hand ? "1px solid #fff": "1px solid #369"};
   color: ${({$turn}) => $turn ? "#fff": "#369"};
   font-size: 2.4rem;
