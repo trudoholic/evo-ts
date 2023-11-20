@@ -10,7 +10,7 @@ export interface ICard  {
 
 export const cards: ICard[] = [...Array(16)]
   .map((_, i) => ({
-    disabled: true,
+    disabled: false,
     id: `${i + 1}`,
     idPlayer: "0",
     idZone: "1",

@@ -1,10 +1,11 @@
 import {IZone} from "../data/zones"
-import Card, {CardContainer} from "./Card";
+import Card, {CardContainer} from "./Card"
+import {grey} from "../styles/colors"
 
 const Zone = ({cards, name}: IZone) => {
   const styles = {
     box: {
-      border: "1px solid #369",
+      border: `1px solid ${grey[500]}`,
       margin: "16px",
       padding: "8px 0",
     },
