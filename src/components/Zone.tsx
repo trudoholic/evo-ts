@@ -23,7 +23,9 @@ const Zone = ({cards, name}: IZone) => {
           <details open>
             <summary>{`${name} [${cards.length}]`}</summary>
             <CardContainer>
-              {cards.map((card) => (<Card {...card} key={card.id}/>))}
+              {cards.map((card) => (
+                <Card {...card} key={card.id}/>
+              ))}
             </CardContainer>
           </details>
           : <div style={styles.box0}>{`${name}`}</div>

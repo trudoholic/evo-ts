@@ -2,6 +2,8 @@ import {cards, ICard} from "../data/cards"
 import {IPlayer} from "../data/players"
 
 export interface IState {
+  cardActiveId: string
+  cardTargetId: string
   cards: ICard[]
   curHand: number
   curHandPhase: number
@@ -14,6 +16,8 @@ export interface IState {
 }
 
 export const defaultState: IState = {
+  cardActiveId: "",
+  cardTargetId: "",
   cards: cards,
   curHand: 0,
   curHandPhase: 0,

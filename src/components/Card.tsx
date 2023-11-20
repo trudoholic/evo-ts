@@ -4,6 +4,7 @@ import useFlow from "../hooks/useFlow"
 import {ICard} from "../data/cards"
 import {IState} from "../context/state"
 import {ZoneList} from "../data/zones"
+import {grey, lime} from "../styles/colors"
 
 export const CardContainer = styled.div`
   //background: olive;
@@ -14,11 +15,13 @@ export const CardContainer = styled.div`
 `
 
 interface ICardProps {
+  $active: boolean;
   $disabled: boolean;
 }
 
 export const StyledCard = styled.div<ICardProps>`
-  border: 1px solid #369;
+  border: ${({$active}) => $active ? `${2}px solid ${lime[300]}`: `${1}px solid ${grey[500]}`};
+  box-sizing: border-box;
   font-size: 1.8rem;
   min-width: 5rem;
   margin: 0.2rem;
@@ -31,10 +34,14 @@ export const StyledCard = styled.div<ICardProps>`
 const Card = ({disabled, id, idPlayer, idZone}: ICard) => {
   const { state } = useAppContext()
   const {
+    cardActiveId,
+    // cardTargetId,
     curHandPhase,
     curTurn,
     players,
   } = state as IState
+
+  const cardActive = id === cardActiveId
 
   const cardDisabled = disabled
     || (players.at(curTurn).id !== idPlayer)
@@ -43,17 +50,23 @@ const Card = ({disabled, id, idPlayer, idZone}: ICard) => {
 
   const {
     getPerks,
+    handleSetActive,
+    // handleSetTarget,
   } = useFlow()
   const perks = getPerks(id)
   // const b = !!tokens
   // const b = perks.length > 0
 
-  const foo = () => console.log("Click!")
+  const handleClick = (id: string) => {
+    console.log("Click!", id)
+    handleSetActive(id)
+  }
 
   return (
     <StyledCard
+      $active={cardActive}
       $disabled={cardDisabled}
-      {...(!cardDisabled && { onClick: foo })}
+      {...(!cardDisabled && { onClick: () => handleClick(id) })}
     >
       {`${id}:${perks.length}`}
     </StyledCard>

@@ -14,6 +14,8 @@ export enum Actions {
   NextTurn,
   Pass,
   Reverse,
+  SetActive,
+  SetTarget,
   UpdateCard,
   UpdateTokens,
 }
@@ -29,6 +31,8 @@ export type TAction =
   | { type: Actions.NextTurn, payload: number }
   | { type: Actions.Pass, payload: number }
   | { type: Actions.Reverse }
+  | { type: Actions.SetActive, payload: string }
+  | { type: Actions.SetTarget, payload: string }
   | { type: Actions.UpdateCard, payload: ICard }
   | { type: Actions.UpdateTokens, payload: number }
 
@@ -119,6 +123,14 @@ export const reducer = (state: IState, action: TAction): IState => {
 
     case Actions.Reverse: {
       return { ...state, isReverse: !state.isReverse}
+    }
+
+    case Actions.SetActive: {
+      return { ...state, cardActiveId: action.payload}
+    }
+
+    case Actions.SetTarget: {
+      return { ...state, cardTargetId: action.payload}
     }
 
     case Actions.UpdateCard: {

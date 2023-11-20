@@ -159,6 +159,15 @@ const useFlow = () => {
   }
   //-------------------------------------------------------
 
+  const handleSetActive = (id: string) => {
+    dispatch({type: Actions.SetActive, payload: id})
+  }
+
+  const handleSetTarget = (id: string) => {
+    dispatch({type: Actions.SetTarget, payload: id})
+  }
+  //-------------------------------------------------------
+
   return {
     getHand,
     getKeep,
@@ -172,6 +181,8 @@ const useFlow = () => {
     handlePlayCard,
     handlePlayPerk,
     handleReverse,
+    handleSetActive,
+    handleSetTarget,
     handleUpdateTokens,
     nextIdx,
   }

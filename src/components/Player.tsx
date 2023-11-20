@@ -24,6 +24,7 @@ interface IPlayerInfoProps {
 const StyledPlayerInfo = styled.div<IPlayerInfoProps>`
   background: ${({$pass}) => $pass ? grey[700]: "var(--table-color)"};
   border: ${({$hand}) => $hand ? `${2}px solid ${lime[300]}`: `${1}px solid ${grey[500]}`};
+  box-sizing: border-box;
   color: ${({$turn}) => $turn ? lime[300]: grey[500]};
   font-size: 2.4rem;
   font-weight: ${({$turn}) => $turn ? "bold": "normal"};
