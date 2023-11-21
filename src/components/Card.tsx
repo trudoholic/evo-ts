@@ -66,6 +66,7 @@ const Card = ({disabled, id, idPlayer, idZone}: ICard) => {
   // const b = traits.length > 0
 
   const handleClick = (id: string) => {
+    // console.log("Click:", id)
     if (cardActiveId) {
       handleSetTarget(id)
     } else {
@@ -78,7 +79,7 @@ const Card = ({disabled, id, idPlayer, idZone}: ICard) => {
       $active={cardActive}
       $target={cardTarget}
       $disabled={cardDisabled}
-      {...(!cardDisabled && { onClick: () => handleClick(id) })}
+      {...(!cardDisabled && { "onClick": () => handleClick(id) })}
     >
       {`${id}:${traits.length}`}
     </StyledCard>
