@@ -13,12 +13,10 @@ const Phase0 = () => {
   } = state as IState
 
   const {
-    // getHand,
-    // getKeep,
     handleNextHandPhase,
     handlePass,
     handlePlayCard,
-    handlePlayPerk,
+    handlePlayTrait,
   } = useFlow()
 
   const phaseEnd = players.every(p => p.pass)
@@ -36,17 +34,15 @@ const Phase0 = () => {
           </>:<>
             {
               cardActiveId ?
-              // getHand().length ?
                 <>
                   <button onClick={handlePlayCard}>
                     Play Card
                   </button>
                   {
                     cardTargetId ?
-                    // getKeep().length ?
                       <>
-                        <button onClick={handlePlayPerk}>
-                          Play Perk
+                        <button onClick={handlePlayTrait}>
+                          Play Trait
                         </button>
                       </>
                       : null

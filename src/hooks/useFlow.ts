@@ -107,7 +107,7 @@ const useFlow = () => {
     return  cards.filter(c => c.idPlayer === players.at(curTurn).id && c.idZone === Zone.Keep)
   }
 
-  const getPerks = (cardId: string) => {
+  const getTraits = (cardId: string) => {
     return  cards.filter(c => c.idZone === cardId)
   }
 
@@ -121,7 +121,7 @@ const useFlow = () => {
     }
   }
 
-  const playPerk = (activeId: string, targetId: string) => {
+  const playTrait = (activeId: string, targetId: string) => {
     const card = cards.find(({id}) => id === activeId)
     if (card) {
       const targetCard = cards.find(({id}) => id === targetId)
@@ -144,9 +144,9 @@ const useFlow = () => {
     handleNextTurn()
   }
 
-  const handlePlayPerk = () => {
-    // console.log(`- Play Perk: ${curTurn}`)
-    playPerk(cardActiveId, cardTargetId)
+  const handlePlayTrait = () => {
+    // console.log(`- Play Trait: ${curTurn}`)
+    playTrait(cardActiveId, cardTargetId)
 
     handleNextTurn()
   }
@@ -174,7 +174,7 @@ const useFlow = () => {
   return {
     getHand,
     getKeep,
-    getPerks,
+    getTraits,
     handleBeginGame,
     handleEndGame,
     handleNextHandPhase,
@@ -182,7 +182,7 @@ const useFlow = () => {
     handleNextTurn,
     handlePass,
     handlePlayCard,
-    handlePlayPerk,
+    handlePlayTrait,
     handleReverse,
     handleSetActive,
     handleSetTarget,

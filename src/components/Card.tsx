@@ -57,13 +57,13 @@ const Card = ({disabled, id, idPlayer, idZone}: ICard) => {
   const cardDisabled = disabled || !isValid(idPlayer, idZone)
 
   const {
-    getPerks,
+    getTraits,
     handleSetActive,
     handleSetTarget,
   } = useFlow()
-  const perks = getPerks(id)
+  const traits = getTraits(id)
   // const b = !!tokens
-  // const b = perks.length > 0
+  // const b = traits.length > 0
 
   const handleClick = (id: string) => {
     if (cardActiveId) {
@@ -80,7 +80,7 @@ const Card = ({disabled, id, idPlayer, idZone}: ICard) => {
       $disabled={cardDisabled}
       {...(!cardDisabled && { onClick: () => handleClick(id) })}
     >
-      {`${id}:${perks.length}`}
+      {`${id}:${traits.length}`}
     </StyledCard>
   )
 }
