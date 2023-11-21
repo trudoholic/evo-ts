@@ -8,6 +8,8 @@ const useFlow = () => {
   const { state, dispatch } = useAppContext()
   const {
     cards,
+    cardActiveId,
+    cardTargetId,
     curHand,
     curTurn,
     isReverse,
@@ -109,10 +111,9 @@ const useFlow = () => {
     return  cards.filter(c => c.idZone === cardId)
   }
 
-  const playCard = (idx: number) => {
-    const hand = getHand()
-    if (hand.length) {
-      const card = {...hand[idx]}
+  const playCard = (activeId: string) => {
+    const card = cards.find(({id}) => id === activeId)
+    if (card) {
       // card.idPlayer = players.at(curTurn).id
       card.idZone = Zone.Keep
       card.tokens = { [Token.R]: 0 }
@@ -120,14 +121,13 @@ const useFlow = () => {
     }
   }
 
-  const playPerk = (idx: number, dst: number) => {
-    const hand = getHand()
-    if (hand.length) {
-      const keep = getKeep()
-      if (keep.length) {
-        const card = {...hand.at(idx)}
-        const dstCard = {...keep.at(dst)}
-        card.idZone = dstCard.id
+  const playPerk = (activeId: string, targetId: string) => {
+    const card = cards.find(({id}) => id === activeId)
+    if (card) {
+      const targetCard = cards.find(({id}) => id === targetId)
+      if (targetCard) {
+        card.idPlayer = targetCard.idPlayer
+        card.idZone = targetCard.id
         dispatch({type: Actions.UpdateCard, payload: card})
       }
     }
@@ -135,8 +135,8 @@ const useFlow = () => {
   //-------------------------------------------------------
 
   const handlePlayCard = () => {
-    console.log(`- Play Card: ${curTurn}`)
-    playCard(0)
+    // console.log(`- Play Card: ${curTurn}`)
+    playCard(cardActiveId)
 
     const rnd = Math.floor(Math.random() * 25 + 1)
     dispatch({type: Actions.IncValue, payload: {idx: curTurn, value: rnd}})
@@ -145,8 +145,8 @@ const useFlow = () => {
   }
 
   const handlePlayPerk = () => {
-    console.log(`- Play Perk: ${curTurn}`)
-    playPerk(0, -1)
+    // console.log(`- Play Perk: ${curTurn}`)
+    playPerk(cardActiveId, cardTargetId)
 
     handleNextTurn()
   }

@@ -6,13 +6,15 @@ const Phase0 = () => {
   const { state } = useAppContext()
   const {
     // cards,
+    cardActiveId,
+    cardTargetId,
     curTurn,
     players,
   } = state as IState
 
   const {
-    getHand,
-    getKeep,
+    // getHand,
+    // getKeep,
     handleNextHandPhase,
     handlePass,
     handlePlayCard,
@@ -33,13 +35,15 @@ const Phase0 = () => {
             </button>
           </>:<>
             {
-              getHand().length ?
+              cardActiveId ?
+              // getHand().length ?
                 <>
                   <button onClick={handlePlayCard}>
                     Play Card
                   </button>
                   {
-                    getKeep().length ?
+                    cardTargetId ?
+                    // getKeep().length ?
                       <>
                         <button onClick={handlePlayPerk}>
                           Play Perk
