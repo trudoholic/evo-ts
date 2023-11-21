@@ -22,5 +22,3 @@ export const zones: IZone[] = [
 export const commonZones: IZone[] = [
   { id: Zone.DrawPile, cards: [], name: 'Draw Pile' },
 ]
-
-export const ZoneList = [Zone.Hand, "", Zone.Keep, ""]

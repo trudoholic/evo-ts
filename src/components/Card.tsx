@@ -1,9 +1,9 @@
 import styled from "styled-components"
 import {useAppContext} from "../context"
+import useCards from "../hooks/useCards"
 import useFlow from "../hooks/useFlow"
 import {ICard} from "../data/cards"
 import {IState} from "../context/state"
-import {ZoneList} from "../data/zones"
 import {grey, lime, orange} from "../styles/colors"
 
 export const CardContainer = styled.div`
@@ -45,18 +45,16 @@ const Card = ({disabled, id, idPlayer, idZone}: ICard) => {
   const {
     cardActiveId,
     cardTargetId,
-    curHandPhase,
-    curTurn,
-    players,
   } = state as IState
 
   const cardActive = id === cardActiveId
   const cardTarget = id === cardTargetId
 
-  const cardDisabled = disabled
-    || (players.at(curTurn).id !== idPlayer)
-    || (players.at(curTurn).pass)
-    || ZoneList[curHandPhase] !== idZone
+  const {
+    isValid,
+  } = useCards()
+
+  const cardDisabled = disabled || !isValid(idPlayer, idZone)
 
   const {
     getPerks,
