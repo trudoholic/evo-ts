@@ -57,7 +57,7 @@ const Player = ({idx}: IPlayerProps) => {
     curHand,
     curTurn,
     cards,
-    players
+    players,
   } = state as IState
 
   const player: IPlayer = players[idx]

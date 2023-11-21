@@ -81,7 +81,7 @@ const Card = ({disabled, id, idPlayer, idZone}: ICard) => {
       $disabled={cardDisabled}
       {...(!cardDisabled && { "onClick": () => handleClick(id) })}
     >
-      {`${id}:${traits.length}`}
+      {(traits.length? `Pack [${traits.length}] `: "") + `${id}`}
     </StyledCard>
   )
 }

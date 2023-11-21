@@ -7,10 +7,10 @@ const useCards = () => {
   const { state } = useAppContext()
   // const { state, dispatch } = useAppContext()
   const {
-    curHandPhase,
-    // cards,
+    cards,
     cardActiveId,
     cardTargetId,
+    curHandPhase,
     // curHand,
     curTurn,
     // isReverse,
@@ -35,12 +35,21 @@ const useCards = () => {
           )
         )
       }
+
       case 1: {
         return false
       }
+
       case 2: {
-        return Zone.Keep === idZone
+        const ids = cards
+          .filter(c => c.idPlayer === idPlayer && c.idZone === Zone.Keep)
+          .map(c => c.id)
+        return (
+          Zone.Keep === idZone
+          || ids.includes(idZone)
+        )
       }
+
       case 3: {
         return false
       }
