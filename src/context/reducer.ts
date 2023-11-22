@@ -76,7 +76,6 @@ export const reducer = (state: IState, action: TAction): IState => {
         cards: state.cards.map(
           c => dropped(c) ? { ...c,
             idZone: Zone.DiscardPile,
-            tokens: null,
           }: c
         )
       }

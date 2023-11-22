@@ -81,7 +81,6 @@ const Card = ({disabled, id, idPlayer, idZone, spells}: ICard) => {
     handleSetTarget,
   } = useFlow()
   const traits = getTraits(id)
-  // const b = !!tokens
   // const b = traits.length > 0
 
   const handleClick = (id: string) => {
