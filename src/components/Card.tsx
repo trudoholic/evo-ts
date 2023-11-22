@@ -57,7 +57,9 @@ export const StyledCard = styled.div<ICardProps>`
   cursor: ${({$disabled}) => $disabled ? "not-allowed" : "pointer"};
 `
 
-const Card = ({disabled, id, idPlayer, idZone, spell}: ICard) => {
+const Card = (card: ICard) => {
+  const {disabled, id, idPlayer, idZone, spell} = card
+
   const { state } = useAppContext()
   const {
     cardActiveId,
