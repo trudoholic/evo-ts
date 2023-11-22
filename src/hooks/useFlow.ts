@@ -1,6 +1,7 @@
 import {useAppContext} from "../context"
 import {Actions} from "../context/reducer"
 import {IState} from "../context/state"
+import {ICard} from "../data/cards"
 import {Zone} from "../data/zones"
 
 const useFlow = () => {
@@ -113,9 +114,10 @@ const useFlow = () => {
   const playCard = (activeId: string) => {
     const card = cards.find(({id}) => id === activeId)
     if (card) {
-      // card.idPlayer = players.at(curTurn).id
-      card.idZone = Zone.Keep
-      dispatch({type: Actions.UpdateCard, payload: card})
+      dispatch({type: Actions.UpdateCard, payload: {...card,
+        // idPlayer: players.at(curTurn).id,
+        idZone: Zone.Keep,
+      } as ICard})
     }
   }
 
@@ -124,9 +126,10 @@ const useFlow = () => {
     if (card) {
       const targetCard = cards.find(({id}) => id === targetId)
       if (targetCard) {
-        card.idPlayer = targetCard.idPlayer
-        card.idZone = targetCard.id
-        dispatch({type: Actions.UpdateCard, payload: card})
+        dispatch({type: Actions.UpdateCard, payload: {...card,
+          idPlayer: targetCard.idPlayer,
+          idZone: targetCard.id,
+        } as ICard})
       }
     }
   }
