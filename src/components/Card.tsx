@@ -2,8 +2,9 @@ import styled from "styled-components"
 import {useAppContext} from "../context"
 import useCards from "../hooks/useCards"
 import useFlow from "../hooks/useFlow"
-import {ICard} from "../data/cards"
 import {IState} from "../context/state"
+import {ICard} from "../data/cards"
+import {getSpell} from "../data/spells"
 import {grey, lime, orange} from "../styles/colors"
 
 export const CardContainer = styled.div`
@@ -12,6 +13,23 @@ export const CardContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
+`
+
+export const FlexRow = styled.div`
+  align-items: center;
+  //align-content: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+`
+
+export const StyledBox = styled.div`
+  background: ${lime[300]};
+  border: ${2}px solid ${grey[500]};
+  box-sizing: border-box;
+  cursor: pointer;
+  height: 16px;
+  width: 16px;
 `
 
 interface ICardProps {
@@ -39,8 +57,7 @@ export const StyledCard = styled.div<ICardProps>`
   cursor: ${({$disabled}) => $disabled ? "not-allowed" : "pointer"};
 `
 
-// const Card = ({disabled, id, idPlayer, idZone, tokens}: ICard) => {
-const Card = ({disabled, id, idPlayer, idZone}: ICard) => {
+const Card = ({disabled, id, idPlayer, idZone, spells}: ICard) => {
   const { state } = useAppContext()
   const {
     cardActiveId,
@@ -49,6 +66,8 @@ const Card = ({disabled, id, idPlayer, idZone}: ICard) => {
 
   const cardActive = id === cardActiveId
   const cardTarget = id === cardTargetId
+
+  const spell = getSpell(spells?.at(0))
 
   const {
     isValid,
@@ -81,7 +100,11 @@ const Card = ({disabled, id, idPlayer, idZone}: ICard) => {
       $disabled={cardDisabled}
       {...(!cardDisabled && { "onClick": () => handleClick(id) })}
     >
-      {(traits.length? `Pack [${traits.length}] `: "") + `${id}`}
+      <FlexRow>
+        {traits.length ? <span>{`Pack [${traits.length}] `}</span> : null}
+        <span>{`_${id}_`}</span>
+        {spell ? <StyledBox onClick={spell.cb} /> : null}
+      </FlexRow>
     </StyledCard>
   )
 }
