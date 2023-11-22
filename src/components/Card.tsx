@@ -57,7 +57,7 @@ export const StyledCard = styled.div<ICardProps>`
   cursor: ${({$disabled}) => $disabled ? "not-allowed" : "pointer"};
 `
 
-const Card = ({disabled, id, idPlayer, idZone, spells}: ICard) => {
+const Card = ({disabled, id, idPlayer, idZone, spell}: ICard) => {
   const { state } = useAppContext()
   const {
     cardActiveId,
@@ -67,7 +67,7 @@ const Card = ({disabled, id, idPlayer, idZone, spells}: ICard) => {
   const cardActive = id === cardActiveId
   const cardTarget = id === cardTargetId
 
-  const spell = getSpell(spells?.at(0))
+  const cardSpell = getSpell(spell)
 
   const {
     isValid,
@@ -81,7 +81,6 @@ const Card = ({disabled, id, idPlayer, idZone, spells}: ICard) => {
     handleSetTarget,
   } = useFlow()
   const traits = getTraits(id)
-  // const b = traits.length > 0
 
   const handleClick = (id: string) => {
     // console.log("Click:", id)
@@ -102,7 +101,7 @@ const Card = ({disabled, id, idPlayer, idZone, spells}: ICard) => {
       <FlexRow>
         {traits.length ? <span>{`Pack [${traits.length}] `}</span> : null}
         <span>{`_${id}_`}</span>
-        {spell ? <StyledBox onClick={spell.cb} /> : null}
+        {cardSpell ? <StyledBox onClick={cardSpell.cb} /> : null}
       </FlexRow>
     </StyledCard>
   )
