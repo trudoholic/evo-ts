@@ -5,7 +5,7 @@ import {ICard} from "../data/cards"
 // import {getSpell} from "../data/spells"
 import useCards from "../hooks/useCards"
 import useFlow from "../hooks/useFlow"
-import {grey, lime, orange} from "../styles/colors"
+import {green, grey, lime, orange, red} from "../styles/colors"
 
 export const CardContainer = styled.div`
   //background: olive;
@@ -28,8 +28,7 @@ interface IBoxProps {
 }
 
 export const StyledBox = styled.div<IBoxProps>`
-  //background: ${lime[300]};
-  background: ${({$disabled}) => $disabled ? "red" : "green"};
+  background: ${({$disabled}) => $disabled ? green[900] : red[900]};
   border: ${2}px solid ${grey[500]};
   box-sizing: border-box;
   cursor: ${({$disabled}) => $disabled ? "not-allowed" : "pointer"};

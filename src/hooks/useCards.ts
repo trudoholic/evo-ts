@@ -3,6 +3,7 @@ import {useAppContext} from "../context"
 import {IState} from "../context/state"
 import {commonId} from "../data/players"
 import {Zone} from "../data/zones"
+import {ICard} from "../data/cards";
 
 const useCards = () => {
   const { state } = useAppContext()
@@ -35,6 +36,7 @@ const useCards = () => {
       Zone.Keep === idZone && "" === idCard
     )
   }
+  //-------------------------------------------------------
 
   const isValid = (idPlayer: string, idZone: string, idCard: string): boolean => {
     const curPlayer = players.at(curTurn)
@@ -77,11 +79,23 @@ const useCards = () => {
   }
   //-------------------------------------------------------
 
+  const someEmpty = (card: ICard): boolean => {
+    if (card.slotEmpty) {
+      return true
+    } else {
+      const slots = getTraits(card.id)
+        .filter(t => t.slot)
+      return slots.length > 0 && slots.some(s => s.slotEmpty)
+    }
+  }
+  //-------------------------------------------------------
+
   return {
     getTraits,
     getZone,
     isKeeper,
     isValid,
+    someEmpty,
   }
 }
 

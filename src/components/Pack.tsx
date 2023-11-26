@@ -1,10 +1,8 @@
 import styled from "styled-components"
-// import {useAppContext} from "../context"
-// import {IState} from "../context/state"
 import {ICard} from "../data/cards"
 import useCards from "../hooks/useCards"
 import Card from "./Card"
-import {green, grey, lime} from "../styles/colors"
+import {green, grey, lime, red} from "../styles/colors"
 
 export const PackContainer = styled.div`
   // background: ${lime[900]};
@@ -15,8 +13,12 @@ export const PackContainer = styled.div`
   //padding: 0 8px;
 `
 
-export const StyledPack = styled.div`
-  background: ${green[700]};
+interface IPackProps {
+  $someEmpty: boolean;
+}
+
+export const StyledPack = styled.div<IPackProps>`
+  background: ${({$someEmpty}) => $someEmpty ? red[700] : green[700]};
   border: 1px solid ${grey[500]};
   display: flex;
   flex-direction: column;
@@ -26,23 +28,22 @@ export const StyledPack = styled.div`
 `
 
 const Pack = (card: ICard) => {
-  // const { state } = useAppContext()
-  // const {
-  //   cards,
-  // } = state as IState
+  const {
+    id,
+  } = card
 
   const {
     getTraits,
+    someEmpty,
   } = useCards()
 
-  // const traits = getTraits(id)
+  const traits = getTraits(id)
 
   return (
-    <StyledPack>
+    <StyledPack $someEmpty={someEmpty(card)}>
       <Card {...card}/>
       {
-        // cards.filter(c => c.idZone === card.id)
-        getTraits(card.id).map((c) => (
+        traits.map((c) => (
           <Card {...c} key={c.id}/>
         ))
       }

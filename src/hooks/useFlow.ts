@@ -59,7 +59,7 @@ const useFlow = () => {
   const onBeginHand = (hand: number) => {
     console.group(`Hand: ${hand}`)
     dispatch({type: Actions.NextHand, payload: hand})
-    dispatch({type: Actions.DrawRound, payload: {hand: hand, nDraw: 2}})
+    dispatch({type: Actions.DrawRound, payload: {hand: hand, nDraw: 3}})
 
     onBeginPhase(0)
 
