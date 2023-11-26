@@ -1,4 +1,4 @@
-import {spellsData} from "./spells"
+// import {spellsData} from "./spells"
 
 export interface ICard  {
   disabled: boolean
@@ -6,7 +6,9 @@ export interface ICard  {
   idCard: string
   idPlayer: string
   idZone: string
-  spell: string
+  slot: boolean
+  slotEmpty: boolean
+  // spell: string
 }
 
 export const cards: ICard[] = [...Array(16)]
@@ -16,7 +18,9 @@ export const cards: ICard[] = [...Array(16)]
     idCard: "",
     idPlayer: "0",
     idZone: "1",
-    spell: (i % 2) ? spellsData.at(i).id : "",
+    slot: !!(i % 2),
+    slotEmpty: true,
+    // spell: (i % 2) ? spellsData.at(i).id : "",
   }))
 
 // console.log(cards)

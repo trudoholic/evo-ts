@@ -125,6 +125,17 @@ const useFlow = () => {
       }
     }
   }
+
+  //Slot
+  const playSlot = (activeId: string) => {
+    const card = cards.find(({id}) => id === activeId)
+    if (card) {
+      dispatch({type: Actions.UpdateCard, payload: {
+          ...card,
+          slotEmpty: false,
+        } as ICard})
+    }
+  }
   //-------------------------------------------------------
 
   const handlePlayCard = () => {
@@ -178,6 +189,7 @@ const useFlow = () => {
     handleSetTarget,
     handleUpdateTokens,
     nextIdx,
+    playSlot,
   }
 }
 

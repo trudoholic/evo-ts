@@ -30,6 +30,12 @@ const useCards = () => {
   )
   //-------------------------------------------------------
 
+  const isKeeper = (idZone: string, idCard: string): boolean => {
+    return (
+      Zone.Keep === idZone && "" === idCard
+    )
+  }
+
   const isValid = (idPlayer: string, idZone: string, idCard: string): boolean => {
     const curPlayer = players.at(curTurn)
     if (curPlayer.id !== idPlayer || curPlayer.pass) {
@@ -74,6 +80,7 @@ const useCards = () => {
   return {
     getTraits,
     getZone,
+    isKeeper,
     isValid,
   }
 }

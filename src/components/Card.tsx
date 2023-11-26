@@ -2,7 +2,7 @@ import styled from "styled-components"
 import {useAppContext} from "../context"
 import {IState} from "../context/state"
 import {ICard} from "../data/cards"
-import {getSpell} from "../data/spells"
+// import {getSpell} from "../data/spells"
 import useCards from "../hooks/useCards"
 import useFlow from "../hooks/useFlow"
 import {grey, lime, orange} from "../styles/colors"
@@ -23,11 +23,16 @@ export const FlexRow = styled.div`
   justify-content: space-evenly;
 `
 
-export const StyledBox = styled.div`
-  background: ${lime[300]};
+interface IBoxProps {
+  $disabled: boolean;
+}
+
+export const StyledBox = styled.div<IBoxProps>`
+  //background: ${lime[300]};
+  background: ${({$disabled}) => $disabled ? "red" : "green"};
   border: ${2}px solid ${grey[500]};
   box-sizing: border-box;
-  cursor: pointer;
+  cursor: ${({$disabled}) => $disabled ? "not-allowed" : "pointer"};
   height: 16px;
   width: 16px;
 `
@@ -58,7 +63,15 @@ export const StyledCard = styled.div<ICardProps>`
 `
 
 const Card = (card: ICard) => {
-  const {disabled, id, idPlayer, idZone, idCard, spell} = card
+  const {
+    disabled,
+    id,
+    idPlayer,
+    idZone,
+    idCard,
+    slot,
+    slotEmpty,
+  } = card
 
   const { state } = useAppContext()
   const {
@@ -69,19 +82,23 @@ const Card = (card: ICard) => {
   const cardActive = id === cardActiveId
   const cardTarget = id === cardTargetId
 
-  const cardSpell = getSpell(spell)
+  // const cardSpell = getSpell(spell)
 
   const {
     getTraits,
+    isKeeper,
     isValid,
   } = useCards()
 
   const traits = getTraits(id)
+  // const cardSlot = slot || isKeeper(idZone, idCard)
+  const cardSlot = (slot && idCard) || isKeeper(idZone, idCard)
   const cardDisabled = disabled || !isValid(idPlayer, idZone, idCard)
 
   const {
     handleSetActive,
     handleSetTarget,
+    playSlot,
   } = useFlow()
 
   const handleClick = (id: string) => {
@@ -91,6 +108,11 @@ const Card = (card: ICard) => {
     } else {
       handleSetActive(id)
     }
+  }
+
+  const handleSlotClick = (id: string) => {
+    // console.log("Slot:", id)
+    playSlot(id)
   }
 
   return (
@@ -103,10 +125,16 @@ const Card = (card: ICard) => {
       <FlexRow>
         {traits.length ? <span>{`Pack [${traits.length}] `}</span> : null}
         <span>{`_${id}_`}</span>
-        {cardSpell ? <StyledBox onClick={cardSpell.cb} /> : null}
+        {cardSlot ? (
+          <StyledBox
+            $disabled={!slotEmpty}
+            {...(slotEmpty && { "onClick": () => handleSlotClick(id) })}
+          />
+        ) : null}
       </FlexRow>
     </StyledCard>
   )
 }
+// onClick={cardSpell.cb}
 
 export default Card
