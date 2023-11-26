@@ -1,6 +1,7 @@
 import {useAppContext} from "../context"
 // import {Actions} from "../context/reducer"
 import {IState} from "../context/state"
+import {commonId} from "../data/players"
 import {Zone} from "../data/zones"
 
 const useCards = () => {
@@ -19,7 +20,17 @@ const useCards = () => {
   } = state as IState
   //-------------------------------------------------------
 
-  const isValid = (idPlayer: string, idZone: string): boolean => {
+  const getTraits = (cardId: string) => {
+    return  cards.filter(c => c.idCard === cardId)
+  }
+  //-------------------------------------------------------
+
+  const getZone = (zoneId: string, playerId: string = commonId) => (
+    cards.filter(({idPlayer, idZone, idCard}) => idPlayer === playerId && idZone === zoneId && idCard === "")
+  )
+  //-------------------------------------------------------
+
+  const isValid = (idPlayer: string, idZone: string, idCard: string): boolean => {
     const curPlayer = players.at(curTurn)
     if (curPlayer.id !== idPlayer || curPlayer.pass) {
       return false
@@ -29,7 +40,7 @@ const useCards = () => {
       case 0: {
         return (
           cardActiveId ? (
-            !cardTargetId && Zone.Keep === idZone
+            !cardTargetId && Zone.Keep === idZone && "" === idCard
           ) : (
             Zone.Hand === idZone
           )
@@ -41,12 +52,12 @@ const useCards = () => {
       }
 
       case 2: {
-        const ids = cards
-          .filter(c => c.idPlayer === idPlayer && c.idZone === Zone.Keep)
-          .map(c => c.id)
+        // const ids = cards
+        //   .filter(c => c.idPlayer === idPlayer && c.idZone === Zone.Keep && c.idCard === "")
+        //   .map(c => c.id)
         return (
           Zone.Keep === idZone
-          || ids.includes(idZone)
+          // || ids.includes(idZone)
         )
       }
 
@@ -61,6 +72,8 @@ const useCards = () => {
   //-------------------------------------------------------
 
   return {
+    getTraits,
+    getZone,
     isValid,
   }
 }

@@ -99,24 +99,14 @@ const useFlow = () => {
   }
   //-------------------------------------------------------
 
-  const getHand = () => {
-    return  cards.filter(c => c.idPlayer === players.at(curTurn).id && c.idZone === Zone.Hand)
-  }
-
-  const getKeep = () => {
-    return  cards.filter(c => c.idPlayer === players.at(curTurn).id && c.idZone === Zone.Keep)
-  }
-
-  const getTraits = (cardId: string) => {
-    return  cards.filter(c => c.idZone === cardId)
-  }
-
   const playCard = (activeId: string) => {
     const card = cards.find(({id}) => id === activeId)
     if (card) {
-      dispatch({type: Actions.UpdateCard, payload: {...card,
-        // idPlayer: players.at(curTurn).id,
-        idZone: Zone.Keep,
+      dispatch({type: Actions.UpdateCard, payload: {
+        ...card,
+          // idPlayer: players.at(curTurn).id,
+          idZone: Zone.Keep,
+          idCard: "",
       } as ICard})
     }
   }
@@ -126,9 +116,11 @@ const useFlow = () => {
     if (card) {
       const targetCard = cards.find(({id}) => id === targetId)
       if (targetCard) {
-        dispatch({type: Actions.UpdateCard, payload: {...card,
-          idPlayer: targetCard.idPlayer,
-          idZone: targetCard.id,
+        dispatch({type: Actions.UpdateCard, payload: {
+          ...card,
+            idPlayer: targetCard.idPlayer,
+            idZone: targetCard.idZone,
+            idCard: targetCard.id,
         } as ICard})
       }
     }
@@ -173,9 +165,6 @@ const useFlow = () => {
   //-------------------------------------------------------
 
   return {
-    getHand,
-    getKeep,
-    getTraits,
     handleBeginGame,
     handleEndGame,
     handleNextHandPhase,

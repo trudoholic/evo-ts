@@ -1,8 +1,9 @@
 import styled from "styled-components"
 import {useAppContext} from "../context"
-import {IPlayer} from "../data/players"
 import {IState} from "../context/state"
+import {IPlayer} from "../data/players"
 import {zones} from "../data/zones"
+import useCards from "../hooks/useCards"
 import Zone from "./Zone"
 import {grey, lime} from "../styles/colors"
 
@@ -56,12 +57,14 @@ const Player = ({idx}: IPlayerProps) => {
   const {
     curHand,
     curTurn,
-    cards,
     players,
   } = state as IState
 
   const player: IPlayer = players[idx]
-  const playerCards = cards.filter(card => card.idPlayer === player.id)
+
+  const {
+    getZone,
+  } = useCards()
 
   return (
     <StyledPlayer>
@@ -77,7 +80,7 @@ const Player = ({idx}: IPlayerProps) => {
           <Zone
             {...zone}
             key={zone.id}
-            cards={playerCards.filter(card => card.idZone === zone.id)}
+            cards={getZone(zone.id, player.id)}
           />)
       }
     </StyledPlayer>

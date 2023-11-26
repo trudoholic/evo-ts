@@ -43,7 +43,7 @@ export const reducer = (state: IState, action: TAction): IState => {
       return { ...state,
         isGameOver: false,
         nPlayers: action.payload,
-        cards: state.cards.map(card => ({...card, idPlayer: commonId, idZone: Zone.DrawPile})),
+        cards: state.cards.map(card => ({...card, idPlayer: commonId, idZone: Zone.DrawPile, idCard: ""})),
         players: players.slice(0, action.payload),
       }
     }
@@ -51,15 +51,17 @@ export const reducer = (state: IState, action: TAction): IState => {
     case Actions.DrawRound: {
       const nDraw = action.payload.nDraw
       const getIdx = (i: number) => (action.payload.hand + Math.floor(i / nDraw)) % state.nPlayers
-      const deck = state.cards.filter(c => c.idPlayer === commonId && c.idZone === Zone.DrawPile)
-      const rest = state.cards.filter(c => c.idPlayer !== commonId || c.idZone !== Zone.DrawPile)
+      const isDeck = (c: ICard) => c.idPlayer === commonId && c.idZone === Zone.DrawPile && c.idCard === ""
+      const deck = state.cards.filter(card => isDeck(card))
+      const rest = state.cards.filter(card => !isDeck(card))
 
       const newDeck = deck.map(
         (card, i) => i < nDraw * state.nPlayers ?
           {
             ...card,
             idPlayer: state.players.at(getIdx(i)).id,
-            idZone: Zone.Hand
+            idZone: Zone.Hand,
+            idCard: "",
           }
           : card
       )
@@ -68,14 +70,16 @@ export const reducer = (state: IState, action: TAction): IState => {
     }
 
     case Actions.DropCards: {
+      const bDrop = (c: ICard) => c.idZone === Zone.Keep && c.idCard === ""
       const dropIds = state.cards
-        .filter(c => c.idZone === Zone.Keep)
+        .filter(c => bDrop(c))
         .map(c => c.id)
-      const dropped = (c: ICard) => c.idZone === Zone.Keep || dropIds.includes(c.idZone)
+      const dropped = (c: ICard) => dropIds.includes(c.id) || dropIds.includes(c.idCard)
       return { ...state,
         cards: state.cards.map(
           c => dropped(c) ? { ...c,
             idZone: Zone.DiscardPile,
+            idCard: "",
           }: c
         )
       }

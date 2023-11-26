@@ -1,7 +1,8 @@
 import styled from "styled-components"
-import {useAppContext} from "../context"
-import {IState} from "../context/state"
+// import {useAppContext} from "../context"
+// import {IState} from "../context/state"
 import {ICard} from "../data/cards"
+import useCards from "../hooks/useCards"
 import Card from "./Card"
 import {green, grey, lime} from "../styles/colors"
 
@@ -25,19 +26,25 @@ export const StyledPack = styled.div`
 `
 
 const Pack = (card: ICard) => {
-  const { state } = useAppContext()
+  // const { state } = useAppContext()
+  // const {
+  //   cards,
+  // } = state as IState
+
   const {
-    cards,
-  } = state as IState
+    getTraits,
+  } = useCards()
+
+  // const traits = getTraits(id)
 
   return (
     <StyledPack>
       <Card {...card}/>
       {
-        cards.filter(c => c.idZone === card.id)
-          .map((c) => (
-            <Card {...c} key={c.id}/>
-          ))
+        // cards.filter(c => c.idZone === card.id)
+        getTraits(card.id).map((c) => (
+          <Card {...c} key={c.id}/>
+        ))
       }
     </StyledPack>
   )

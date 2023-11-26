@@ -1,8 +1,6 @@
 import styled from "styled-components"
-import {useAppContext} from "../context"
-import {commonId} from "../data/players"
 import {commonZones} from "../data/zones"
-import {IState} from "../context/state"
+import useCards from "../hooks/useCards"
 import Zone from "./Zone"
 
 export const StyledCommon = styled.div`
@@ -16,17 +14,18 @@ export const StyledCommon = styled.div`
 `
 
 const Common = () => {
-  const { state } = useAppContext()
-  const { cards } = state as IState
-
-  const commonCards = cards.filter(card => card.idPlayer === commonId)
+  const {
+    getZone,
+  } = useCards()
 
   return (
     <StyledCommon>
       {
         commonZones.map((zone) =>
-          <Zone {...zone} key={zone.id}
-                cards={commonCards.filter(card => card.idZone === zone.id)}
+          <Zone
+            {...zone}
+            key={zone.id}
+            cards={getZone(zone.id)}
           />)
       }
     </StyledCommon>

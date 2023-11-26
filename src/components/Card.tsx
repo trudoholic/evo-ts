@@ -1,10 +1,10 @@
 import styled from "styled-components"
 import {useAppContext} from "../context"
-import useCards from "../hooks/useCards"
-import useFlow from "../hooks/useFlow"
 import {IState} from "../context/state"
 import {ICard} from "../data/cards"
 import {getSpell} from "../data/spells"
+import useCards from "../hooks/useCards"
+import useFlow from "../hooks/useFlow"
 import {grey, lime, orange} from "../styles/colors"
 
 export const CardContainer = styled.div`
@@ -58,7 +58,7 @@ export const StyledCard = styled.div<ICardProps>`
 `
 
 const Card = (card: ICard) => {
-  const {disabled, id, idPlayer, idZone, spell} = card
+  const {disabled, id, idPlayer, idZone, idCard, spell} = card
 
   const { state } = useAppContext()
   const {
@@ -72,17 +72,17 @@ const Card = (card: ICard) => {
   const cardSpell = getSpell(spell)
 
   const {
+    getTraits,
     isValid,
   } = useCards()
 
-  const cardDisabled = disabled || !isValid(idPlayer, idZone)
+  const traits = getTraits(id)
+  const cardDisabled = disabled || !isValid(idPlayer, idZone, idCard)
 
   const {
-    getTraits,
     handleSetActive,
     handleSetTarget,
   } = useFlow()
-  const traits = getTraits(id)
 
   const handleClick = (id: string) => {
     // console.log("Click:", id)
