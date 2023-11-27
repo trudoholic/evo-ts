@@ -14,6 +14,7 @@ const useFlow = () => {
     curHand,
     curHandPhase,
     curTurn,
+    isLastTurn,
     isReverse,
     nPlayers,
     players,
@@ -212,7 +213,7 @@ const useFlow = () => {
   const handleDropStep = () => {
     dispatch({type: Actions.DropCards, payload: getDropIds()})
     handleUpdateTokens(0)
-    dispatch({type: Actions.NextStep, payload: 1})
+    dispatch({type: Actions.NextStep, payload: isLastTurn? 2: 1})
   }
   //-------------------------------------------------------
 

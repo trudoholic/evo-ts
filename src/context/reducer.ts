@@ -67,6 +67,7 @@ export const reducer = (state: IState, action: TAction): IState => {
             idPlayer: state.players.at(getIdx(i)).id,
             idZone: Zone.Hand,
             idCard: "",
+            slotEmpty: true,
           }
           : card
       )
@@ -83,7 +84,7 @@ export const reducer = (state: IState, action: TAction): IState => {
             idZone: Zone.DiscardPile,
             idCard: "",
             slotEmpty: true,
-          }: {...c, slotEmpty: true}
+          }: {...c, slotEmpty: !state.isLastTurn}
         )
       }
     }
