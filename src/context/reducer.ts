@@ -9,8 +9,10 @@ export enum Actions {
   DropCards,
   EndGame,
   IncValue,
+  LastTurn,
   NextHand,
   NextHandPhase,
+  NextStep,
   NextTurn,
   Pass,
   Reverse,
@@ -26,8 +28,10 @@ export type TAction =
   | { type: Actions.DropCards, payload: string[] }
   | { type: Actions.EndGame }
   | { type: Actions.IncValue, payload: { idx: number, value: number } }
+  | { type: Actions.LastTurn }
   | { type: Actions.NextHand, payload: number }
   | { type: Actions.NextHandPhase, payload: number }
+  | { type: Actions.NextStep, payload: number }
   | { type: Actions.NextTurn, payload: number }
   | { type: Actions.Pass, payload: number }
   | { type: Actions.Reverse }
@@ -42,6 +46,7 @@ export const reducer = (state: IState, action: TAction): IState => {
     case Actions.BeginGame: {
       return { ...state,
         isGameOver: false,
+        isLastTurn: false,
         nPlayers: action.payload,
         cards: state.cards.map(card => ({...card, idPlayer: commonId, idZone: Zone.DrawPile, idCard: ""})),
         players: players.slice(0, action.payload),
@@ -96,6 +101,10 @@ export const reducer = (state: IState, action: TAction): IState => {
       }
     }
 
+    case Actions.LastTurn: {
+      return { ...state, isLastTurn: true }
+    }
+
     case Actions.NextHand: {
       return { ...state, curHand: action.payload}
     }
@@ -109,8 +118,12 @@ export const reducer = (state: IState, action: TAction): IState => {
       }
     }
 
+    case Actions.NextStep: {
+      return { ...state, curStep: action.payload }
+    }
+
     case Actions.NextTurn: {
-      return { ...state, curTurn: action.payload}
+      return { ...state, curTurn: action.payload }
     }
 
     case Actions.Pass: {

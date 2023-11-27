@@ -1,34 +1,48 @@
-import {Zone} from "../../data/zones"
+import {useAppContext} from "../../context"
+import {IState} from "../../context/state"
 import useFlow from "../../hooks/useFlow"
-import useCards from "../../hooks/useCards"
 
 const Phase3 = () => {
+  const { state } = useAppContext()
   const {
-    getZone,
-  } = useCards()
-
-  const deck = getZone(Zone.DrawPile)
-  const gameEnd = !deck.length
+    curStep,
+    isLastTurn,
+  } = state as IState
 
   const {
+    handleDrawStep,
+    handleDropStep,
     handleNextHand,
     handleEndGame,
   } = useFlow()
 
   return (
     <>
-      <h2>{`${gameEnd? "Game End": `Deck: [${deck.length}]`}`}</h2>
       {
-        gameEnd?
-          <>
-            <button onClick={handleEndGame}>
-              End Game
+        0 === curStep? <>
+            <button onClick={handleDropStep}>
+              Drop Step
             </button>
-          </>:<>
-            <button onClick={handleNextHand}>
-              Next Hand
+          </>:
+        1 === curStep? <>
+            <button onClick={handleDrawStep}>
+              Draw Step
             </button>
-          </>
+          </>:
+        2 === curStep? <>
+          {
+            isLastTurn?
+              <>
+                <button onClick={handleEndGame}>
+                  End Game
+                </button>
+              </>:<>
+                <button onClick={handleNextHand}>
+                  Next Hand
+                </button>
+              </>
+          }
+          </>:<h2>Error</h2>
       }
     </>
   )

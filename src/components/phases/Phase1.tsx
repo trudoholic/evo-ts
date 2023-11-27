@@ -22,7 +22,7 @@ const Phase1 = () => {
 
   return (
     <>
-      <h2>{`Tokens: [${tokens}]`}</h2>
+      <h2>{`Get Tokens: [${tokens}]`}</h2>
       {
         tokens?
           <>

@@ -30,7 +30,7 @@ const Phase2 = () => {
       {
         tokens && !phaseEnd ?
           <>
-            <h2>{`Tokens: [${tokens}]`}</h2>
+            <h2>{`Use Tokens: [${tokens}]`}</h2>
             {
               noKeep ?
                 <button onClick={handlePass}>

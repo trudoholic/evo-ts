@@ -21,6 +21,7 @@ const useFlow = () => {
 
   const {
     getDropIds,
+    getZone,
   } = useCards()
 
   const nextIdx = (idx: number) => {
@@ -38,6 +39,11 @@ const useFlow = () => {
     handleSetActive("")
     handleSetTarget("")
 
+    const deck = getZone(Zone.DrawPile)
+    if (!deck.length) {
+      dispatch({type: Actions.LastTurn})
+    }
+
     let nextTurn = nextIdx(curTurn)
     while (players.at(nextTurn).pass) {
       nextTurn = nextIdx(nextTurn)
@@ -53,6 +59,7 @@ const useFlow = () => {
   }
 
   const onEndPhase = () => {
+    dispatch({type: Actions.NextStep, payload: 0})
     console.groupEnd()
   }
 
@@ -65,16 +72,12 @@ const useFlow = () => {
   const onBeginHand = (hand: number) => {
     console.group(`Hand: ${hand}`)
     dispatch({type: Actions.NextHand, payload: hand})
-    dispatch({type: Actions.DrawRound, payload: {hand: hand, nDraw: 3}})
 
     onBeginPhase(0)
-
     dispatch({type: Actions.NextTurn, payload: hand})
   }
 
   const onEndHand = () => {
-    dispatch({type: Actions.DropCards, payload: getDropIds()})
-    handleUpdateTokens(0)
     console.groupEnd()
   }
 
@@ -92,6 +95,7 @@ const useFlow = () => {
 
     const  eldestHand = Math.floor(Math.random() * n)
     console.log(`* Eldest Hand: ${eldestHand} *`)
+    dispatch({type: Actions.DrawRound, payload: {hand: eldestHand, nDraw: 3}})
     onBeginHand(eldestHand)
   }
 
@@ -200,8 +204,22 @@ const useFlow = () => {
   }
   //-------------------------------------------------------
 
+  const handleDrawStep = () => {
+    dispatch({type: Actions.DrawRound, payload: {hand: curHand, nDraw: 3}})
+    dispatch({type: Actions.NextStep, payload: 2})
+  }
+
+  const handleDropStep = () => {
+    dispatch({type: Actions.DropCards, payload: getDropIds()})
+    handleUpdateTokens(0)
+    dispatch({type: Actions.NextStep, payload: 1})
+  }
+  //-------------------------------------------------------
+
   return {
     handleBeginGame,
+    handleDrawStep,
+    handleDropStep,
     handleEndGame,
     handleNextHandPhase,
     handleNextHand,
