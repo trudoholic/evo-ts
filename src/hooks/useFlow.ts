@@ -3,6 +3,7 @@ import {Actions} from "../context/reducer"
 import {IState} from "../context/state"
 import {ICard} from "../data/cards"
 import {Zone} from "../data/zones"
+import useCards from "../hooks/useCards"
 
 const useFlow = () => {
   const { state, dispatch } = useAppContext()
@@ -17,6 +18,10 @@ const useFlow = () => {
     nPlayers,
     players,
   } = state as IState
+
+  const {
+    getDropIds,
+  } = useCards()
 
   const nextIdx = (idx: number) => {
     return isReverse?
@@ -68,14 +73,14 @@ const useFlow = () => {
   }
 
   const onEndHand = () => {
-    dispatch({type: Actions.DropCards})
+    dispatch({type: Actions.DropCards, payload: getDropIds()})
     handleUpdateTokens(0)
     console.groupEnd()
   }
 
   const handleNextHand = () => {
     onEndHand()
-    const  nextHand = nextIdx(curHand)
+    const nextHand = nextIdx(curHand)
     onBeginHand(nextHand)
   }
   //-------------------------------------------------------
@@ -172,7 +177,7 @@ const useFlow = () => {
   }
 
   const handlePass = () => {
-    console.log(`--- Pass: ${curTurn}`)
+    // console.log(`--- Pass: ${curTurn}`)
     dispatch({type: Actions.Pass, payload: curTurn})
     handleNextTurn()
   }

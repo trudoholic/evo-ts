@@ -15,7 +15,7 @@ const Phase1 = () => {
 
   const getTokens = () => {
     const d1 = Math.floor(Math.random() * 6 + 1)
-    const d2 = Math.floor(Math.random() * 6 + 1)
+    const d2 = 1//Math.floor(Math.random() * 6 + 1)
     console.log("RND", d1, d2)
     handleUpdateTokens(d1 + d2)
   }

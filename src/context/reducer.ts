@@ -23,7 +23,7 @@ export enum Actions {
 export type TAction =
   | { type: Actions.BeginGame, payload: number }
   | { type: Actions.DrawRound, payload: { hand: number, nDraw: number } }
-  | { type: Actions.DropCards }
+  | { type: Actions.DropCards, payload: string[] }
   | { type: Actions.EndGame }
   | { type: Actions.IncValue, payload: { idx: number, value: number } }
   | { type: Actions.NextHand, payload: number }
@@ -70,10 +70,7 @@ export const reducer = (state: IState, action: TAction): IState => {
     }
 
     case Actions.DropCards: {
-      const bDrop = (c: ICard) => c.idZone === Zone.Keep && c.idCard === ""
-      const dropIds = state.cards
-        .filter(c => bDrop(c))
-        .map(c => c.id)
+      const dropIds = action.payload
       const dropped = (c: ICard) => dropIds.includes(c.id) || dropIds.includes(c.idCard)
       return { ...state,
         cards: state.cards.map(
@@ -81,7 +78,7 @@ export const reducer = (state: IState, action: TAction): IState => {
             idZone: Zone.DiscardPile,
             idCard: "",
             slotEmpty: true,
-          }: c
+          }: {...c, slotEmpty: true}
         )
       }
     }

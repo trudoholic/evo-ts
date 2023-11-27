@@ -21,6 +21,14 @@ const useCards = () => {
   } = state as IState
   //-------------------------------------------------------
 
+  const getDropIds = () => {
+    return  cards
+      .filter(c => isKeeper(c.idZone, c.idCard))
+      .filter(c => someEmpty(c))
+      .map(c => c.id)
+  }
+  //-------------------------------------------------------
+
   const getTraits = (cardId: string) => {
     return  cards.filter(c => c.idCard === cardId)
   }
@@ -100,6 +108,7 @@ const useCards = () => {
   //-------------------------------------------------------
 
   return {
+    getDropIds,
     getTraits,
     getZone,
     isKeeper,

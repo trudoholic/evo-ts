@@ -17,7 +17,7 @@ const Phase3 = () => {
 
   return (
     <>
-      <h2>{`${gameEnd?"Game End":"*"}`}</h2>
+      <h2>{`${gameEnd? "Game End": `Deck: [${deck.length}]`}`}</h2>
       {
         gameEnd?
           <>
