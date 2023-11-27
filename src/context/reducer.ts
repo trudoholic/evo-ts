@@ -80,6 +80,7 @@ export const reducer = (state: IState, action: TAction): IState => {
           c => dropped(c) ? { ...c,
             idZone: Zone.DiscardPile,
             idCard: "",
+            slotEmpty: true,
           }: c
         )
       }

@@ -11,6 +11,7 @@ const useFlow = () => {
     cardActiveId,
     cardTargetId,
     curHand,
+    curHandPhase,
     curTurn,
     isReverse,
     nPlayers,
@@ -126,9 +127,8 @@ const useFlow = () => {
     }
   }
 
-  //Slot
-  const playSlot = (activeId: string) => {
-    const card = cards.find(({id}) => id === activeId)
+  const playSlot = (cardId: string) => {
+    const card = cards.find(({id}) => id === cardId)
     if (card) {
       dispatch({type: Actions.UpdateCard, payload: {
           ...card,
@@ -137,6 +137,22 @@ const useFlow = () => {
     }
   }
   //-------------------------------------------------------
+
+  const handlePlaySlot = (cardId: string) => {
+    // console.log(`- Play Slot: ${cardId}`)
+    playSlot(cardId)
+
+    const isEmpty = (card: ICard) => (card.idCard === "" || card.slot) && card.slotEmpty
+    const slots = cards
+      .filter(c => c.idPlayer === players.at(curTurn).id && c.idZone === Zone.Keep)
+      .map(c => c.id === cardId ? false : isEmpty(c))
+    // console.log(`---> ${slots}`)
+    if (slots.every(s => !s)) {
+      dispatch({type: Actions.Pass, payload: curTurn})
+    }
+
+    handleNextTurn()
+  }
 
   const handlePlayCard = () => {
     // console.log(`- Play Card: ${curTurn}`)
@@ -167,11 +183,15 @@ const useFlow = () => {
   //-------------------------------------------------------
 
   const handleSetActive = (id: string) => {
-    dispatch({type: Actions.SetActive, payload: id})
+    if (0 === curHandPhase) {
+      dispatch({type: Actions.SetActive, payload: id})
+    }
   }
 
   const handleSetTarget = (id: string) => {
-    dispatch({type: Actions.SetTarget, payload: id})
+    if (0 === curHandPhase) {
+      dispatch({type: Actions.SetTarget, payload: id})
+    }
   }
   //-------------------------------------------------------
 
@@ -183,13 +203,13 @@ const useFlow = () => {
     handleNextTurn,
     handlePass,
     handlePlayCard,
+    handlePlaySlot,
     handlePlayTrait,
     handleReverse,
     handleSetActive,
     handleSetTarget,
     handleUpdateTokens,
     nextIdx,
-    playSlot,
   }
 }
 

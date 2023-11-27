@@ -77,6 +77,7 @@ const Card = (card: ICard) => {
   const {
     cardActiveId,
     cardTargetId,
+    tokens,
   } = state as IState
 
   const cardActive = id === cardActiveId
@@ -92,15 +93,15 @@ const Card = (card: ICard) => {
   } = useCards()
 
   const traits = getTraits(id)
-  // const cardSlot = slot || isKeeper(idZone, idCard)
   const cardSlot = (slot && idCard) || isKeeper(idZone, idCard)
   const cardDisabled = disabled || !isValidCard(idPlayer, idZone, idCard)
-  const slotDisabled = !slotEmpty || !isValidSlot(idPlayer, idZone)
+  const slotDisabled = !tokens || !slotEmpty || !isValidSlot(idPlayer, idZone)
 
   const {
+    handlePlaySlot,
     handleSetActive,
     handleSetTarget,
-    playSlot,
+    handleUpdateTokens,
   } = useFlow()
 
   const handleClick = (id: string) => {
@@ -112,9 +113,10 @@ const Card = (card: ICard) => {
     }
   }
 
-  const handleSlotClick = (id: string) => {
-    // console.log("Slot:", id)
-    playSlot(id)
+  const handleSlotClick = (cardId: string) => {
+    // console.log("Slot:", cardId)
+    handleUpdateTokens(tokens - 1)
+    handlePlaySlot(cardId)
   }
 
   return (
