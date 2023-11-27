@@ -25,11 +25,12 @@ export const FlexRow = styled.div`
 
 interface IBoxProps {
   $disabled: boolean;
+  $empty: boolean;
 }
 
 export const StyledBox = styled.div<IBoxProps>`
-  background: ${({$disabled}) => $disabled ? green[900] : red[900]};
-  border: ${2}px solid ${grey[500]};
+  background: ${({$empty}) => $empty ? red[900] : green[900]};
+  border: ${({$disabled}) => $disabled ? `2px solid ${grey[500]}` : `2px solid ${grey[50]}`};
   box-sizing: border-box;
   cursor: ${({$disabled}) => $disabled ? "not-allowed" : "pointer"};
   height: 16px;
@@ -86,13 +87,15 @@ const Card = (card: ICard) => {
   const {
     getTraits,
     isKeeper,
-    isValid,
+    isValidCard,
+    isValidSlot,
   } = useCards()
 
   const traits = getTraits(id)
   // const cardSlot = slot || isKeeper(idZone, idCard)
   const cardSlot = (slot && idCard) || isKeeper(idZone, idCard)
-  const cardDisabled = disabled || !isValid(idPlayer, idZone, idCard)
+  const cardDisabled = disabled || !isValidCard(idPlayer, idZone, idCard)
+  const slotDisabled = !slotEmpty || !isValidSlot(idPlayer, idZone)
 
   const {
     handleSetActive,
@@ -126,8 +129,9 @@ const Card = (card: ICard) => {
         <span>{`_${id}_`}</span>
         {cardSlot ? (
           <StyledBox
-            $disabled={!slotEmpty}
-            {...(slotEmpty && { "onClick": () => handleSlotClick(id) })}
+            $disabled={slotDisabled}
+            $empty={slotEmpty}
+            {...(!slotDisabled && { "onClick": () => handleSlotClick(id) })}
           />
         ) : null}
       </FlexRow>

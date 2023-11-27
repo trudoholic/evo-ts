@@ -38,7 +38,7 @@ const useCards = () => {
   }
   //-------------------------------------------------------
 
-  const isValid = (idPlayer: string, idZone: string, idCard: string): boolean => {
+  const isValidCard = (idPlayer: string, idZone: string, idCard: string): boolean => {
     const curPlayer = players.at(curTurn)
     if (curPlayer.id !== idPlayer || curPlayer.pass) {
       return false
@@ -79,6 +79,15 @@ const useCards = () => {
   }
   //-------------------------------------------------------
 
+  const isValidSlot = (idPlayer: string, idZone: string): boolean => {
+    return (
+      curHandPhase === 2
+      && players.at(curTurn)?.id === idPlayer
+      && idZone === Zone.Keep
+    )
+  }
+  //-------------------------------------------------------
+
   const someEmpty = (card: ICard): boolean => {
     if (card.slotEmpty) {
       return true
@@ -94,7 +103,8 @@ const useCards = () => {
     getTraits,
     getZone,
     isKeeper,
-    isValid,
+    isValidCard,
+    isValidSlot,
     someEmpty,
   }
 }
