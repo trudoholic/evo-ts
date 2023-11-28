@@ -1,66 +1,12 @@
-import styled from "styled-components"
-import {useAppContext} from "../context"
-import {IState} from "../context/state"
-import {ICard} from "../data/cards"
+import {useAppContext} from "../../context"
+import {IState} from "../../context/state"
+import {ICard} from "../../data/cards"
 // import {getSpell} from "../data/spells"
-import useCards from "../hooks/useCards"
-import useFlow from "../hooks/useFlow"
-import {green, grey, lime, orange, red} from "../styles/colors"
-
-export const CardContainer = styled.div`
-  //background: olive;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-`
-
-export const FlexRow = styled.div`
-  align-items: center;
-  //align-content: center;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-`
-
-interface IBoxProps {
-  $disabled: boolean;
-  $empty: boolean;
-}
-
-export const StyledBox = styled.div<IBoxProps>`
-  background: ${({$empty}) => $empty ? red[900] : green[900]};
-  border: ${({$disabled}) => $disabled ? `2px solid ${grey[500]}` : `2px solid ${grey[50]}`};
-  box-sizing: border-box;
-  cursor: ${({$disabled}) => $disabled ? "not-allowed" : "pointer"};
-  height: 16px;
-  width: 16px;
-`
-
-interface ICardProps {
-  $active: boolean;
-  $target: boolean;
-  $disabled: boolean;
-}
-
-export const StyledCard = styled.div<ICardProps>`
-  border: ${
-    ({$active, $target}) => $active ? (
-      `${2}px solid ${lime[300]}`
-    ) : $target ? (
-      `${2}px solid ${orange[300]}`
-    ) : (
-      `${1}px solid ${grey[500]}`
-    )
-  };
-  box-sizing: border-box;
-  font-size: 1.8rem;
-  min-width: 5rem;
-  margin: 0.2rem;
-  padding: 0.3rem 0.5rem;
-  background: ${({$disabled}) => $disabled ? "grey" : "green"};
-  cursor: ${({$disabled}) => $disabled ? "not-allowed" : "pointer"};
-`
+import useCards from "../../hooks/useCards"
+import useFlow from "../../hooks/useFlow"
+import {FlexRow} from "./FlexRow"
+import {StyledBox} from "./StyledBox"
+import {StyledCard} from "./StyledCard"
 
 const Card = (card: ICard) => {
   const {

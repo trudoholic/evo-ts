@@ -1,5 +1,6 @@
 import {IZone, Zone as ZoneM} from "../data/zones"
-import Card, {CardContainer} from "./Card"
+import Card from "./Card"
+import {CardContainer} from "./Card/CardContainer"
 import Pack, {PackContainer} from "./Pack"
 import {grey} from "../styles/colors"
 
