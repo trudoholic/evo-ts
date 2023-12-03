@@ -1,12 +1,13 @@
 import {useAppContext} from "../../context"
 import {IState} from "../../context/state"
 import {ICard} from "../../data/cards"
-// import {getSpell} from "../data/spells"
+import {castSpell} from "../../data/spells"
 import useCards from "../../hooks/useCards"
 import useFlow from "../../hooks/useFlow"
 import {FlexRow} from "./FlexRow"
 import {StyledBox} from "./StyledBox"
 import {StyledCard} from "./StyledCard"
+import {StyledOrb} from "./StyledOrb"
 
 const Card = (card: ICard) => {
   const {
@@ -17,6 +18,7 @@ const Card = (card: ICard) => {
     idCard,
     slot,
     slotEmpty,
+    spellId,
   } = card
 
   const { state } = useAppContext()
@@ -29,8 +31,6 @@ const Card = (card: ICard) => {
   const cardActive = id === cardActiveId
   const cardTarget = id === cardTargetId
 
-  // const cardSpell = getSpell(spell)
-
   const {
     getTraits,
     isKeeper,
@@ -39,7 +39,8 @@ const Card = (card: ICard) => {
   } = useCards()
 
   const traits = getTraits(id)
-  const cardSlot = (slot && idCard) || isKeeper(idZone, idCard)
+  const cardSlot = !!(slot && idCard) || isKeeper(idZone, idCard)
+  const cardSpell = !!spellId && !!idCard
   const cardDisabled = disabled || !isValidCard(idPlayer, idZone, idCard)
   const slotDisabled = !tokens || !slotEmpty || !isValidSlot(idPlayer, idZone)
 
@@ -73,8 +74,15 @@ const Card = (card: ICard) => {
       {...(!cardDisabled && { "onClick": () => handleClick(id) })}
     >
       <FlexRow>
+        {cardSpell ? (
+          <StyledOrb
+            $disabled={slotDisabled}
+            $empty={slotEmpty}
+            {...(cardSpell && { "onClick": () => castSpell(spellId) })}
+          />
+        ) : null}
         {traits.length ? <span>{`Pack [${traits.length}] `}</span> : null}
-        <span>{`_${id}_`}</span>
+        <span>{`${spellId? "* ": ""}${id}`}</span>
         {cardSlot ? (
           <StyledBox
             $disabled={slotDisabled}
@@ -86,6 +94,5 @@ const Card = (card: ICard) => {
     </StyledCard>
   )
 }
-// onClick={cardSpell.cb}
 
 export default Card
