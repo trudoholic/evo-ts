@@ -43,6 +43,7 @@ const Card = (card: ICard) => {
   const cardSpell = !isEmpty(spellId) && !!idCard
   const cardDisabled = disabled || !isValidCard(idPlayer, idZone, idCard)
   const slotDisabled = !tokens || !slotEmpty || !isValidSlot(idPlayer, idZone)
+  const spellEnabled = !cardDisabled && cardSpell
 
   const {
     handlePlaySlot,
@@ -76,9 +77,9 @@ const Card = (card: ICard) => {
       <FlexRow>
         {cardSpell ? (
           <StyledOrb
-            $disabled={slotDisabled}
+            $disabled={cardDisabled}
             $empty={slotEmpty}
-            {...(cardSpell && { "onClick": () => castSpell(spellId) })}
+            {...(spellEnabled && { "onClick": () => castSpell(spellId) })}
           />
         ) : null}
 
