@@ -18,9 +18,9 @@ export interface ISpell {
 }
 
 export const getSpellId =
-  (idx: number): TSpell => [
-    Spell.Qwe, Spell.Asd, Spell.Zxc
-  ][idx % 3]
+  (idx: number): TSpell => (idx % 2) ?
+    [Spell.Qwe, Spell.Asd, Spell.Zxc][idx % 3]
+    : Spell.Empty
 
 const spellsMap = new Map<TSpell, ISpell>([
   [Spell.Qwe, {effect: () => {console.log(`* cast: ${Spell.Qwe}`)}}],

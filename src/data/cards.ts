@@ -1,4 +1,4 @@
-import {getSpellId, Spell, TSpell} from "./spells"
+import {getSpellId, TSpell} from "./spells"
 
 export interface ICard  {
   disabled: boolean
@@ -20,7 +20,7 @@ export const cards: ICard[] = [...Array(16)]
     idZone: "1",
     slot: !!(i % 2),
     slotEmpty: true,
-    spellId: (i % 2) ? getSpellId(i) : Spell.Empty,
+    spellId: getSpellId(i),
   }))
 
 // console.log(cards)
