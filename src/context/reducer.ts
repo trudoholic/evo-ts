@@ -8,6 +8,7 @@ export enum Actions {
   DrawRound,
   DropCards,
   EndGame,
+  IncCooldown,
   IncValue,
   LastTurn,
   NextHand,
@@ -27,6 +28,7 @@ export type TAction =
   | { type: Actions.DrawRound, payload: { hand: number, nDraw: number } }
   | { type: Actions.DropCards, payload: string[] }
   | { type: Actions.EndGame }
+  | { type: Actions.IncCooldown, payload: { id: string, value: number } }
   | { type: Actions.IncValue, payload: { idx: number, value: number } }
   | { type: Actions.LastTurn }
   | { type: Actions.NextHand, payload: number }
@@ -93,6 +95,18 @@ export const reducer = (state: IState, action: TAction): IState => {
       return { ...state, isGameOver: true }
     }
 
+    case Actions.IncCooldown: {
+      return { ...state,
+        cards: state.cards.map(
+          c => c.id === action.payload.id ? { ...c,
+            spellCooldown: action.payload.value,
+          }: c.idPlayer === state.players.at(state.curTurn).id ? { ...c,
+            spellUsed: true,
+          }: c
+        )
+      }
+    }
+
     case Actions.IncValue: {
       return { ...state,
         players: state.players.map(
@@ -107,7 +121,12 @@ export const reducer = (state: IState, action: TAction): IState => {
     }
 
     case Actions.NextHand: {
-      return { ...state, curHand: action.payload}
+      return { ...state,
+        curHand: action.payload,
+        cards: state.cards.map(c => ({...c,
+          spellCooldown: c.spellCooldown > 0 ? c.spellCooldown - 1 : 0
+        }))
+      }
     }
 
     case Actions.NextHandPhase: {
@@ -124,7 +143,10 @@ export const reducer = (state: IState, action: TAction): IState => {
     }
 
     case Actions.NextTurn: {
-      return { ...state, curTurn: action.payload }
+      return { ...state,
+        curTurn: action.payload,
+        cards: state.cards.map(c => ({...c, spellUsed: false}))
+      }
     }
 
     case Actions.Pass: {
@@ -150,7 +172,7 @@ export const reducer = (state: IState, action: TAction): IState => {
 
     case Actions.UpdateCard: {
       return { ...state,
-        cards: state.cards.map(card => card.id === action.payload.id ? action.payload: card)
+        cards: state.cards.map(c => c.id === action.payload.id ? action.payload: c)
       }
     }
 

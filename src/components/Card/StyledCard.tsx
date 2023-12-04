@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import {grey, lime, orange} from "../../styles/colors"
+import {green, grey, lime, orange} from "../../styles/colors"
 
 interface ICardProps {
   $active: boolean;
@@ -8,6 +8,7 @@ interface ICardProps {
 }
 
 export const StyledCard = styled.div<ICardProps>`
+  background: ${({$disabled}) => $disabled ? grey[700] : green[900]};
   border: ${
   ({$active, $target}) => $active ? (
     `${2}px solid ${lime[300]}`
@@ -18,10 +19,9 @@ export const StyledCard = styled.div<ICardProps>`
   )
 };
   box-sizing: border-box;
+  cursor: ${({$disabled}) => $disabled ? "not-allowed" : "pointer"};
   font-size: 1.8rem;
   min-width: 5rem;
   margin: 0.2rem;
   padding: 0.3rem 0.5rem;
-  background: ${({$disabled}) => $disabled ? "grey" : "green"};
-  cursor: ${({$disabled}) => $disabled ? "not-allowed" : "pointer"};
 `

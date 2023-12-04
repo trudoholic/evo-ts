@@ -19,6 +19,8 @@ const Card = (card: ICard) => {
     slot,
     slotEmpty,
     spellId,
+    spellCooldown,
+    spellUsed,
   } = card
 
   const { state } = useAppContext()
@@ -43,12 +45,13 @@ const Card = (card: ICard) => {
   const cardSpell = !isEmpty(spellId) && !!idCard
   const cardDisabled = disabled || !isValidCard(idPlayer, idZone, idCard)
   const slotDisabled = !tokens || !slotEmpty || !isValidSlot(idPlayer, idZone)
-  const spellEnabled = !cardDisabled && cardSpell
+  const spellEnabled = !cardDisabled && cardSpell && !spellUsed
 
   const {
     handlePlaySlot,
     handleSetActive,
     handleSetTarget,
+    handleSpellUsed,
     handleUpdateTokens,
   } = useFlow()
 
@@ -67,6 +70,12 @@ const Card = (card: ICard) => {
     handlePlaySlot(cardId)
   }
 
+  const handleCastSpell = (cardId: string) => {
+    // console.log("Cast Spell:", cardId)
+    castSpell(spellId)
+    handleSpellUsed(cardId)
+  }
+
   return (
     <StyledCard
       $active={cardActive}
@@ -77,9 +86,9 @@ const Card = (card: ICard) => {
       <FlexRow>
         {cardSpell ? (
           <StyledOrb
-            $disabled={cardDisabled}
-            $empty={slotEmpty}
-            {...(spellEnabled && { "onClick": () => castSpell(spellId) })}
+            $disabled={cardDisabled || spellUsed}
+            $ready={!spellCooldown}
+            {...(spellEnabled && { "onClick": () => handleCastSpell(id) })}
           />
         ) : null}
 

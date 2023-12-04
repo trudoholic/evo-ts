@@ -9,6 +9,8 @@ export interface ICard  {
   slot: boolean
   slotEmpty: boolean
   spellId: TSpell
+  spellCooldown: number
+  spellUsed: boolean
 }
 
 export const cards: ICard[] = [...Array(16)]
@@ -21,6 +23,8 @@ export const cards: ICard[] = [...Array(16)]
     slot: !!(i % 2),
     slotEmpty: true,
     spellId: getSpellId(i),
+    spellCooldown: 0,
+    spellUsed: false,
   }))
 
 // console.log(cards)

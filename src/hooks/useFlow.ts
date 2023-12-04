@@ -190,6 +190,12 @@ const useFlow = () => {
   const handleUpdateTokens = (n: number) => {
     dispatch({type: Actions.UpdateTokens, payload: n})
   }
+
+  const handleSpellUsed = (cardId: string) => {
+    dispatch({type: Actions.IncCooldown, payload: {id: cardId, value: 1}})
+
+    // handleNextTurn()
+  }
   //-------------------------------------------------------
 
   const handleSetActive = (id: string) => {
@@ -232,6 +238,7 @@ const useFlow = () => {
     handleReverse,
     handleSetActive,
     handleSetTarget,
+    handleSpellUsed,
     handleUpdateTokens,
     nextIdx,
   }
