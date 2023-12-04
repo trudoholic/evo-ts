@@ -4,22 +4,25 @@ export interface ISpell {
   id: string
 }
 
-export const spellsData: ISpell[] = [...Array(16)]
-  .map((_, i) => ({
-    cb: () => {console.log(`* cast spell: ${i + 1}`)},
+export const getSpellId =
+  (idx: number) => `spell_${idx + 1}`
+
+const getSpell =
+  (idx: number) => ({
+    cb: () => {console.log(`> cast: ${getSpellId(idx)}`)},
     disabled: false,
-    id: `spell_${i + 1}`,
-  }))
+    id: getSpellId(idx),
+  })
 
-// console.log(spellsData)
+const spellsMap = [...Array(16)]
+  .reduce((accumulator, _, idx) =>
+      accumulator.set(getSpellId(idx), getSpell(idx)),
+    new Map<string, ISpell>()
+  )
 
-export const spellsLib = spellsData
-  .reduce((accumulator, value) => ({
-    ...accumulator, [value.id]: value
-  }), {})
+// console.log(spellsMap)
 
-// console.log(spellsLib)
-
-export const castSpell = (spellId) => spellId in spellsLib?
-  spellsLib[spellId].cb():
-  console.warn("Can not cast:", spellId)
+export const castSpell =
+  (spellId: string) => spellsMap.has(spellId)?
+    spellsMap.get(spellId).cb():
+    console.warn("Can not cast:", spellId)

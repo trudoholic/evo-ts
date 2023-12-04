@@ -1,4 +1,4 @@
-import {spellsData} from "./spells"
+import {getSpellId} from "./spells"
 
 export interface ICard  {
   disabled: boolean
@@ -20,7 +20,7 @@ export const cards: ICard[] = [...Array(16)]
     idZone: "1",
     slot: !!(i % 2),
     slotEmpty: true,
-    spellId: (i % 2) ? spellsData.at(i).id : "",
+    spellId: (i % 2) ? getSpellId(i) : "",
   }))
 
 // console.log(cards)
