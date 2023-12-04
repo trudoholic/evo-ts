@@ -1,7 +1,7 @@
 import {useAppContext} from "../../context"
 import {IState} from "../../context/state"
 import {ICard} from "../../data/cards"
-import {castSpell} from "../../data/spells"
+import {castSpell, isEmpty} from "../../data/spells"
 import useCards from "../../hooks/useCards"
 import useFlow from "../../hooks/useFlow"
 import {FlexRow} from "./FlexRow"
@@ -40,7 +40,7 @@ const Card = (card: ICard) => {
 
   const traits = getTraits(id)
   const cardSlot = !!(slot && idCard) || isKeeper(idZone, idCard)
-  const cardSpell = !!spellId && !!idCard
+  const cardSpell = !isEmpty(spellId) && !!idCard
   const cardDisabled = disabled || !isValidCard(idPlayer, idZone, idCard)
   const slotDisabled = !tokens || !slotEmpty || !isValidSlot(idPlayer, idZone)
 
@@ -81,8 +81,10 @@ const Card = (card: ICard) => {
             {...(cardSpell && { "onClick": () => castSpell(spellId) })}
           />
         ) : null}
+
         {traits.length ? <span>{`Pack [${traits.length}] `}</span> : null}
-        <span>{`${spellId? "* ": ""}${id}`}</span>
+        <span>{`${isEmpty(spellId)? "": `${spellId}: `}${id}`}</span>
+
         {cardSlot ? (
           <StyledBox
             $disabled={slotDisabled}

@@ -1,4 +1,4 @@
-import {getSpellId} from "./spells"
+import {getSpellId, Spell, TSpell} from "./spells"
 
 export interface ICard  {
   disabled: boolean
@@ -8,7 +8,7 @@ export interface ICard  {
   idZone: string
   slot: boolean
   slotEmpty: boolean
-  spellId: string
+  spellId: TSpell
 }
 
 export const cards: ICard[] = [...Array(16)]
@@ -20,7 +20,8 @@ export const cards: ICard[] = [...Array(16)]
     idZone: "1",
     slot: !!(i % 2),
     slotEmpty: true,
-    spellId: (i % 2) ? getSpellId(i) : "",
+    spellId: (i % 2) ? getSpellId(i) : Spell.Empty,
   }))
 
 // console.log(cards)
+// console.log(cards.map(c => c.id + ':' + c.spellId))

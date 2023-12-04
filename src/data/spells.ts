@@ -1,28 +1,38 @@
+export enum Spell {
+  Empty = "Empty",
+  Qwe = "Qwe",
+  Asd = "Asd",
+  Zxc = "Zxc",
+}
+
+export type TSpell =
+  | Spell.Empty
+  | Spell.Qwe
+  | Spell.Asd
+  | Spell.Zxc
+
 export interface ISpell {
-  cb: () => void
-  disabled: boolean
-  id: string
+  effect: () => void
+  // disabled: boolean
+  // id: TSpell
 }
 
 export const getSpellId =
-  (idx: number) => `spell_${idx + 1}`
+  (idx: number): TSpell => [
+    Spell.Qwe, Spell.Asd, Spell.Zxc
+  ][idx % 3]
 
-const getSpell =
-  (idx: number) => ({
-    cb: () => {console.log(`> cast: ${getSpellId(idx)}`)},
-    disabled: false,
-    id: getSpellId(idx),
-  })
-
-const spellsMap = [...Array(16)]
-  .reduce((accumulator, _, idx) =>
-      accumulator.set(getSpellId(idx), getSpell(idx)),
-    new Map<string, ISpell>()
-  )
+const spellsMap = new Map<TSpell, ISpell>([
+  [Spell.Qwe, {effect: () => {console.log(`* cast: ${Spell.Qwe}`)}}],
+  [Spell.Asd, {effect: () => {console.log(`* cast: ${Spell.Asd}`)}}],
+  [Spell.Zxc, {effect: () => {console.log(`* cast: ${Spell.Zxc}`)}}],
+])
 
 // console.log(spellsMap)
 
+export const isEmpty = (spellId: TSpell) => Spell.Empty === spellId
+
 export const castSpell =
-  (spellId: string) => spellsMap.has(spellId)?
-    spellsMap.get(spellId).cb():
+  (spellId: TSpell) => spellsMap.has(spellId)?
+    spellsMap.get(spellId).effect():
     console.warn("Can not cast:", spellId)
