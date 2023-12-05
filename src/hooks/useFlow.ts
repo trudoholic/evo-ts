@@ -2,9 +2,9 @@ import {useAppContext} from "../context"
 import {Actions} from "../context/reducer"
 import {IState} from "../context/state"
 import {ICard} from "../data/cards"
+import {Spell, TSpell} from "../data/spells"
 import {Zone} from "../data/zones"
 import useCards from "../hooks/useCards"
-import {TSpell} from "../data/spells";
 
 const nDraw = 10
 
@@ -21,6 +21,7 @@ const useFlow = () => {
     isReverse,
     nPlayers,
     players,
+    tokens,
   } = state as IState
 
   const {
@@ -193,13 +194,6 @@ const useFlow = () => {
   const handleUpdateTokens = (n: number) => {
     dispatch({type: Actions.UpdateTokens, payload: n})
   }
-
-  const handleSpellUsed = (cardId: string, spellId: TSpell) => {
-    dispatch({type: Actions.IncCooldown, payload: {id: cardId, value: 1}})
-    dispatch({type: Actions.DisableSpell, payload: spellId})
-
-    // handleNextTurn()
-  }
   //-------------------------------------------------------
 
   const handleSetActive = (id: string) => {
@@ -227,8 +221,50 @@ const useFlow = () => {
   }
   //-------------------------------------------------------
 
+  const castSpellGrazing = (cardId: string) => {
+    if (tokens) {
+      handleUpdateTokens(tokens - 1)
+    }
+
+    const card = cards.find(({id}) => id === cardId)
+    if (card) {
+      dispatch({type: Actions.UpdateCard, payload: {
+          ...card,
+          spellUsed: true,
+        } as ICard})
+    }
+  }
+
+  const handleSpellUsed = (cardId: string, spellId: TSpell) => {
+    dispatch({type: Actions.IncCooldown, payload: {id: cardId, value: 1}})
+    dispatch({type: Actions.DisableSpell, payload: spellId})
+
+    // handleNextTurn()
+  }
+
+  const handleCastSpell = (cardId: string, spellId: TSpell) => {
+    switch (spellId) {
+      case Spell.Carnivore: {
+        handleSpellUsed(cardId, spellId)
+        break
+      }
+      case Spell.Grazing: {
+        castSpellGrazing(cardId)
+        break
+      }
+      case Spell.Hibernation: {
+        break
+      }
+      case Spell.Piracy: {
+        break
+      }
+    }
+  }
+  //-------------------------------------------------------
+
   return {
     handleBeginGame,
+    handleCastSpell,
     handleDrawStep,
     handleDropStep,
     handleEndGame,
@@ -242,7 +278,6 @@ const useFlow = () => {
     handleReverse,
     handleSetActive,
     handleSetTarget,
-    handleSpellUsed,
     handleUpdateTokens,
     nextIdx,
   }
