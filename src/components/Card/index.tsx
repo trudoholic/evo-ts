@@ -73,7 +73,7 @@ const Card = (card: ICard) => {
   const handleCastSpell = (cardId: string) => {
     // console.log("Cast Spell:", cardId)
     castSpell(spellId)
-    handleSpellUsed(cardId)
+    handleSpellUsed(cardId, spellId)
   }
 
   return (

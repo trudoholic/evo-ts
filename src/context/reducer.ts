@@ -1,10 +1,12 @@
 import {IState} from "./state"
 import {ICard} from "../data/cards"
 import {commonId, players} from "../data/players"
+import {TSpell} from "../data/spells"
 import {Zone} from "../data/zones"
 
 export enum Actions {
   BeginGame,
+  DisableSpell,
   DrawRound,
   DropCards,
   EndGame,
@@ -25,6 +27,7 @@ export enum Actions {
 
 export type TAction =
   | { type: Actions.BeginGame, payload: number }
+  | { type: Actions.DisableSpell, payload: TSpell }
   | { type: Actions.DrawRound, payload: { hand: number, nDraw: number } }
   | { type: Actions.DropCards, payload: string[] }
   | { type: Actions.EndGame }
@@ -52,6 +55,17 @@ export const reducer = (state: IState, action: TAction): IState => {
         nPlayers: action.payload,
         cards: state.cards.map(card => ({...card, idPlayer: commonId, idZone: Zone.DrawPile, idCard: ""})),
         players: players.slice(0, action.payload),
+      }
+    }
+
+    case Actions.DisableSpell: {
+      const curPlayerId = state.players.at(state.curTurn).id
+      return { ...state,
+        cards: state.cards.map(
+          c => c.idPlayer === curPlayerId && c.spellId === action.payload ? { ...c,
+            spellUsed: true,
+          }: c
+        )
       }
     }
 
@@ -100,8 +114,6 @@ export const reducer = (state: IState, action: TAction): IState => {
         cards: state.cards.map(
           c => c.id === action.payload.id ? { ...c,
             spellCooldown: action.payload.value,
-          }: c.idPlayer === state.players.at(state.curTurn).id ? { ...c,
-            spellUsed: true,
           }: c
         )
       }

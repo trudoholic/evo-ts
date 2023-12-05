@@ -4,6 +4,9 @@ import {IState} from "../context/state"
 import {ICard} from "../data/cards"
 import {Zone} from "../data/zones"
 import useCards from "../hooks/useCards"
+import {TSpell} from "../data/spells";
+
+const nDraw = 10
 
 const useFlow = () => {
   const { state, dispatch } = useAppContext()
@@ -96,7 +99,7 @@ const useFlow = () => {
 
     const  eldestHand = Math.floor(Math.random() * n)
     console.log(`* Eldest Hand: ${eldestHand} *`)
-    dispatch({type: Actions.DrawRound, payload: {hand: eldestHand, nDraw: 3}})
+    dispatch({type: Actions.DrawRound, payload: {hand: eldestHand, nDraw}})
     onBeginHand(eldestHand)
   }
 
@@ -191,8 +194,9 @@ const useFlow = () => {
     dispatch({type: Actions.UpdateTokens, payload: n})
   }
 
-  const handleSpellUsed = (cardId: string) => {
+  const handleSpellUsed = (cardId: string, spellId: TSpell) => {
     dispatch({type: Actions.IncCooldown, payload: {id: cardId, value: 1}})
+    dispatch({type: Actions.DisableSpell, payload: spellId})
 
     // handleNextTurn()
   }
@@ -212,7 +216,7 @@ const useFlow = () => {
   //-------------------------------------------------------
 
   const handleDrawStep = () => {
-    dispatch({type: Actions.DrawRound, payload: {hand: curHand, nDraw: 3}})
+    dispatch({type: Actions.DrawRound, payload: {hand: curHand, nDraw}})
     dispatch({type: Actions.NextStep, payload: 2})
   }
 

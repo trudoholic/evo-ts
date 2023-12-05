@@ -7,6 +7,8 @@ import {grey} from "../styles/colors"
 const Zone = ({id, cards, name}: IZone) => {
   const styles = {
     box: {
+      maxHeight: "75vh",
+      overflow: "auto",
       border: `1px solid ${grey[500]}`,
       margin: "16px",
       padding: "8px 0",
