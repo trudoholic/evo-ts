@@ -253,6 +253,7 @@ const useFlow = () => {
         break
       }
       case Spell.Hibernation: {
+        dispatch({type: Actions.IncCooldown, payload: {id: cardId, value: 2}})
         break
       }
       case Spell.Piracy: {

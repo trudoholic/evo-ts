@@ -16,7 +16,7 @@ export type TSpell =
 export const getSpellId =
   (idx: number): TSpell => (idx % 2) ?
     Spell.Carnivore
-    : Spell.Grazing
+    : Spell.Hibernation
     // [Spell.Carnivore, Spell.Grazing, Spell.Hibernation][idx % 3]
     // : Spell.Empty
 
