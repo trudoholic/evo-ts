@@ -22,14 +22,15 @@ const Phase1 = () => {
 
   return (
     <>
-      <h2>{`Get Tokens: [${tokens}]`}</h2>
       {
         tokens?
           <>
+            <h2>{`[${tokens}]`}</h2>
             <button onClick={() => handleNextHandPhase(2)}>
               Next Phase
             </button>
           </>:<>
+            <h2>&#9856;&#9857;&#9858;&#9859;&#9860;&#9861;</h2>
             <button onClick={getTokens}>
               Get Tokens
             </button>

@@ -5,7 +5,7 @@ import Phase2 from "./Phase2"
 import Phase3 from "./Phase3"
 import GameActions from "./GameActions"
 
-const phases = ["Phase_0", "Phase_1", "Phase_2", "Phase_3"]
+const phases = ["Play", "Dice", "Feed", "Drop"]
 
 const Phases = () => {
   const { state } = useAppContext()
@@ -16,7 +16,7 @@ const Phases = () => {
   return (
     <>
       <h2>
-        {`Phases: [${phases[curHandPhase]}]`}
+        {`${phases[curHandPhase]} Phase`}
       </h2>
       { 0 === curHandPhase? <Phase0/>:
         1 === curHandPhase? <Phase1/>:

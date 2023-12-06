@@ -10,7 +10,7 @@ export interface IState {
   curStep: number
   curTurn: number
   isGameOver: boolean
-  isLastTurn: boolean
+  isLastHand: boolean
   isReverse: boolean
   nPlayers: number
   players: IPlayer[]
@@ -26,7 +26,7 @@ export const defaultState: IState = {
   curStep: 0,
   curTurn: 0,
   isGameOver: true,
-  isLastTurn: true,
+  isLastHand: true,
   isReverse: false,
   nPlayers: 0,
   players: [],

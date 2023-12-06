@@ -30,7 +30,8 @@ const Phase2 = () => {
       {
         tokens && !phaseEnd ?
           <>
-            <h2>{`Use Tokens: [${tokens}]`}</h2>
+            <h2>{`Turn: ${players.at(curTurn).name} (${curTurn})`}</h2>
+            <h2>{`Token Pool: [ ${tokens} ]`}</h2>
             {
               noKeep ?
                 <button onClick={handlePass}>

@@ -23,7 +23,7 @@ const Phase0 = () => {
 
   return (
     <>
-      <h2>{`Turn: [${curTurn}]`}</h2>
+      <h2>{`Turn: ${players.at(curTurn).name} (${curTurn})`}</h2>
       <h2>{`${phaseEnd?"All Players Have Passed":"*"}`}</h2>
       {
         phaseEnd?

@@ -2,10 +2,11 @@ import styled from "styled-components"
 import {commonZones} from "../data/zones"
 import useCards from "../hooks/useCards"
 import Zone from "./Zone"
+import {green} from "../styles/colors"
 
 export const StyledCommon = styled.div`
   //background: olive;
-  border: 1px solid #f0f;
+  border: 1px solid ${green[700]};
   flex: 1 0 0;
   //font-size: 1.8rem;
   //min-width: 15rem;

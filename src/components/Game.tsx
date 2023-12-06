@@ -9,6 +9,7 @@ const Game = () => {
   const {
     // cards,
     curHand,
+    isLastHand,
     isReverse,
     players,
   } = state as IState
@@ -18,7 +19,7 @@ const Game = () => {
   return (
     <>
       <h2>
-        {`Hand: [${curHand}] ${isReverse?"(R)":""}`}
+        {`Hand: ${players.at(curHand).name} (${curHand}) ${isLastHand?"Last!":""} ${isReverse?"(R)":""}`}
       </h2>
       <PlayerContainer>
         <Common/>

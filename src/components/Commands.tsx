@@ -1,9 +1,10 @@
 import styled from "styled-components"
 import Phases from "./phases"
+import {green} from "../styles/colors"
 
 export const StyledCommands = styled.div`
   //background: olive;
-  border: 1px solid #f0f;
+  border: 1px solid ${green[700]};
   display: flex;
   flex-direction: column;
   flex: 1 0 0;

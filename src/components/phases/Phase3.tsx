@@ -6,7 +6,7 @@ const Phase3 = () => {
   const { state } = useAppContext()
   const {
     curStep,
-    isLastTurn,
+    isLastHand,
   } = state as IState
 
   const {
@@ -31,7 +31,7 @@ const Phase3 = () => {
           </>:
         2 === curStep? <>
           {
-            isLastTurn?
+            isLastHand?
               <>
                 <button onClick={handleEndGame}>
                   End Game

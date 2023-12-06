@@ -48,7 +48,7 @@ export const reducer = (state: IState, action: TAction): IState => {
     case Actions.BeginGame: {
       return { ...state,
         isGameOver: false,
-        isLastTurn: false,
+        isLastHand: false,
         nPlayers: action.payload,
         cards: state.cards.map(card => ({...card, idPlayer: commonId, idZone: Zone.DrawPile, idCard: ""})),
         players: players.slice(0, action.payload),
@@ -86,7 +86,7 @@ export const reducer = (state: IState, action: TAction): IState => {
             idZone: Zone.DiscardPile,
             idCard: "",
             slotEmpty: true,
-          }: {...c, slotEmpty: !state.isLastTurn}
+          }: {...c, slotEmpty: !state.isLastHand}
         )
       }
     }
@@ -105,7 +105,7 @@ export const reducer = (state: IState, action: TAction): IState => {
     }
 
     case Actions.LastTurn: {
-      return { ...state, isLastTurn: true }
+      return { ...state, isLastHand: true }
     }
 
     case Actions.NextHand: {
