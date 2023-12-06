@@ -25,8 +25,10 @@ const useFlow = () => {
   } = state as IState
 
   const {
+    findCard,
     getDropIds,
     getZone,
+    isInPack,
   } = useCards()
 
   const nextIdx = (idx: number) => {
@@ -115,7 +117,7 @@ const useFlow = () => {
   //-------------------------------------------------------
 
   const playCard = (activeId: string) => {
-    const card = cards.find(({id}) => id === activeId)
+    const card = findCard(activeId)
     if (card) {
       dispatch({type: Actions.UpdateCard, payload: {
         ...card,
@@ -127,9 +129,9 @@ const useFlow = () => {
   }
 
   const playTrait = (activeId: string, targetId: string) => {
-    const card = cards.find(({id}) => id === activeId)
+    const card = findCard(activeId)
     if (card) {
-      const targetCard = cards.find(({id}) => id === targetId)
+      const targetCard = findCard(targetId)
       if (targetCard) {
         dispatch({type: Actions.UpdateCard, payload: {
           ...card,
@@ -140,31 +142,26 @@ const useFlow = () => {
       }
     }
   }
-
-  const playSlot = (cardId: string) => {
-    const card = cards.find(({id}) => id === cardId)
-    if (card) {
-      dispatch({type: Actions.UpdateCard, payload: {
-          ...card,
-          slotEmpty: false,
-        } as ICard})
-    }
-  }
   //-------------------------------------------------------
 
-  const handlePlaySlot = (cardId: string) => {
-    // console.log(`- Play Slot: ${cardId}`)
-    playSlot(cardId)
-
+  const handleEverySlotChecked = (cardList: ICard[], cardId: string) => {
     const isEmpty = (card: ICard) => (card.idCard === "" || card.slot) && card.slotEmpty
-    const slots = cards
+    const slots = cardList
       .filter(c => c.idPlayer === players.at(curTurn).id && c.idZone === Zone.Keep)
       .map(c => c.id === cardId ? false : isEmpty(c))
     // console.log(`---> ${slots}`)
     if (slots.every(s => !s)) {
       dispatch({type: Actions.Pass, payload: curTurn})
     }
+  }
 
+  const handlePlaySlot = (cardId: string) => {
+    // console.log(`- Play Slot: ${cardId}`)
+    const updCards = cards
+      .map(c => c.id === cardId ? {...c, slotEmpty: false}: c)
+    dispatch({type: Actions.UpdateCards, payload: updCards})
+
+    handleEverySlotChecked(updCards, cardId)
     handleNextTurn()
   }
 
@@ -226,12 +223,26 @@ const useFlow = () => {
       handleUpdateTokens(tokens - 1)
     }
 
-    const card = cards.find(({id}) => id === cardId)
+    const card = findCard(cardId)
     if (card) {
       dispatch({type: Actions.UpdateCard, payload: {
           ...card,
           spellUsed: true,
         } as ICard})
+    }
+  }
+
+  const castSpellHibernation = (cardId: string) => {
+    const card = findCard(cardId)
+    if (card) {
+      dispatch({type: Actions.IncCooldown, payload: {id: cardId, value: 2}})
+
+      const updCards = cards
+        .map(c => isInPack(card.idCard, c)? {...c, slotEmpty: false}: c)
+      dispatch({type: Actions.UpdateCards, payload: updCards})
+
+      handleEverySlotChecked(updCards, card.idCard)
+      handleNextTurn()
     }
   }
 
@@ -253,7 +264,7 @@ const useFlow = () => {
         break
       }
       case Spell.Hibernation: {
-        dispatch({type: Actions.IncCooldown, payload: {id: cardId, value: 2}})
+        castSpellHibernation(cardId)
         break
       }
       case Spell.Piracy: {

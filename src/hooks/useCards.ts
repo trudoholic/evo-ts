@@ -1,9 +1,9 @@
 import {useAppContext} from "../context"
 // import {Actions} from "../context/reducer"
 import {IState} from "../context/state"
+import {ICard} from "../data/cards"
 import {commonId} from "../data/players"
 import {Zone} from "../data/zones"
-import {ICard} from "../data/cards";
 
 const useCards = () => {
   const { state } = useAppContext()
@@ -19,6 +19,11 @@ const useCards = () => {
     // nPlayers,
     players,
   } = state as IState
+  //-------------------------------------------------------
+
+  const findCard = (cardId: string) => {
+    return cards.find(({id}) => id === cardId)
+  }
   //-------------------------------------------------------
 
   const getDropIds = () => {
@@ -37,6 +42,12 @@ const useCards = () => {
   const getZone = (zoneId: string, playerId: string = commonId) => (
     cards.filter(({idPlayer, idZone, idCard}) => idPlayer === playerId && idZone === zoneId && idCard === "")
   )
+  //-------------------------------------------------------
+
+  const isInPack = (cardId: string, card: ICard): boolean => {
+    if (!cardId) return false
+    return card.id === cardId || card.idCard === cardId
+  }
   //-------------------------------------------------------
 
   const isKeeper = (idZone: string, idCard: string): boolean => {
@@ -108,9 +119,11 @@ const useCards = () => {
   //-------------------------------------------------------
 
   return {
+    findCard,
     getDropIds,
     getTraits,
     getZone,
+    isInPack,
     isKeeper,
     isValidCard,
     isValidSlot,

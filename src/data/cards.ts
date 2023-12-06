@@ -13,7 +13,7 @@ export interface ICard  {
   spellUsed: boolean
 }
 
-export const cards: ICard[] = [...Array(50)]
+export const cards: ICard[] = [...Array(150)]
   .map((_, i) => ({
     disabled: false,
     id: `${i + 1}`,

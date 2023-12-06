@@ -22,6 +22,7 @@ export enum Actions {
   SetActive,
   SetTarget,
   UpdateCard,
+  UpdateCards,
   UpdateTokens,
 }
 
@@ -43,6 +44,7 @@ export type TAction =
   | { type: Actions.SetActive, payload: string }
   | { type: Actions.SetTarget, payload: string }
   | { type: Actions.UpdateCard, payload: ICard }
+  | { type: Actions.UpdateCards, payload: ICard[] }
   | { type: Actions.UpdateTokens, payload: number }
 
 export const reducer = (state: IState, action: TAction): IState => {
@@ -186,6 +188,10 @@ export const reducer = (state: IState, action: TAction): IState => {
       return { ...state,
         cards: state.cards.map(c => c.id === action.payload.id ? action.payload: c)
       }
+    }
+
+    case Actions.UpdateCards: {
+      return { ...state, cards: action.payload}
     }
 
     case Actions.UpdateTokens: {
