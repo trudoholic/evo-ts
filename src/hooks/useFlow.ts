@@ -218,6 +218,16 @@ const useFlow = () => {
   }
   //-------------------------------------------------------
 
+  const handleSpellCarnivore = (cardId: string, spellId: TSpell) => {
+    const curPlayerId = players.at(curTurn).id
+    const updCards = cards
+      .map(c => c.idPlayer === curPlayerId && c.spellId === spellId? {...c, spellUsed: true}: c)
+      .map(c => c.id === cardId? {...c, slotEmpty: false, spellCooldown: 1}: c)
+    dispatch({type: Actions.UpdateCards, payload: updCards})
+
+    handleNextTurn()
+  }
+
   const castSpellGrazing = (cardId: string) => {
     if (tokens) {
       handleUpdateTokens(tokens - 1)
@@ -235,28 +245,19 @@ const useFlow = () => {
   const castSpellHibernation = (cardId: string) => {
     const card = findCard(cardId)
     if (card) {
-      dispatch({type: Actions.IncCooldown, payload: {id: cardId, value: 2}})
-
       const updCards = cards
         .map(c => isInPack(card.idCard, c)? {...c, slotEmpty: false}: c)
+        .map(c => c.id === cardId? {...c, spellCooldown: 2}: c)
       dispatch({type: Actions.UpdateCards, payload: updCards})
-
       handleEverySlotChecked(updCards, card.idCard)
-      handleNextTurn()
     }
-  }
-
-  const handleSpellUsed = (cardId: string, spellId: TSpell) => {
-    dispatch({type: Actions.IncCooldown, payload: {id: cardId, value: 1}})
-    dispatch({type: Actions.DisableSpell, payload: spellId})
-
-    // handleNextTurn()
+    handleNextTurn()
   }
 
   const handleCastSpell = (cardId: string, spellId: TSpell) => {
     switch (spellId) {
       case Spell.Carnivore: {
-        handleSpellUsed(cardId, spellId)
+        handleSpellCarnivore(cardId, spellId)
         break
       }
       case Spell.Grazing: {

@@ -49,7 +49,7 @@ export default createGlobalStyle`
     }
 
     h2 {
-      color: #369;
+      color: #81c784;
       font-size: 1.8rem;
       line-height: 1.1;
     }

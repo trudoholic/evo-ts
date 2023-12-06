@@ -1,4 +1,5 @@
 import {useAppContext} from "../context"
+import {IState} from "../context/state"
 import Commands from "./Commands"
 import Common from "./Common"
 import Player, {PlayerContainer} from "./Player"
@@ -6,10 +7,13 @@ import Player, {PlayerContainer} from "./Player"
 const Game = () => {
   const { state } = useAppContext()
   const {
+    // cards,
     curHand,
     isReverse,
     players,
-  } = state
+  } = state as IState
+
+  // console.log(cards)
 
   return (
     <>

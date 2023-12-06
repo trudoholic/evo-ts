@@ -5,5 +5,6 @@ export const FlexRow = styled.div`
   //align-content: center;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  //justify-content: space-evenly;
+  justify-content: space-between;
 `

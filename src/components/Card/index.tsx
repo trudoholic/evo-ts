@@ -45,7 +45,7 @@ const Card = (card: ICard) => {
   const cardSpell = !isEmpty(spellId) && !!idCard
   const cardDisabled = disabled || !isValidCard(idPlayer, idZone, idCard)
   const slotDisabled = !tokens || !slotEmpty || !isValidSlot(idPlayer, idZone)
-  const spellEnabled = !cardDisabled && cardSpell && !spellUsed
+  const spellEnabled = !cardDisabled && cardSpell && !spellCooldown && !spellUsed
 
   const {
     handleCastSpell,
@@ -86,6 +86,7 @@ const Card = (card: ICard) => {
           />
         ) : null}
 
+        <span>{`${spellCooldown || ""}`}</span>
         {traits.length ? <span>{`Pack [${traits.length}] `}</span> : null}
         <span>{`${isEmpty(spellId)? "": `${spellId}: `}${id}`}</span>
 

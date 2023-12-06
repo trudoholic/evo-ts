@@ -1,16 +1,13 @@
 import {IState} from "./state"
 import {ICard} from "../data/cards"
 import {commonId, players} from "../data/players"
-import {TSpell} from "../data/spells"
 import {Zone} from "../data/zones"
 
 export enum Actions {
   BeginGame,
-  DisableSpell,
   DrawRound,
   DropCards,
   EndGame,
-  IncCooldown,
   IncValue,
   LastTurn,
   NextHand,
@@ -28,11 +25,9 @@ export enum Actions {
 
 export type TAction =
   | { type: Actions.BeginGame, payload: number }
-  | { type: Actions.DisableSpell, payload: TSpell }
   | { type: Actions.DrawRound, payload: { hand: number, nDraw: number } }
   | { type: Actions.DropCards, payload: string[] }
   | { type: Actions.EndGame }
-  | { type: Actions.IncCooldown, payload: { id: string, value: number } }
   | { type: Actions.IncValue, payload: { idx: number, value: number } }
   | { type: Actions.LastTurn }
   | { type: Actions.NextHand, payload: number }
@@ -57,17 +52,6 @@ export const reducer = (state: IState, action: TAction): IState => {
         nPlayers: action.payload,
         cards: state.cards.map(card => ({...card, idPlayer: commonId, idZone: Zone.DrawPile, idCard: ""})),
         players: players.slice(0, action.payload),
-      }
-    }
-
-    case Actions.DisableSpell: {
-      const curPlayerId = state.players.at(state.curTurn).id
-      return { ...state,
-        cards: state.cards.map(
-          c => c.idPlayer === curPlayerId && c.spellId === action.payload ? { ...c,
-            spellUsed: true,
-          }: c
-        )
       }
     }
 
@@ -111,16 +95,6 @@ export const reducer = (state: IState, action: TAction): IState => {
       return { ...state, isGameOver: true }
     }
 
-    case Actions.IncCooldown: {
-      return { ...state,
-        cards: state.cards.map(
-          c => c.id === action.payload.id ? { ...c,
-            spellCooldown: action.payload.value,
-          }: c
-        )
-      }
-    }
-
     case Actions.IncValue: {
       return { ...state,
         players: state.players.map(
@@ -138,7 +112,7 @@ export const reducer = (state: IState, action: TAction): IState => {
       return { ...state,
         curHand: action.payload,
         cards: state.cards.map(c => ({...c,
-          spellCooldown: c.spellCooldown > 0 ? c.spellCooldown - 1 : 0
+          spellCooldown: (c.spellCooldown > 0 ? c.spellCooldown - 1 : 0)
         }))
       }
     }
