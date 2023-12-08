@@ -46,11 +46,6 @@ const useFlow = () => {
     handleSetActive("")
     handleSetTarget("")
 
-    const deck = getZone(Zone.DrawPile)
-    if (!deck.length) {
-      dispatch({type: Actions.LastTurn})
-    }
-
     let nextTurn = nextIdx(curTurn)
     while (players.at(nextTurn).pass) {
       nextTurn = nextIdx(nextTurn)
@@ -59,20 +54,20 @@ const useFlow = () => {
   }
   //-------------------------------------------------------
 
-  const onBeginPhase = (phase: number) => {
+  const onBeginHandPhase = (phase: number, hand?: number) => {
     dispatch({type: Actions.NextHandPhase, payload: phase})
     console.group(`Phase: ${phase}`)
-    dispatch({type: Actions.NextTurn, payload: curHand})
+    dispatch({type: Actions.NextTurn, payload: phase? curHand: hand})
   }
 
-  const onEndPhase = () => {
+  const onEndHandPhase = () => {
     dispatch({type: Actions.NextStep, payload: 0})
     console.groupEnd()
   }
 
   const handleNextHandPhase = (phase: number) => {
-    onEndPhase()
-    onBeginPhase(phase)
+    onEndHandPhase()
+    onBeginHandPhase(phase)
   }
   //-------------------------------------------------------
 
@@ -80,8 +75,13 @@ const useFlow = () => {
     console.group(`Hand: ${hand}`)
     dispatch({type: Actions.NextHand, payload: hand})
 
-    onBeginPhase(0)
-    dispatch({type: Actions.NextTurn, payload: hand})
+    const deck = getZone(Zone.DrawPile)
+    if (!deck.length) {
+      console.log('deck --->', deck.length)
+      dispatch({type: Actions.LastHand})
+    }
+
+    onBeginHandPhase(0, hand)
   }
 
   const onEndHand = () => {
@@ -107,7 +107,7 @@ const useFlow = () => {
   }
 
   const handleEndGame = () => {
-    onEndPhase()
+    onEndHandPhase()
     onEndHand()
     dispatch({type: Actions.EndGame})
     const result = "End Game"

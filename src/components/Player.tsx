@@ -73,7 +73,7 @@ const Player = ({idx}: IPlayerProps) => {
         $turn={idx === curTurn}
         $pass={player.pass}
       >
-        {`${player.name}: ${player.value}`}
+        {`${player.name} (${idx}) : ${player.value}`}
       </StyledPlayerInfo>
       {
         zones.map((zone) =>

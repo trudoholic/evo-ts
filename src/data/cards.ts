@@ -1,4 +1,6 @@
+import {commonId} from "./players"
 import {getSpellId, TSpell} from "./spells"
+import {Zone} from "./zones"
 
 export interface ICard  {
   disabled: boolean
@@ -18,8 +20,8 @@ export const cards: ICard[] = [...Array(50)]
     disabled: false,
     id: `${i + 1}`,
     idCard: "",
-    idPlayer: "0",
-    idZone: "1",
+    idPlayer: commonId,
+    idZone: Zone.DrawPile,
     slot: !!(i % 2),
     slotEmpty: true,
     spellId: getSpellId(i),

@@ -9,7 +9,7 @@ export enum Actions {
   DropCards,
   EndGame,
   IncValue,
-  LastTurn,
+  LastHand,
   NextHand,
   NextHandPhase,
   NextStep,
@@ -29,7 +29,7 @@ export type TAction =
   | { type: Actions.DropCards, payload: string[] }
   | { type: Actions.EndGame }
   | { type: Actions.IncValue, payload: { idx: number, value: number } }
-  | { type: Actions.LastTurn }
+  | { type: Actions.LastHand }
   | { type: Actions.NextHand, payload: number }
   | { type: Actions.NextHandPhase, payload: number }
   | { type: Actions.NextStep, payload: number }
@@ -104,7 +104,7 @@ export const reducer = (state: IState, action: TAction): IState => {
       }
     }
 
-    case Actions.LastTurn: {
+    case Actions.LastHand: {
       return { ...state, isLastHand: true }
     }
 
