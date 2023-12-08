@@ -9,6 +9,7 @@ const Game = () => {
   const {
     // cards,
     curHand,
+    curSpell,
     isLastHand,
     isReverse,
     players,
@@ -20,6 +21,7 @@ const Game = () => {
     <>
       <h2>
         {`Hand: ${players.at(curHand).name} (${curHand}) ${isLastHand?"Last!":""} ${isReverse?"(R)":""}`}
+        {`Spell: ${curSpell}`}
       </h2>
       <PlayerContainer>
         <Common/>

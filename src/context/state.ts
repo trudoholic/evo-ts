@@ -1,5 +1,6 @@
 import {cards, ICard} from "../data/cards"
 import {IPlayer} from "../data/players"
+import {Spell, TSpell} from "../data/spells"
 
 export interface IState {
   cardActiveId: string
@@ -7,6 +8,7 @@ export interface IState {
   cards: ICard[]
   curHand: number
   curHandPhase: number
+  curSpell: TSpell
   curStep: number
   curTurn: number
   isGameOver: boolean
@@ -23,6 +25,7 @@ export const defaultState: IState = {
   cards: cards,
   curHand: 0,
   curHandPhase: 0,
+  curSpell: Spell.Empty,
   curStep: 0,
   curTurn: 0,
   isGameOver: true,

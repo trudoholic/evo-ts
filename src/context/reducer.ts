@@ -1,10 +1,12 @@
 import {IState} from "./state"
 import {ICard} from "../data/cards"
 import {commonId, players} from "../data/players"
+import {TSpell} from "../data/spells"
 import {Zone} from "../data/zones"
 
 export enum Actions {
   BeginGame,
+  CastSpell,
   DrawRound,
   DropCards,
   EndGame,
@@ -25,6 +27,7 @@ export enum Actions {
 
 export type TAction =
   | { type: Actions.BeginGame, payload: number }
+  | { type: Actions.CastSpell, payload: TSpell }
   | { type: Actions.DrawRound, payload: { hand: number, nDraw: number } }
   | { type: Actions.DropCards, payload: string[] }
   | { type: Actions.EndGame }
@@ -53,6 +56,10 @@ export const reducer = (state: IState, action: TAction): IState => {
         cards: state.cards.map(card => ({...card, idPlayer: commonId, idZone: Zone.DrawPile, idCard: ""})),
         players: players.slice(0, action.payload),
       }
+    }
+
+    case Actions.CastSpell: {
+      return { ...state, curSpell: action.payload }
     }
 
     case Actions.DrawRound: {

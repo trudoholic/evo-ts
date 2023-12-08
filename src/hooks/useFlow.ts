@@ -257,7 +257,8 @@ const useFlow = () => {
   const handleCastSpell = (cardId: string, spellId: TSpell) => {
     switch (spellId) {
       case Spell.Carnivore: {
-        handleSpellCarnivore(cardId, spellId)
+        dispatch({type: Actions.CastSpell, payload: Spell.Carnivore})
+        // handleSpellCarnivore(cardId, spellId)
         break
       }
       case Spell.Grazing: {
@@ -269,6 +270,7 @@ const useFlow = () => {
         break
       }
       case Spell.Piracy: {
+        dispatch({type: Actions.CastSpell, payload: Spell.Piracy})
         break
       }
     }
