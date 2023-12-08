@@ -254,6 +254,10 @@ const useFlow = () => {
     handleNextTurn()
   }
 
+  const handleUncastSpell = () => {
+    dispatch({type: Actions.CastSpell, payload: Spell.Empty})
+  }
+
   const handleCastSpell = (cardId: string, spellId: TSpell) => {
     switch (spellId) {
       case Spell.Carnivore: {
@@ -293,6 +297,7 @@ const useFlow = () => {
     handleReverse,
     handleSetActive,
     handleSetTarget,
+    handleUncastSpell,
     handleUpdateTokens,
     nextIdx,
   }

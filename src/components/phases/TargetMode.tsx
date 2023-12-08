@@ -1,7 +1,7 @@
 import {IState} from "../../context/state"
 import {useAppContext} from "../../context"
 import {isEmpty} from "../../data/spells"
-// import useFlow from "../../hooks/useFlow"
+import useFlow from "../../hooks/useFlow"
 
 const TargetMode = () => {
   const { state } = useAppContext()
@@ -9,8 +9,9 @@ const TargetMode = () => {
     curSpell,
   } = state as IState
 
-  // const {
-  // } = useFlow()
+  const {
+    handleUncastSpell,
+  } = useFlow()
 
   return (
     <>
@@ -21,7 +22,7 @@ const TargetMode = () => {
               Empty
             </button>
           </>:<>
-            <button onClick={() => {}}>
+            <button onClick={handleUncastSpell}>
               Not Empty
             </button>
           </>
