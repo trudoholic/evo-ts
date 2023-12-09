@@ -219,16 +219,6 @@ const useFlow = () => {
   }
   //-------------------------------------------------------
 
-  const handleSpellCarnivore = (cardId: string, spellId: TSpell) => {
-    const curPlayerId = players.at(curTurn).id
-    const updCards = cards
-      .map(c => c.idPlayer === curPlayerId && c.spellId === spellId? {...c, spellUsed: true}: c)
-      .map(c => c.id === cardId? {...c, slotEmpty: false, spellCooldown: 1}: c)
-    dispatch({type: Actions.UpdateCards, payload: updCards})
-
-    handleNextTurn()
-  }
-
   const castSpellGrazing = (cardId: string) => {
     if (tokens) {
       handleUpdateTokens(tokens - 1)
@@ -284,11 +274,33 @@ const useFlow = () => {
     }
   }
 
+  const handleSpellCarnivore = (cardId: string, targetId: string, spellId: TSpell) => {
+    const curPlayerId = players.at(curTurn).id
+
+    const updCards = cards
+      .map(c => c.idPlayer === curPlayerId && c.spellId === spellId? {...c,
+        spellUsed: true
+      }: c)
+      .map(c => c.id === cardId? {...c,
+        slotEmpty: false,
+        spellCooldown: 1
+      }: c)
+      .map(c => isInPack(targetId, c) ? { ...c,
+        idZone: Zone.DiscardPile,
+        idCard: "",
+        slotEmpty: true,
+      }: c)
+
+    dispatch({type: Actions.UpdateCards, payload: updCards})
+    handleEverySlotChecked(updCards, cardId)
+    handleNextTurn()
+  }
+
   const handlePutSpellOn = (cardId: string, targetId: string, spellId: TSpell) => {
     console.log("Target:", targetId)
     switch (spellId) {
       case Spell.Carnivore: {
-        handleSpellCarnivore(cardId, spellId)
+        handleSpellCarnivore(cardId, targetId, spellId)
         break
       }
       case Spell.Piracy: {
