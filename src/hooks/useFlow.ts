@@ -26,6 +26,7 @@ const useFlow = () => {
   } = state as IState
 
   const {
+    emptySlotIds,
     findCard,
     getDropIds,
     getZone,
@@ -276,13 +277,16 @@ const useFlow = () => {
 
   const handleSpellCarnivore = (cardId: string, targetId: string, spellId: TSpell) => {
     const curPlayerId = players.at(curTurn).id
+    const ids = emptySlotIds(cardId).slice(0, 2)
 
     const updCards = cards
       .map(c => c.idPlayer === curPlayerId && c.spellId === spellId? {...c,
         spellUsed: true
       }: c)
-      .map(c => c.id === cardId? {...c,
+      .map(c => ids.includes(c.id)? {...c,
         slotEmpty: false,
+      }: c)
+      .map(c => c.id === cardId? {...c,
         spellCooldown: 1
       }: c)
       .map(c => isInPack(targetId, c) ? { ...c,

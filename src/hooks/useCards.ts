@@ -135,13 +135,27 @@ const useCards = () => {
       return true
     } else {
       const slots = getTraits(card.id)
-        .filter(t => t.slot)
+        .filter(c => c.slot)
       return slots.length > 0 && slots.some(s => s.slotEmpty)
     }
   }
   //-------------------------------------------------------
 
+  const emptySlotIds = (cardId: string) => {
+    const trait = findCard(cardId)
+    const card = findCard(trait.idCard)
+    const slotIds = getTraits(card.id)
+      .filter(c => c.slot && c.slotEmpty)
+      .map(c => c.id)
+    if (card.slotEmpty) {
+      slotIds.unshift(card.id)
+    }
+    return slotIds
+  }
+  //-------------------------------------------------------
+
   return {
+    emptySlotIds,
     findCard,
     getDropIds,
     getTraits,
