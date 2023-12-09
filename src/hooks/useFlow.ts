@@ -2,7 +2,7 @@ import {useAppContext} from "../context"
 import {Actions} from "../context/reducer"
 import {IState} from "../context/state"
 import {ICard} from "../data/cards"
-import {Spell, TSpell} from "../data/spells"
+import {isEmpty, Spell, TSpell} from "../data/spells"
 import {Zone} from "../data/zones"
 import useCards from "../hooks/useCards"
 
@@ -16,6 +16,7 @@ const useFlow = () => {
     cardTargetId,
     curHand,
     curHandPhase,
+    curSpell,
     curTurn,
     isLastHand,
     isReverse,
@@ -43,8 +44,8 @@ const useFlow = () => {
   //-------------------------------------------------------
 
   const handleNextTurn = () => {
-    handleSetActive("")
-    handleSetTarget("")
+    dispatch({type: Actions.SetActive, payload: ""})
+    dispatch({type: Actions.SetTarget, payload: ""})
 
     let nextTurn = nextIdx(curTurn)
     while (players.at(nextTurn).pass) {
@@ -200,7 +201,7 @@ const useFlow = () => {
   }
 
   const handleSetTarget = (id: string) => {
-    if (0 === curHandPhase) {
+    if (0 === curHandPhase || !isEmpty(curSpell)) {
       dispatch({type: Actions.SetTarget, payload: id})
     }
   }
@@ -256,13 +257,15 @@ const useFlow = () => {
 
   const handleUncastSpell = () => {
     dispatch({type: Actions.CastSpell, payload: Spell.Empty})
+    dispatch({type: Actions.SetActive, payload: ""})
+    dispatch({type: Actions.SetTarget, payload: ""})
   }
 
   const handleCastSpell = (cardId: string, spellId: TSpell) => {
     switch (spellId) {
       case Spell.Carnivore: {
         dispatch({type: Actions.CastSpell, payload: Spell.Carnivore})
-        // handleSpellCarnivore(cardId, spellId)
+        dispatch({type: Actions.SetActive, payload: cardId})
         break
       }
       case Spell.Grazing: {
@@ -275,9 +278,24 @@ const useFlow = () => {
       }
       case Spell.Piracy: {
         dispatch({type: Actions.CastSpell, payload: Spell.Piracy})
+        dispatch({type: Actions.SetActive, payload: cardId})
         break
       }
     }
+  }
+
+  const handlePutSpellOn = (cardId: string, targetId: string, spellId: TSpell) => {
+    console.log("Target:", targetId)
+    switch (spellId) {
+      case Spell.Carnivore: {
+        handleSpellCarnivore(cardId, spellId)
+        break
+      }
+      case Spell.Piracy: {
+        break
+      }
+    }
+    handleUncastSpell()
   }
   //-------------------------------------------------------
 
@@ -294,6 +312,7 @@ const useFlow = () => {
     handlePlayCard,
     handlePlaySlot,
     handlePlayTrait,
+    handlePutSpellOn,
     handleReverse,
     handleSetActive,
     handleSetTarget,

@@ -3,6 +3,7 @@ import {useAppContext} from "../context"
 import {IState} from "../context/state"
 import {ICard} from "../data/cards"
 import {commonId} from "../data/players"
+import {isEmpty, Spell} from "../data/spells"
 import {Zone} from "../data/zones"
 
 const useCards = () => {
@@ -15,6 +16,7 @@ const useCards = () => {
     curHandPhase,
     // curHand,
     curTurn,
+    curSpell,
     // isReverse,
     // nPlayers,
     players,
@@ -58,6 +60,18 @@ const useCards = () => {
   //-------------------------------------------------------
 
   const isValidCard = (idPlayer: string, idZone: string, idCard: string): boolean => {
+    if (!isEmpty(curSpell)) {
+      switch (curSpell) {
+        case Spell.Carnivore: {
+          return isKeeper(idZone, idCard)
+        }
+
+        default: {
+          return false
+        }
+      }
+    }
+
     const curPlayer = players.at(curTurn)
     if (curPlayer.id !== idPlayer || curPlayer.pass) {
       return false
@@ -67,7 +81,7 @@ const useCards = () => {
       case 0: {
         return (
           cardActiveId ? (
-            !cardTargetId && Zone.Keep === idZone && "" === idCard
+            !cardTargetId && isKeeper(idZone, idCard)
           ) : (
             Zone.Hand === idZone
           )
@@ -91,6 +105,7 @@ const useCards = () => {
       case 3: {
         return false
       }
+
       default: {
         return false
       }

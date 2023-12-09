@@ -8,6 +8,8 @@ const Game = () => {
   const { state } = useAppContext()
   const {
     // cards,
+    cardActiveId,
+    cardTargetId,
     curHand,
     curSpell,
     isLastHand,
@@ -21,7 +23,7 @@ const Game = () => {
     <>
       <h2>
         {`Hand: ${players.at(curHand).name} (${curHand}) ${isLastHand?"Last!":""} ${isReverse?"(R)":""}`}
-        {`Spell: ${curSpell}`}
+        {`Spell: ${curSpell} ${cardActiveId || "--"} ${cardTargetId || "--"}`}
       </h2>
       <PlayerContainer>
         <Common/>

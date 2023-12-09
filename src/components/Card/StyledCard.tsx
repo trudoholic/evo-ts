@@ -20,7 +20,8 @@ export const StyledCard = styled.div<ICardProps>`
   };
   box-sizing: border-box;
   cursor: ${({$disabled}) => $disabled ? "not-allowed" : "pointer"};
-  font-size: 1.8rem;
+  font-family: monospace, monospace;
+  font-size: 1.6rem;
   min-width: 5rem;
   margin: 0.2rem;
   padding: 0.3rem 0.5rem;

@@ -1,31 +1,32 @@
 import {IState} from "../../context/state"
 import {useAppContext} from "../../context"
-import {isEmpty} from "../../data/spells"
 import useFlow from "../../hooks/useFlow"
 
 const TargetMode = () => {
   const { state } = useAppContext()
   const {
+    cardActiveId,
+    cardTargetId,
     curSpell,
   } = state as IState
 
   const {
+    handlePutSpellOn,
     handleUncastSpell,
   } = useFlow()
 
   return (
     <>
+      <button onClick={handleUncastSpell}>
+        X
+      </button>
       {
-        isEmpty(curSpell)?
+        cardActiveId && cardTargetId?
           <>
-            <button onClick={() => {}}>
-              Empty
+            <button onClick={() => handlePutSpellOn(cardActiveId, cardTargetId, curSpell)}>
+              Put Spell On Target
             </button>
-          </>:<>
-            <button onClick={handleUncastSpell}>
-              Not Empty
-            </button>
-          </>
+          </>: null
       }
     </>
   )
