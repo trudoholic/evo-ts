@@ -26,6 +26,8 @@ const useCards = () => {
   const findCard = (cardId: string) => {
     return cards.find(({id}) => id === cardId)
   }
+
+  const activeCard = findCard(cardActiveId)
   //-------------------------------------------------------
 
   const getDropIds = () => {
@@ -59,11 +61,17 @@ const useCards = () => {
   }
   //-------------------------------------------------------
 
-  const isValidCard = (idPlayer: string, idZone: string, idCard: string): boolean => {
+  const isActiveParent = (cardId: string): boolean => {
+    return activeCard?.idCard === cardId
+  }
+  //-------------------------------------------------------
+
+  const isValidCard = (idPlayer: string, idZone: string, idCard: string, id: string): boolean => {
     if (!isEmpty(curSpell)) {
+
       switch (curSpell) {
         case Spell.Carnivore: {
-          return isKeeper(idZone, idCard)
+          return isKeeper(idZone, idCard) && !isActiveParent(id)
         }
 
         default: {
