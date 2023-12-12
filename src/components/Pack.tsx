@@ -33,14 +33,15 @@ const Pack = (card: ICard) => {
   } = card
 
   const {
+    emptySlotIds,
     getTraits,
-    someEmpty,
+    // someEmpty,
   } = useCards()
 
   const traits = getTraits(id)
 
   return (
-    <StyledPack $someEmpty={someEmpty(card)}>
+    <StyledPack $someEmpty={emptySlotIds(id).length > 0}>
       <Card {...card}/>
       {
         traits.map((c) => (

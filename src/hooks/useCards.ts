@@ -33,7 +33,7 @@ const useCards = () => {
   const getDropIds = () => {
     return  cards
       .filter(c => isKeeper(c.idZone, c.idCard))
-      .filter(c => someEmpty(c))
+      .filter(c => emptySlotIds(c.id) > 0)
       .map(c => c.id)
   }
   //-------------------------------------------------------
@@ -136,26 +136,6 @@ const useCards = () => {
   }
   //-------------------------------------------------------
 
-  const someEmpty = (card: ICard): boolean => {
-    if (card.slotEmpty) {
-      return true
-    } else {
-      const slots = getTraits(card.id)
-        .filter(c => c.slot)
-      return slots.length > 0 && slots.some(s => s.slotEmpty)
-    }
-  }
-
-  const packSomeEmpty = (card: ICard): boolean => {
-    if (isKeeper(card.idZone, card.idCard)) {
-      return someEmpty(card)
-    } else {
-      const cardParent = findCard(card.idCard)
-      return cardParent? someEmpty(cardParent): false
-    }
-  }
-  //-------------------------------------------------------
-
   const getParent = (cardId: string) => {
     const card = findCard(cardId)
     return ("" === card.idCard) ? card : findCard(card.idCard)
@@ -195,8 +175,6 @@ const useCards = () => {
     isKeeper,
     isValidCard,
     isValidSlot,
-    packSomeEmpty,
-    someEmpty,
   }
 }
 
