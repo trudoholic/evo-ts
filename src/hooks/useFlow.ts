@@ -26,6 +26,7 @@ const useFlow = () => {
   } = state as IState
 
   const {
+    checkedSlotIds,
     emptySlotIds,
     findCard,
     getDropIds,
@@ -275,12 +276,12 @@ const useFlow = () => {
     }
   }
 
-  const handleSpellCarnivore = (cardId: string, targetId: string, spellId: TSpell) => {
+  const handleSpellCarnivore = (cardId: string, targetId: string) => {
     const curPlayerId = players.at(curTurn).id
     const ids = emptySlotIds(cardId).slice(0, 2)
 
     const updCards = cards
-      .map(c => c.idPlayer === curPlayerId && c.spellId === spellId? {...c,
+      .map(c => c.idPlayer === curPlayerId && c.spellId === Spell.Carnivore? {...c,
         spellUsed: true
       }: c)
       .map(c => ids.includes(c.id)? {...c,
@@ -300,14 +301,35 @@ const useFlow = () => {
     handleNextTurn()
   }
 
+  const handleSpellPiracy = (cardId: string, targetId: string) => {
+    const emptyIds = emptySlotIds(cardId).slice(0, 1)
+    const checkedIds = checkedSlotIds(targetId).slice(0, 1)
+
+    const updCards = cards
+      .map(c => emptyIds.includes(c.id)? {...c,
+        slotEmpty: false,
+      }: c)
+      .map(c => checkedIds.includes(c.id)? {...c,
+        slotEmpty: true,
+      }: c)
+      .map(c => c.id === cardId? {...c,
+        spellCooldown: 1
+      }: c)
+
+    dispatch({type: Actions.UpdateCards, payload: updCards})
+    handleEverySlotChecked(updCards, cardId)
+    handleNextTurn()
+  }
+
   const handlePutSpellOn = (cardId: string, targetId: string, spellId: TSpell) => {
     console.log("Target:", targetId)
     switch (spellId) {
       case Spell.Carnivore: {
-        handleSpellCarnivore(cardId, targetId, spellId)
+        handleSpellCarnivore(cardId, targetId)
         break
       }
       case Spell.Piracy: {
+        handleSpellPiracy(cardId, targetId)
         break
       }
     }
