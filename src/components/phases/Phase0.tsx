@@ -17,7 +17,17 @@ const Phase0 = () => {
     handlePass,
     handlePlayCard,
     handlePlayTrait,
+    handleSetActive,
+    handleSetTarget,
   } = useFlow()
+
+  const handleUndo = () => {
+    if (cardTargetId) {
+      handleSetTarget("")
+    } else {
+      handleSetActive("")
+    }
+  }
 
   const phaseEnd = players.every(p => p.pass)
 
@@ -35,8 +45,8 @@ const Phase0 = () => {
             {
               cardActiveId ?
                 <>
-                  <button onClick={handlePlayCard}>
-                    Play Card
+                  <button onClick={handleUndo}>
+                    X
                   </button>
                   {
                     cardTargetId ?
@@ -44,8 +54,11 @@ const Phase0 = () => {
                         <button onClick={handlePlayTrait}>
                           Play Trait
                         </button>
+                      </> : <>
+                        <button onClick={handlePlayCard}>
+                          Play Card
+                        </button>
                       </>
-                      : null
                   }
                 </>
                 : null
