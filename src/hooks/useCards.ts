@@ -33,7 +33,7 @@ const useCards = () => {
   const getDropIds = () => {
     return  cards
       .filter(c => isKeeper(c.idZone, c.idCard))
-      .filter(c => emptySlotIds(c.id) > 0)
+      .filter(c => getSlotIds(c.id, true) > 0)
       .map(c => c.id)
   }
   //-------------------------------------------------------
@@ -76,8 +76,8 @@ const useCards = () => {
 
         case Spell.Piracy: {
           return isKeeper(idZone, idCard) && !isActiveParent(id)
-            && checkedSlotIds(id).length > 0
-            && emptySlotIds(id).length > 0
+            && getSlotIds(id, false).length > 0
+            && getSlotIds(id, true).length > 0
         }
 
         default: {
@@ -141,32 +141,21 @@ const useCards = () => {
     return ("" === card.idCard) ? card : findCard(card.idCard)
   }
 
-  const checkedSlotIds = (cardId: string) => {
+  const getSlotIds = (cardId: string, empty: boolean) => {
     const card = getParent(cardId)
-    const slotIds = getTraits(card.id)
-      .filter(c => c.slot && !c.slotEmpty)
+    const ids = getTraits(card.id)
+      .filter(c => c.slot && c.slotEmpty === empty)
       .map(c => c.id)
-    if (!card.slotEmpty) {
-      slotIds.unshift(card.id)
+    if (card.slotEmpty === empty) {
+      ids.unshift(card.id)
     }
-    return slotIds
+    return ids
   }
 
-  const emptySlotIds = (cardId: string) => {
-    const card = getParent(cardId)
-    const slotIds = getTraits(card.id)
-      .filter(c => c.slot && c.slotEmpty)
-      .map(c => c.id)
-    if (card.slotEmpty) {
-      slotIds.unshift(card.id)
-    }
-    return slotIds
-  }
   //-------------------------------------------------------
 
   return {
-    checkedSlotIds,
-    emptySlotIds,
+    getSlotIds,
     findCard,
     getDropIds,
     getTraits,

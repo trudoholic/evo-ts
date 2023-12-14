@@ -26,8 +26,7 @@ const useFlow = () => {
   } = state as IState
 
   const {
-    checkedSlotIds,
-    emptySlotIds,
+    getSlotIds,
     findCard,
     getDropIds,
     getZone,
@@ -278,7 +277,7 @@ const useFlow = () => {
 
   const handleSpellCarnivore = (cardId: string, targetId: string) => {
     const curPlayerId = players.at(curTurn).id
-    const ids = emptySlotIds(cardId).slice(0, 2)
+    const ids = getSlotIds(cardId, true).slice(0, 2)
 
     const updCards = cards
       .map(c => c.idPlayer === curPlayerId && c.spellId === Spell.Carnivore? {...c,
@@ -302,8 +301,8 @@ const useFlow = () => {
   }
 
   const handleSpellPiracy = (cardId: string, targetId: string) => {
-    const emptyIds = emptySlotIds(cardId).slice(0, 1)
-    const checkedIds = checkedSlotIds(targetId).slice(0, 1)
+    const emptyIds = getSlotIds(cardId, true).slice(0, 1)
+    const checkedIds = getSlotIds(targetId, false).slice(0, 1)
 
     const updCards = cards
       .map(c => emptyIds.includes(c.id)? {...c,
