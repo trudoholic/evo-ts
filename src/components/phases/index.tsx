@@ -5,7 +5,7 @@ import Phase2 from "./Phase2"
 import Phase3 from "./Phase3"
 import TargetMode from "./TargetMode"
 import GameActions from "./GameActions"
-import {isEmpty} from "../../data/spells"
+import {isEmpty} from "../../data/abilities"
 
 const phases = ["Play", "Dice", "Feed", "Drop"]
 

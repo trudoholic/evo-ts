@@ -3,7 +3,7 @@ import {useAppContext} from "../context"
 import {IState} from "../context/state"
 import {ICard} from "../data/cards"
 import {commonId} from "../data/players"
-import {isEmpty, Spell} from "../data/spells"
+import {isEmpty, Ability} from "../data/abilities"
 import {Zone} from "../data/zones"
 
 const useCards = () => {
@@ -70,11 +70,11 @@ const useCards = () => {
     if (!isEmpty(curSpell)) {
 
       switch (curSpell) {
-        case Spell.Carnivore: {
+        case Ability.Carnivore: {
           return isKeeper(idZone, idCard) && !isActiveParent(id)
         }
 
-        case Spell.Piracy: {
+        case Ability.Piracy: {
           return isKeeper(idZone, idCard) && !isActiveParent(id)
             && getSlotIds(id, false).length > 0
             && getSlotIds(id, true).length > 0

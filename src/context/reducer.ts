@@ -1,7 +1,7 @@
 import {IState} from "./state"
 import {ICard} from "../data/cards"
 import {commonId, players} from "../data/players"
-import {TSpell} from "../data/spells"
+import {TAbility} from "../data/abilities"
 import {Zone} from "../data/zones"
 
 export enum Actions {
@@ -27,7 +27,7 @@ export enum Actions {
 
 export type TAction =
   | { type: Actions.BeginGame, payload: number }
-  | { type: Actions.CastSpell, payload: TSpell }
+  | { type: Actions.CastSpell, payload: TAbility }
   | { type: Actions.DrawRound, payload: { hand: number, nDraw: number } }
   | { type: Actions.DropCards, payload: string[] }
   | { type: Actions.EndGame }

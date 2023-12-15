@@ -1,5 +1,5 @@
 import {commonId} from "./players"
-import {getSpellId, TSpell} from "./spells"
+import {getSpellId, TAbility} from "./abilities"
 import {Zone} from "./zones"
 
 export interface ICard  {
@@ -10,7 +10,7 @@ export interface ICard  {
   idZone: string
   slot: boolean
   slotEmpty: boolean
-  spellId: TSpell
+  spellId: TAbility
   spellCooldown: number
   spellUsed: boolean
 }

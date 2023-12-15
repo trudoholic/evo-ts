@@ -2,7 +2,7 @@ import {useAppContext} from "../context"
 import {Actions} from "../context/reducer"
 import {IState} from "../context/state"
 import {ICard} from "../data/cards"
-import {isEmpty, Spell, TSpell} from "../data/spells"
+import {isEmpty, Ability, TAbility} from "../data/abilities"
 import {Zone} from "../data/zones"
 import useCards from "../hooks/useCards"
 
@@ -247,40 +247,40 @@ const useFlow = () => {
   }
 
   const handleUncastSpell = () => {
-    dispatch({type: Actions.CastSpell, payload: Spell.Empty})
+    dispatch({type: Actions.CastSpell, payload: Ability.Empty})
     dispatch({type: Actions.SetActive, payload: ""})
     dispatch({type: Actions.SetTarget, payload: ""})
   }
 
-  const handleCastSpell = (cardId: string, spellId: TSpell) => {
+  const handleCastSpell = (cardId: string, spellId: TAbility) => {
     switch (spellId) {
-      case Spell.Carnivore: {
-        dispatch({type: Actions.CastSpell, payload: Spell.Carnivore})
+      case Ability.Carnivore: {
+        dispatch({type: Actions.CastSpell, payload: Ability.Carnivore})
         dispatch({type: Actions.SetActive, payload: cardId})
         break
       }
-      case Spell.Grazing: {
+      case Ability.Grazing: {
         castSpellGrazing(cardId)
         break
       }
-      case Spell.Hibernation: {
+      case Ability.Hibernation: {
         castSpellHibernation(cardId)
         break
       }
-      case Spell.Piracy: {
-        dispatch({type: Actions.CastSpell, payload: Spell.Piracy})
+      case Ability.Piracy: {
+        dispatch({type: Actions.CastSpell, payload: Ability.Piracy})
         dispatch({type: Actions.SetActive, payload: cardId})
         break
       }
     }
   }
 
-  const handleSpellCarnivore = (cardId: string, targetId: string) => {
+  const castSpellCarnivore = (cardId: string, targetId: string) => {
     const curPlayerId = players.at(curTurn).id
     const ids = getSlotIds(cardId, true).slice(0, 2)
 
     const updCards = cards
-      .map(c => c.idPlayer === curPlayerId && c.spellId === Spell.Carnivore? {...c,
+      .map(c => c.idPlayer === curPlayerId && c.spellId === Ability.Carnivore? {...c,
         spellUsed: true
       }: c)
       .map(c => ids.includes(c.id)? {...c,
@@ -300,7 +300,7 @@ const useFlow = () => {
     handleNextTurn()
   }
 
-  const handleSpellPiracy = (cardId: string, targetId: string) => {
+  const castSpellPiracy = (cardId: string, targetId: string) => {
     const emptyIds = getSlotIds(cardId, true).slice(0, 1)
     const checkedIds = getSlotIds(targetId, false).slice(0, 1)
 
@@ -320,15 +320,15 @@ const useFlow = () => {
     handleNextTurn()
   }
 
-  const handlePutSpellOn = (cardId: string, targetId: string, spellId: TSpell) => {
+  const handlePutSpellOn = (cardId: string, targetId: string, spellId: TAbility) => {
     console.log("Target:", targetId)
     switch (spellId) {
-      case Spell.Carnivore: {
-        handleSpellCarnivore(cardId, targetId)
+      case Ability.Carnivore: {
+        castSpellCarnivore(cardId, targetId)
         break
       }
-      case Spell.Piracy: {
-        handleSpellPiracy(cardId, targetId)
+      case Ability.Piracy: {
+        castSpellPiracy(cardId, targetId)
         break
       }
     }
