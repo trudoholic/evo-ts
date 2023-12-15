@@ -25,6 +25,8 @@ const useFlow = () => {
     tokens,
   } = state as IState
 
+  const curPlayerId = players.at(curTurn)?.id ?? ""
+
   const {
     getSlotIds,
     findCard,
@@ -146,24 +148,12 @@ const useFlow = () => {
   }
   //-------------------------------------------------------
 
-  const handleEverySlotChecked = (cardList: ICard[], cardId: string) => {
-    const isEmpty = (card: ICard) => (card.idCard === "" || card.slot) && card.slotEmpty
-    const slots = cardList
-      .filter(c => c.idPlayer === players.at(curTurn).id && c.idZone === Zone.Keep)
-      .map(c => c.id === cardId ? false : isEmpty(c))
-    // console.log(`---> ${slots}`)
-    if (slots.every(s => !s)) {
-      dispatch({type: Actions.Pass, payload: curTurn})
-    }
-  }
-
   const handlePlaySlot = (cardId: string) => {
     // console.log(`- Play Slot: ${cardId}`)
     const updCards = cards
       .map(c => c.id === cardId ? {...c, slotEmpty: false}: c)
     dispatch({type: Actions.UpdateCards, payload: updCards})
 
-    handleEverySlotChecked(updCards, cardId)
     handleNextTurn()
   }
 
@@ -241,7 +231,6 @@ const useFlow = () => {
         .map(c => isInPack(card.idCard, c)? {...c, slotEmpty: false}: c)
         .map(c => c.id === cardId? {...c, spellCooldown: 2}: c)
       dispatch({type: Actions.UpdateCards, payload: updCards})
-      handleEverySlotChecked(updCards, card.idCard)
     }
     handleNextTurn()
   }
@@ -276,7 +265,6 @@ const useFlow = () => {
   }
 
   const castSpellCarnivore = (cardId: string, targetId: string) => {
-    const curPlayerId = players.at(curTurn).id
     const ids = getSlotIds(cardId, true).slice(0, 2)
 
     const updCards = cards
@@ -296,7 +284,6 @@ const useFlow = () => {
       }: c)
 
     dispatch({type: Actions.UpdateCards, payload: updCards})
-    handleEverySlotChecked(updCards, cardId)
     handleNextTurn()
   }
 
@@ -316,12 +303,11 @@ const useFlow = () => {
       }: c)
 
     dispatch({type: Actions.UpdateCards, payload: updCards})
-    handleEverySlotChecked(updCards, cardId)
     handleNextTurn()
   }
 
   const handlePutSpellOn = (cardId: string, targetId: string, spellId: TAbility) => {
-    console.log("Target:", targetId)
+    // console.log("Target:", targetId)
     switch (spellId) {
       case Ability.Carnivore: {
         castSpellCarnivore(cardId, targetId)

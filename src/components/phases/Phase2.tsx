@@ -21,6 +21,7 @@ const Phase2 = () => {
 
   const {
     getZone,
+    isEverySlotChecked,
   } = useCards()
 
   const noKeep = getZone(Zone.Keep, players.at(curTurn).id).length === 0
@@ -33,7 +34,7 @@ const Phase2 = () => {
             <h2>{`Turn: ${players.at(curTurn).name} (${curTurn})`}</h2>
             <h2>{`Token Pool: [ ${tokens} ]`}</h2>
             {
-              noKeep ?
+              noKeep || isEverySlotChecked() ?
                 <button onClick={handlePass}>
                   Pass
                 </button>

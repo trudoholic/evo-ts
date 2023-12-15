@@ -26,12 +26,11 @@ const abilityMap = new Map<TAbility, IAbility>([
 
 export const isActive = (id: TAbility) => !!abilityMap.get(id)?.active
 
-
 export const getSpellId =
   (idx: number): TAbility => (idx % 2) ?
     Ability.Piracy
     : Ability.Hibernation
-    // [Spell.Carnivore, Spell.Grazing, Spell.Hibernation][idx % 3]
-    // : Spell.Empty
+    // [Ability.Carnivore, Ability.Grazing, Ability.Hibernation, Ability.Piracy][idx % 4]
+    // : Ability.Empty
 
 export const isEmpty = (spellId: TAbility) => Ability.Empty === spellId

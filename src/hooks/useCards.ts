@@ -21,6 +21,8 @@ const useCards = () => {
     // nPlayers,
     players,
   } = state as IState
+
+  const curPlayerId = players.at(curTurn)?.id ?? ""
   //-------------------------------------------------------
 
   const findCard = (cardId: string) => {
@@ -31,7 +33,7 @@ const useCards = () => {
   //-------------------------------------------------------
 
   const getDropIds = () => {
-    return  cards
+    return cards
       .filter(c => isKeeper(c.idZone, c.idCard))
       .filter(c => getSlotIds(c.id, true) > 0)
       .map(c => c.id)
@@ -39,7 +41,7 @@ const useCards = () => {
   //-------------------------------------------------------
 
   const getTraits = (cardId: string) => {
-    return  cards.filter(c => c.idCard === cardId)
+    return cards.filter(c => c.idCard === cardId)
   }
   //-------------------------------------------------------
 
@@ -154,12 +156,21 @@ const useCards = () => {
 
   //-------------------------------------------------------
 
+  const isEverySlotChecked = () => {
+    const keepers = cards
+      .filter(c => c.idPlayer === curPlayerId && isKeeper(c.idZone, c.idCard))
+    // console.log(`---> ${slots}`)
+    return (keepers.every(c => !getSlotIds(c.id, true).length))
+  }
+  //-------------------------------------------------------
+
   return {
     getSlotIds,
     findCard,
     getDropIds,
     getTraits,
     getZone,
+    isEverySlotChecked,
     isInPack,
     isKeeper,
     isValidCard,
