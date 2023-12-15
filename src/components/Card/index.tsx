@@ -1,7 +1,7 @@
 import {useAppContext} from "../../context"
 import {IState} from "../../context/state"
 import {ICard} from "../../data/cards"
-import {isEmpty} from "../../data/abilities"
+import {isActive} from "../../data/abilities"
 import useCards from "../../hooks/useCards"
 import useFlow from "../../hooks/useFlow"
 import {FlexRow} from "./FlexRow"
@@ -43,7 +43,7 @@ const Card = (card: ICard) => {
 
   const traits = getTraits(id)
   const cardSlot = !!(slot && idCard) || isKeeper(idZone, idCard)
-  const cardSpell = !isEmpty(spellId) && !!idCard
+  const cardSpell = isActive(spellId) && !!idCard
   const cardDisabled = disabled || !isValidCard(idPlayer, idZone, idCard, id)
   const slotDisabled = !tokens || !slotEmpty || !isValidSlot(idPlayer, idZone)
   const spellEnabled = !cardDisabled && cardSpell && !spellCooldown && !spellUsed
@@ -90,7 +90,7 @@ const Card = (card: ICard) => {
 
         <span>{`${spellCooldown || ""}`}</span>
         {traits.length ? <span>{`Pack [${traits.length}] `}</span> : null}
-        <span>{`${isEmpty(spellId)? "": `${spellId}: `}${id}`}</span>
+        <span>{`${spellId}: ${id}`}</span>
 
         {cardSlot ? (
           <StyledBox
