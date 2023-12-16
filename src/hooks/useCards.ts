@@ -75,6 +75,30 @@ const useCards = () => {
   }
   //-------------------------------------------------------
 
+  const isValidAbility = (card: ICard): boolean => {
+    if (!activeCard) return false
+    const activeParent = ("" === activeCard.idCard) ? activeCard : findCard(activeCard.idCard)
+    const {id} = card
+
+    if (hasTrait(id, Ability.Burrowing) && !getSlotIds(id, true).length) {
+      return false
+    }
+    else if (hasTrait(id, Ability.Camouflage) && !hasTrait(activeParent.id, Ability.SharpVision)) {
+      return false
+    }
+    else if (hasTrait(id, Ability.HighBodyWeight) && !hasTrait(activeParent.id, Ability.HighBodyWeight)) {
+      return false
+    }
+    else if (hasTrait(id, Ability.Swimming) && !hasTrait(activeParent.id, Ability.Swimming)) {
+      return false
+    }
+    else if (!hasTrait(id, Ability.Swimming) && hasTrait(activeParent.id, Ability.Swimming)
+    ) {
+      return false
+    }
+    return true
+  }
+
   const isValidCard = (card: ICard): boolean => {
     const {id, idPlayer, idZone, idCard} = card
 
@@ -82,7 +106,7 @@ const useCards = () => {
 
       switch (curSpell) {
         case Ability.Carnivore: {
-          return isKeeper(idZone, idCard) && !isActiveParent(id)
+          return isKeeper(idZone, idCard) && !isActiveParent(id) && isValidAbility(card)
         }
 
         case Ability.Piracy: {
@@ -174,7 +198,6 @@ const useCards = () => {
     getDropIds,
     getTraits,
     getZone,
-    // hasTrait,
     isEverySlotChecked,
     isInPack,
     isKeeper,

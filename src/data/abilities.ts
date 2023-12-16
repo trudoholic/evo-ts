@@ -48,7 +48,7 @@ export const getSpellId =
   (idx: number): TAbility => (idx % 2) ?
     Ability.Carnivore
     // : Ability.Camouflage
-    : [Ability.Burrowing, Ability.Camouflage, Ability.SharpVision][idx % 3]
+    : [Ability.Burrowing, Ability.HighBodyWeight, Ability.Swimming][idx % 3]
     // : Ability.Empty
 
 export const isEmpty = (spellId: TAbility) => Ability.Empty === spellId
