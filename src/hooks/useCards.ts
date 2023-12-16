@@ -3,7 +3,7 @@ import {useAppContext} from "../context"
 import {IState} from "../context/state"
 import {ICard} from "../data/cards"
 import {commonId} from "../data/players"
-import {isEmpty, Ability} from "../data/abilities"
+import {isEmpty, Ability, TAbility} from "../data/abilities"
 import {Zone} from "../data/zones"
 
 const useCards = () => {
@@ -50,6 +50,13 @@ const useCards = () => {
   )
   //-------------------------------------------------------
 
+  const hasTrait = (cardId: string, spellId: TAbility) => {
+    return cards
+      .filter(c => c.idCard === cardId)
+      .some(c => c.spellId === spellId)
+  }
+  //-------------------------------------------------------
+
   const isInPack = (cardId: string, card: ICard): boolean => {
     if (!cardId) return false
     return card.id === cardId || card.idCard === cardId
@@ -68,7 +75,9 @@ const useCards = () => {
   }
   //-------------------------------------------------------
 
-  const isValidCard = (idPlayer: string, idZone: string, idCard: string, id: string): boolean => {
+  const isValidCard = (card: ICard): boolean => {
+    const {id, idPlayer, idZone, idCard} = card
+
     if (!isEmpty(curSpell)) {
 
       switch (curSpell) {
@@ -97,7 +106,7 @@ const useCards = () => {
       case 0: {
         return (
           cardActiveId ? (
-            !cardTargetId && isKeeper(idZone, idCard)
+            !cardTargetId && isKeeper(idZone, idCard) && !hasTrait(id, activeCard.spellId)
           ) : (
             Zone.Hand === idZone
           )
@@ -109,13 +118,7 @@ const useCards = () => {
       }
 
       case 2: {
-        // const ids = cards
-        //   .filter(c => c.idPlayer === idPlayer && c.idZone === Zone.Keep && c.idCard === "")
-        //   .map(c => c.id)
-        return (
-          Zone.Keep === idZone
-          // || ids.includes(idZone)
-        )
+        return Zone.Keep === idZone
       }
 
       case 3: {
@@ -129,7 +132,8 @@ const useCards = () => {
   }
   //-------------------------------------------------------
 
-  const isValidSlot = (idPlayer: string, idZone: string): boolean => {
+  const isValidSlot = (card: ICard): boolean => {
+    const {idPlayer, idZone} = card
     return (
       curHandPhase === 2
       && players.at(curTurn)?.id === idPlayer
@@ -170,6 +174,7 @@ const useCards = () => {
     getDropIds,
     getTraits,
     getZone,
+    // hasTrait,
     isEverySlotChecked,
     isInPack,
     isKeeper,

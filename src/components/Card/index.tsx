@@ -44,8 +44,8 @@ const Card = (card: ICard) => {
   const traits = getTraits(id)
   const cardSlot = !!(slot && idCard) || isKeeper(idZone, idCard)
   const cardSpell = isActive(spellId) && !!idCard
-  const cardDisabled = disabled || !isValidCard(idPlayer, idZone, idCard, id)
-  const slotDisabled = !tokens || !slotEmpty || !isValidSlot(idPlayer, idZone)
+  const cardDisabled = disabled || !isValidCard(card)
+  const slotDisabled = !tokens || !slotEmpty || !isValidSlot(card)
   const spellEnabled = !cardDisabled && cardSpell && !spellCooldown && !spellUsed
     && getSlotIds(id, true).length > 0
 
