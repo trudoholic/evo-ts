@@ -160,8 +160,10 @@ const useCards = () => {
     const {idPlayer, idZone} = card
     return (
       curHandPhase === 2
-      && players.at(curTurn)?.id === idPlayer
+      && curPlayerId === idPlayer
+      // && players.at(curTurn)?.id === idPlayer
       && idZone === Zone.Keep
+      && !cardActiveId
     )
   }
   //-------------------------------------------------------

@@ -13,7 +13,6 @@ const Card = (card: ICard) => {
   const {
     disabled,
     id,
-    idPlayer,
     idZone,
     idCard,
     slot,
