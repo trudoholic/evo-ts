@@ -6,7 +6,7 @@ import {isEmpty, Ability, TAbility} from "../data/abilities"
 import {Zone} from "../data/zones"
 import useCards from "../hooks/useCards"
 
-const nDraw = 10
+const nDraw = 3
 
 const useFlow = () => {
   const { state, dispatch } = useAppContext()
@@ -267,15 +267,20 @@ const useFlow = () => {
   }
 
   const castSpellCarnivore = (cardId: string, targetId: string) => {
-    const ids = getSlotIds(cardId, true).slice(0, 2)
     const parent = getParent(cardId)
+    const rnd = Math.floor(Math.random() * 6 + 1)
+    const runAway: boolean = hasTrait(targetId, Ability.Running)? (rnd > 3): false
+    console.log("Runaway:", runAway, '(', rnd, ')')
+
+    const dropId = runAway? "": targetId
+    const ids = runAway? []: getSlotIds(cardId, true).slice(0, 2)
 
     const updCards = cards
       .map(c => c.id === cardId? {...c,
         spellCooldown: 1,
       }: c)
       .map(c => c.id === parent.id? {...c,
-        poisoned: hasTrait(targetId, Ability.Poisonous),
+        poisoned: !runAway && hasTrait(targetId, Ability.Poisonous),
       }: c)
       .map(c => c.idPlayer === curPlayerId && c.spellId === Ability.Carnivore? {...c,
         spellUsed: true
@@ -283,7 +288,7 @@ const useFlow = () => {
       .map(c => ids.includes(c.id)? {...c,
         slotEmpty: false,
       }: c)
-      .map(c => isInPack(targetId, c) ? { ...c,
+      .map(c => isInPack(dropId, c) ? { ...c,
         idZone: Zone.DiscardPile,
         idCard: "",
         slotEmpty: true,
