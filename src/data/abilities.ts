@@ -10,15 +10,14 @@ export enum Ability {
   Parasite = "parasite",
   Piracy = "PIR",
   Poisonous = "PSN",
-  Running = "Running",
+  Running = "RUN",
   SharpVision = "SHV",
   Swimming = "SWI",
+  TailLoss = "TLS",
 }
 
 /*
-Running
 Scavenger
-TailLoss
 */
 
 export type TAbility =
@@ -36,6 +35,7 @@ export type TAbility =
   | Ability.Running
   | Ability.SharpVision
   | Ability.Swimming
+  | Ability.TailLoss
 
 interface IAbility{
   active?: boolean
@@ -55,15 +55,12 @@ const abilityMap = new Map<TAbility, IAbility>([
   [Ability.Running, {}],
   [Ability.SharpVision, {}],
   [Ability.Swimming, {}],
+  [Ability.TailLoss, {}],
 ])
 
 export const isActive = (id: TAbility) => !!abilityMap.get(id)?.active
 
-export const getSpellId =
-  (idx: number): TAbility => (idx % 2) ?
-    Ability.Carnivore
-    // : Ability.Camouflage
-    : [Ability.Running, Ability.Running, Ability.Running][idx % 3]
-    // : Ability.Empty
+export const getSpellId = (idx: number): TAbility =>
+  [Ability.Carnivore, Ability.Poisonous, Ability.Running, Ability.TailLoss][idx % 4]
 
 export const isEmpty = (spellId: TAbility) => Ability.Empty === spellId
