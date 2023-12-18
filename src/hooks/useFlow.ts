@@ -28,7 +28,9 @@ const useFlow = () => {
   const curPlayerId = players.at(curTurn)?.id ?? ""
 
   const {
+    dice,
     findCard,
+    getAbility,
     getParent,
     getSlotIds,
     getDropIds,
@@ -268,13 +270,17 @@ const useFlow = () => {
 
   const castSpellCarnivore = (cardId: string, targetId: string) => {
     const parent = getParent(cardId)
-    const rnd = Math.floor(Math.random() * 6 + 1)
-    const runAway: boolean = hasTrait(targetId, Ability.Running)? (rnd > 3): false
-    console.log("Runaway:", runAway, '(', rnd, ')')
+    const d = dice(6)
+    const runAway: boolean = hasTrait(targetId, Ability.Running)? (d > 3): false
+    console.log("Runaway:", runAway, '(', d, ')')
 
     const dropId = runAway? "": targetId
     const nSlots = hasTrait(targetId, Ability.TailLoss)? 1: 2
     const ids = runAway? []: getSlotIds(cardId, true).slice(0, nSlots)
+
+    const scavengers = getAbility(Ability.Scavenger, curPlayerId)
+    const scvId: string = scavengers[0] || ""
+    if (scvId) ids.push(scvId)
 
     const dropped = (c: ICard) => isInPack(dropId, c)
       && (!hasTrait(targetId, Ability.TailLoss) || Ability.TailLoss === c.spellId)

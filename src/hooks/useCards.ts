@@ -32,6 +32,17 @@ const useCards = () => {
   const activeCard = findCard(cardActiveId)
   //-------------------------------------------------------
 
+  const dice = (n: number) => Math.floor(Math.random() * n + 1)
+  //-------------------------------------------------------
+
+  const getAbility = (ability: TAbility, playerId: string = commonId) => (
+    getZone(Zone.Keep, playerId)
+      .filter(c => hasTrait(c.id, ability))
+      .filter(c => getSlotIds(c.id, true).length > 0)
+      .map(c => c.id)
+  )
+  //-------------------------------------------------------
+
   const getDropIds = () => {
     return cards
       .filter(c => isKeeper(c.idZone, c.idCard))
@@ -200,7 +211,9 @@ const useCards = () => {
   //-------------------------------------------------------
 
   return {
+    dice,
     findCard,
+    getAbility,
     getParent,
     getSlotIds,
     getDropIds,

@@ -11,6 +11,7 @@ export enum Ability {
   Piracy = "PIR",
   Poisonous = "PSN",
   Running = "RUN",
+  Scavenger = "SCV",
   SharpVision = "SHV",
   Swimming = "SWI",
   TailLoss = "TLS",
@@ -33,6 +34,7 @@ export type TAbility =
   | Ability.Piracy
   | Ability.Poisonous
   | Ability.Running
+  | Ability.Scavenger
   | Ability.SharpVision
   | Ability.Swimming
   | Ability.TailLoss
@@ -53,6 +55,7 @@ const abilityMap = new Map<TAbility, IAbility>([
   [Ability.Piracy, {active: true}],
   [Ability.Poisonous, {}],
   [Ability.Running, {}],
+  [Ability.Scavenger, {}],
   [Ability.SharpVision, {}],
   [Ability.Swimming, {}],
   [Ability.TailLoss, {}],
@@ -61,6 +64,6 @@ const abilityMap = new Map<TAbility, IAbility>([
 export const isActive = (id: TAbility) => !!abilityMap.get(id)?.active
 
 export const getSpellId = (idx: number): TAbility =>
-  [Ability.Carnivore, Ability.Poisonous, Ability.Running, Ability.TailLoss][idx % 4]
+  [Ability.Carnivore, Ability.Running, Ability.Scavenger, Ability.TailLoss][idx % 4]
 
 export const isEmpty = (spellId: TAbility) => Ability.Empty === spellId
