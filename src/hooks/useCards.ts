@@ -89,6 +89,11 @@ const useCards = () => {
     else if (hasTrait(id, Ability.HighBodyWeight) && !hasTrait(activeParent.id, Ability.HighBodyWeight)) {
       return false
     }
+    else if (hasTrait(id, Ability.Mimicry)) {
+      const t = getZone(Zone.Keep, card.idPlayer)
+        .filter(c => !hasTrait(c.id, Ability.Mimicry))
+      if (t.length) return false
+    }
     else if (hasTrait(id, Ability.Swimming) && !hasTrait(activeParent.id, Ability.Swimming)) {
       return false
     }

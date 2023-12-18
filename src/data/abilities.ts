@@ -6,11 +6,19 @@ export enum Ability {
   Grazing = "GRZ",
   Hibernation = "HIB",
   HighBodyWeight = "HBW",
+  Mimicry = "MIM",
   Parasite = "parasite",
   Piracy = "PIR",
   SharpVision = "SHV",
   Swimming = "SWI",
 }
+
+/*
+Poisonous
+Running
+Scavenger
+TailLoss
+*/
 
 export type TAbility =
   | Ability.Empty
@@ -20,6 +28,7 @@ export type TAbility =
   | Ability.Grazing
   | Ability.Hibernation
   | Ability.HighBodyWeight
+  | Ability.Mimicry
   | Ability.Parasite
   | Ability.Piracy
   | Ability.SharpVision
@@ -36,6 +45,7 @@ const abilityMap = new Map<TAbility, IAbility>([
   [Ability.Grazing, {active: true}],
   [Ability.Hibernation, {active: true}],
   [Ability.HighBodyWeight, {}],
+  [Ability.Mimicry, {}],
   [Ability.Parasite, {}],
   [Ability.Piracy, {active: true}],
   [Ability.SharpVision, {}],
@@ -48,7 +58,7 @@ export const getSpellId =
   (idx: number): TAbility => (idx % 2) ?
     Ability.Carnivore
     // : Ability.Camouflage
-    : [Ability.Burrowing, Ability.HighBodyWeight, Ability.Swimming][idx % 3]
+    : [Ability.Mimicry, Ability.HighBodyWeight, Ability.Swimming][idx % 3]
     // : Ability.Empty
 
 export const isEmpty = (spellId: TAbility) => Ability.Empty === spellId
