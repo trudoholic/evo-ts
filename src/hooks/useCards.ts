@@ -35,7 +35,7 @@ const useCards = () => {
   const getDropIds = () => {
     return cards
       .filter(c => isKeeper(c.idZone, c.idCard))
-      .filter(c => getSlotIds(c.id, true) > 0)
+      .filter(c => getSlotIds(c.id, true) > 0 || c.poisoned)
       .map(c => c.id)
   }
   //-------------------------------------------------------
@@ -200,11 +200,13 @@ const useCards = () => {
   //-------------------------------------------------------
 
   return {
-    getSlotIds,
     findCard,
+    getParent,
+    getSlotIds,
     getDropIds,
     getTraits,
     getZone,
+    hasTrait,
     isEverySlotChecked,
     isInPack,
     isKeeper,

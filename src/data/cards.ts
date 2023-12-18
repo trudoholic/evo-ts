@@ -6,8 +6,10 @@ export interface ICard  {
   disabled: boolean
   id: string
   idCard: string
+  idCard2: string
   idPlayer: string
   idZone: string
+  poisoned: boolean
   slot: boolean
   slotEmpty: boolean
   spellId: TAbility
@@ -20,8 +22,10 @@ export const cards: ICard[] = [...Array(50)]
     disabled: false,
     id: `${('0' + (i + 1)).slice(-2)}`,
     idCard: "",
+    idCard2: "",
     idPlayer: commonId,
     idZone: Zone.DrawPile,
+    poisoned: false,
     slot: !!(i % 2),
     slotEmpty: true,
     spellId: getSpellId(i),

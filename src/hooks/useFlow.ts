@@ -28,10 +28,12 @@ const useFlow = () => {
   const curPlayerId = players.at(curTurn)?.id ?? ""
 
   const {
-    getSlotIds,
     findCard,
+    getParent,
+    getSlotIds,
     getDropIds,
     getZone,
+    hasTrait,
     isInPack,
   } = useCards()
 
@@ -266,16 +268,20 @@ const useFlow = () => {
 
   const castSpellCarnivore = (cardId: string, targetId: string) => {
     const ids = getSlotIds(cardId, true).slice(0, 2)
+    const parent = getParent(cardId)
 
     const updCards = cards
+      .map(c => c.id === cardId? {...c,
+        spellCooldown: 1,
+      }: c)
+      .map(c => c.id === parent.id? {...c,
+        poisoned: hasTrait(targetId, Ability.Poisonous),
+      }: c)
       .map(c => c.idPlayer === curPlayerId && c.spellId === Ability.Carnivore? {...c,
         spellUsed: true
       }: c)
       .map(c => ids.includes(c.id)? {...c,
         slotEmpty: false,
-      }: c)
-      .map(c => c.id === cardId? {...c,
-        spellCooldown: 1
       }: c)
       .map(c => isInPack(targetId, c) ? { ...c,
         idZone: Zone.DiscardPile,

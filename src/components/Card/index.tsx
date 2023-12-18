@@ -15,6 +15,7 @@ const Card = (card: ICard) => {
     id,
     idZone,
     idCard,
+    poisoned,
     slot,
     slotEmpty,
     spellId,
@@ -89,7 +90,7 @@ const Card = (card: ICard) => {
 
         <span>{`${spellCooldown || ""}`}</span>
         {traits.length ? <span>{`Pack [${traits.length}] `}</span> : null}
-        <span>{`${spellId}: ${id}`}</span>
+        <span>{`${spellId}: ${id}${poisoned? " *": ""}`}</span>
 
         {cardSlot ? (
           <StyledBox

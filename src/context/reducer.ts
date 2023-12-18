@@ -92,6 +92,8 @@ export const reducer = (state: IState, action: TAction): IState => {
           c => dropped(c) ? { ...c,
             idZone: Zone.DiscardPile,
             idCard: "",
+            idCard2: "",
+            poisoned: false,
             slotEmpty: true,
           }: {...c, slotEmpty: !state.isLastHand}
         )
