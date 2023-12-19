@@ -1,7 +1,7 @@
 import {useAppContext} from "../../context"
 import {IState} from "../../context/state"
 import {ICard} from "../../data/cards"
-import {hasSlots, isActive} from "../../data/abilities"
+import {isActive} from "../../data/abilities"
 import useCards from "../../hooks/useCards"
 import useFlow from "../../hooks/useFlow"
 import {FlexRow} from "./FlexRow"
@@ -13,10 +13,9 @@ const Card = (card: ICard) => {
   const {
     disabled,
     id,
-    idZone,
     idCard,
+    emptySlots,
     poisoned,
-    slotEmpty,
     spellId,
     spellCooldown,
     spellUsed,
@@ -35,16 +34,15 @@ const Card = (card: ICard) => {
   const {
     getSlotIds,
     getTraits,
-    isKeeper,
+    hasSlots,
     isValidCard,
     isValidSlot,
   } = useCards()
 
   const traits = getTraits(id)
-  const cardSlot = hasSlots(spellId) && !!idCard || isKeeper(idZone, idCard)
   const cardSpell = isActive(spellId) && !!idCard
   const cardDisabled = disabled || !isValidCard(card)
-  const slotDisabled = !tokens || !slotEmpty || !isValidSlot(card)
+  const slotDisabled = !tokens || !emptySlots || !isValidSlot(card)
   const spellEnabled = !cardDisabled && cardSpell && !spellCooldown && !spellUsed
     && getSlotIds(id, true).length > 0
 
@@ -91,10 +89,10 @@ const Card = (card: ICard) => {
         {traits.length ? <span>{`Pack [${traits.length}] `}</span> : null}
         <span>{`${spellId}: ${id}${poisoned? " *": ""}`}</span>
 
-        {cardSlot ? (
+        {hasSlots(card) ? (
           <StyledBox
             $disabled={slotDisabled}
-            $empty={slotEmpty}
+            $empty={!!emptySlots}
             {...(!slotDisabled && { "onClick": () => handleSlotClick(id) })}
           />
         ) : null}

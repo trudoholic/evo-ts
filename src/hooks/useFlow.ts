@@ -1,7 +1,7 @@
 import {useAppContext} from "../context"
 import {Actions} from "../context/reducer"
 import {IState} from "../context/state"
-import {isEmpty, Ability, TAbility} from "../data/abilities"
+import {isEmpty, nSlots, Ability, TAbility} from "../data/abilities"
 import {ICard} from "../data/cards"
 import {Zone} from "../data/zones"
 import useCards from "../hooks/useCards"
@@ -129,6 +129,7 @@ const useFlow = () => {
     if (card) {
       dispatch({type: Actions.UpdateCard, payload: {
         ...card,
+          emptySlots: 1,
           // idPlayer: players.at(curTurn).id,
           idZone: Zone.Keep,
           idCard: "",
@@ -143,6 +144,7 @@ const useFlow = () => {
       if (targetCard) {
         dispatch({type: Actions.UpdateCard, payload: {
           ...card,
+            emptySlots: nSlots(card.spellId),
             idPlayer: targetCard.idPlayer,
             idZone: targetCard.idZone,
             idCard: targetCard.id,
@@ -155,7 +157,7 @@ const useFlow = () => {
   const handlePlaySlot = (cardId: string) => {
     // console.log(`- Play Slot: ${cardId}`)
     const updCards = cards
-      .map(c => c.id === cardId ? {...c, slotEmpty: false}: c)
+      .map(c => c.id === cardId ? {...c, emptySlots: c.emptySlots - 1}: c)
     dispatch({type: Actions.UpdateCards, payload: updCards})
 
     handleNextTurn()
@@ -232,7 +234,7 @@ const useFlow = () => {
     const card = findCard(cardId)
     if (card) {
       const updCards = cards
-        .map(c => isInPack(card.idCard, c)? {...c, slotEmpty: false}: c)
+        .map(c => isInPack(card.idCard, c)? {...c, emptySlots: 0}: c)
         .map(c => c.id === cardId? {...c, spellCooldown: 2}: c)
       dispatch({type: Actions.UpdateCards, payload: updCards})
     }
@@ -265,6 +267,9 @@ const useFlow = () => {
         dispatch({type: Actions.SetActive, payload: cardId})
         break
       }
+      default: {
+        console.log("Cast Spell:", cardId, spellId)
+      }
     }
   }
 
@@ -275,8 +280,8 @@ const useFlow = () => {
     console.log("Runaway:", runAway, '(', d, ')')
 
     const dropId = runAway? "": targetId
-    const nSlots = hasTrait(targetId, Ability.TailLoss)? 1: 2
-    const ids = runAway? []: getSlotIds(cardId, true).slice(0, nSlots)
+    const fedSlots = hasTrait(targetId, Ability.TailLoss)? 1: 2
+    const ids = runAway? []: getSlotIds(cardId, true).slice(0, fedSlots)
 
     const scavengers = getAbility(Ability.Scavenger, curPlayerId)
     const scvId: string = scavengers[0] || ""
@@ -296,13 +301,12 @@ const useFlow = () => {
         spellUsed: true
       }: c)
       .map(c => ids.includes(c.id)? {...c,
-        slotEmpty: false,
+        emptySlots: c.emptySlots - 1,
       }: c)
       .map(c => dropped(c) ? { ...c,
-      // .map(c => isInPack(dropId, c) ? { ...c,
         idZone: Zone.DiscardPile,
         idCard: "",
-        slotEmpty: true,
+        emptySlots: nSlots(c.spellId),
       }: c)
 
     dispatch({type: Actions.UpdateCards, payload: updCards})
@@ -315,10 +319,10 @@ const useFlow = () => {
 
     const updCards = cards
       .map(c => emptyIds.includes(c.id)? {...c,
-        slotEmpty: false,
+        emptySlots: c.emptySlots - 1,
       }: c)
       .map(c => checkedIds.includes(c.id)? {...c,
-        slotEmpty: true,
+        emptySlots: c.emptySlots + 1,
       }: c)
       .map(c => c.id === cardId? {...c,
         spellCooldown: 1

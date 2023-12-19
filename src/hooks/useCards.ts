@@ -3,7 +3,7 @@ import {useAppContext} from "../context"
 import {IState} from "../context/state"
 import {ICard} from "../data/cards"
 import {commonId} from "../data/players"
-import {hasSlots, isEmpty, Ability, TAbility} from "../data/abilities"
+import {nSlots, isEmpty, Ability, TAbility} from "../data/abilities"
 import {Zone} from "../data/zones"
 
 const useCards = () => {
@@ -189,12 +189,14 @@ const useCards = () => {
     return ("" === card.idCard) ? card : findCard(card.idCard)
   }
 
+  const hasSlots = (c: ICard) => Zone.Keep === c.idZone && (!c.idCard || nSlots(c.spellId) > 0)
+
   const getSlotIds = (cardId: string, empty: boolean) => {
     const card = getParent(cardId)
     const ids = getTraits(card.id)
-      .filter(c => hasSlots(c.spellId) && c.slotEmpty === empty)
+      .filter(c => hasSlots(c) > 0 && (c.emptySlots > 0) === empty)
       .map(c => c.id)
-    if (card.slotEmpty === empty) {
+    if ((card.emptySlots > 0) === empty) {
       ids.unshift(card.id)
     }
     return ids
@@ -220,6 +222,7 @@ const useCards = () => {
     getTraits,
     getZone,
     hasTrait,
+    hasSlots,
     isEverySlotChecked,
     isInPack,
     isKeeper,

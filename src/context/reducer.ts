@@ -1,7 +1,7 @@
 import {IState} from "./state"
 import {ICard} from "../data/cards"
 import {commonId, players} from "../data/players"
-import {TAbility} from "../data/abilities"
+import {nSlots, TAbility} from "../data/abilities"
 import {Zone} from "../data/zones"
 
 export enum Actions {
@@ -76,7 +76,7 @@ export const reducer = (state: IState, action: TAction): IState => {
             idPlayer: state.players.at(getIdx(i)).id,
             idZone: Zone.Hand,
             idCard: "",
-            slotEmpty: true,
+            emptySlots: nSlots(card.spellId),
           }
           : card
       )
@@ -87,6 +87,8 @@ export const reducer = (state: IState, action: TAction): IState => {
     case Actions.DropCards: {
       const dropIds = action.payload
       const dropped = (c: ICard) => dropIds.includes(c.id) || dropIds.includes(c.idCard)
+      const nEmptySlots = (c: ICard) => Zone.Keep !== c.idZone? 0: "" === c.idCard? 1: nSlots(c.spellId)
+
       return { ...state,
         cards: state.cards.map(
           c => dropped(c) ? { ...c,
@@ -94,8 +96,10 @@ export const reducer = (state: IState, action: TAction): IState => {
             idCard: "",
             idCard2: "",
             poisoned: false,
-            slotEmpty: true,
-          }: {...c, slotEmpty: !state.isLastHand}
+            emptySlots: 0,
+          }: {...c,
+            emptySlots: state.isLastHand? 0: nEmptySlots(c),
+          }
         )
       }
     }

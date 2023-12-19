@@ -9,8 +9,8 @@ export interface ICard  {
   idCard2: string
   idPlayer: string
   idZone: string
+  emptySlots: number
   poisoned: boolean
-  slotEmpty: boolean
   spellId: TAbility
   spellCooldown: number
   spellUsed: boolean
@@ -24,12 +24,11 @@ export const cards: ICard[] = [...Array(50)]
     idCard2: "",
     idPlayer: commonId,
     idZone: Zone.DrawPile,
+    emptySlots: 0,
     poisoned: false,
-    slotEmpty: true,
     spellId: getSpellId(i),
     spellCooldown: 0,
     spellUsed: false,
   }))
 
 // console.log(cards)
-// console.log(cards.map(c => c.id + ':' + c.spellId))
