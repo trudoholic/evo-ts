@@ -3,7 +3,7 @@ import {useAppContext} from "../context"
 import {IState} from "../context/state"
 import {ICard} from "../data/cards"
 import {commonId} from "../data/players"
-import {isEmpty, Ability, TAbility} from "../data/abilities"
+import {hasSlots, isEmpty, Ability, TAbility} from "../data/abilities"
 import {Zone} from "../data/zones"
 
 const useCards = () => {
@@ -192,7 +192,7 @@ const useCards = () => {
   const getSlotIds = (cardId: string, empty: boolean) => {
     const card = getParent(cardId)
     const ids = getTraits(card.id)
-      .filter(c => c.slot && c.slotEmpty === empty)
+      .filter(c => hasSlots(c.spellId) && c.slotEmpty === empty)
       .map(c => c.id)
     if (card.slotEmpty === empty) {
       ids.unshift(card.id)

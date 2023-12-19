@@ -1,7 +1,7 @@
 import {useAppContext} from "../../context"
 import {IState} from "../../context/state"
 import {ICard} from "../../data/cards"
-import {isActive} from "../../data/abilities"
+import {hasSlots, isActive} from "../../data/abilities"
 import useCards from "../../hooks/useCards"
 import useFlow from "../../hooks/useFlow"
 import {FlexRow} from "./FlexRow"
@@ -16,7 +16,6 @@ const Card = (card: ICard) => {
     idZone,
     idCard,
     poisoned,
-    slot,
     slotEmpty,
     spellId,
     spellCooldown,
@@ -42,7 +41,7 @@ const Card = (card: ICard) => {
   } = useCards()
 
   const traits = getTraits(id)
-  const cardSlot = !!(slot && idCard) || isKeeper(idZone, idCard)
+  const cardSlot = hasSlots(spellId) && !!idCard || isKeeper(idZone, idCard)
   const cardSpell = isActive(spellId) && !!idCard
   const cardDisabled = disabled || !isValidCard(card)
   const slotDisabled = !tokens || !slotEmpty || !isValidSlot(card)
