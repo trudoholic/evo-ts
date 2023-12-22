@@ -8,7 +8,7 @@ export enum Ability {
   Hibernation = "HIB",
   HighBodyWeight = "HBW",
   Mimicry = "MIM",
-  Parasite = "parasite",
+  Parasite = "PRS",
   Piracy = "PIR",
   Poisonous = "PSN",
   Running = "RUN",
@@ -66,4 +66,4 @@ export const isActive = (ability: TAbility) => !!abilityMap.get(ability)?.active
 export const isEmpty = (ability: TAbility) => Ability.Empty === ability
 
 export const getSpellId = (idx: number): TAbility =>
-  [Ability.Carnivore, Ability.Fat, Ability.Scavenger, Ability.Piracy][idx % 4]
+  [Ability.Carnivore, Ability.Parasite, Ability.Scavenger, Ability.Piracy][idx % 4]

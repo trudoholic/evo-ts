@@ -38,7 +38,7 @@ const useCards = () => {
   const getAbility = (ability: TAbility, playerId: string = commonId) => (
     getZone(Zone.Keep, playerId)
       .filter(c => hasTrait(c.id, ability))
-      .filter(c => getSlotIds(c.id, true).length > 0)
+      .filter(c => hasEmpty(c.id))
       .map(c => c.id)
   )
   //-------------------------------------------------------
@@ -46,7 +46,7 @@ const useCards = () => {
   const getDropIds = () => {
     return cards
       .filter(c => isKeeper(c.idZone, c.idCard))
-      .filter(c => getSlotIds(c.id, true) > 0 || c.poisoned)
+      .filter(c => hasEmpty(c.id) || c.poisoned)
       .map(c => c.id)
   }
   //-------------------------------------------------------
@@ -91,7 +91,7 @@ const useCards = () => {
     const activeParent = ("" === activeCard.idCard) ? activeCard : findCard(activeCard.idCard)
     const {id} = card
 
-    if (hasTrait(id, Ability.Burrowing) && !getSlotIds(id, true).length) {
+    if (hasTrait(id, Ability.Burrowing) && !hasEmpty(id)) {
       return false
     }
     else if (hasTrait(id, Ability.Camouflage) && !hasTrait(activeParent.id, Ability.SharpVision)) {
@@ -126,9 +126,7 @@ const useCards = () => {
         }
 
         case Ability.Piracy: {
-          return isKeeper(idZone, idCard) && !isActiveParent(id)
-            && getSlotIds(id, false).length > 0
-            && getSlotIds(id, true).length > 0
+          return isKeeper(idZone, idCard) && !isActiveParent(id) && hasChecked(id) && hasEmpty(id)
         }
 
         default: {
@@ -191,15 +189,34 @@ const useCards = () => {
 
   const hasSlots = (c: ICard) => Zone.Keep === c.idZone && (!c.idCard || nSlots(c.spellId) > 0)
 
-  const getSlotIds = (cardId: string, empty: boolean) => {
+  const slotIdsChecked = (cardId: string) => {
     const card = getParent(cardId)
     const ids = getTraits(card.id)
-      .filter(c => hasSlots(c) > 0 && (c.emptySlots > 0) === empty)
+      .filter(c => hasSlots(c) > 0 && c.emptySlots < nSlots(c.spellId))
       .map(c => c.id)
-    if ((card.emptySlots > 0) === empty) {
+    if (!card.emptySlots) {
       ids.unshift(card.id)
     }
     return ids
+  }
+
+  const hasChecked = (cardId: string) => {
+    return slotIdsChecked(cardId).length > 0
+  }
+
+  const slotIdsEmpty = (cardId: string) => {
+    const card = getParent(cardId)
+    const ids = getTraits(card.id)
+      .filter(c => hasSlots(c) > 0 && c.emptySlots > 0)
+      .map(c => c.id)
+    if (card.emptySlots > 0) {
+      ids.unshift(card.id)
+    }
+    return ids
+  }
+
+  const hasEmpty = (cardId: string) => {
+    return slotIdsEmpty(cardId).length > 0
   }
 
   //-------------------------------------------------------
@@ -208,7 +225,7 @@ const useCards = () => {
     const keepers = cards
       .filter(c => c.idPlayer === curPlayerId && isKeeper(c.idZone, c.idCard))
     // console.log(`---> ${slots}`)
-    return (keepers.every(c => !getSlotIds(c.id, true).length))
+    return (keepers.every(c => !slotIdsEmpty(c.id).length))
   }
   //-------------------------------------------------------
 
@@ -217,10 +234,11 @@ const useCards = () => {
     findCard,
     getAbility,
     getParent,
-    getSlotIds,
     getDropIds,
     getTraits,
     getZone,
+    hasChecked,
+    hasEmpty,
     hasTrait,
     hasSlots,
     isEverySlotChecked,
@@ -228,6 +246,8 @@ const useCards = () => {
     isKeeper,
     isValidCard,
     isValidSlot,
+    slotIdsChecked,
+    slotIdsEmpty,
   }
 }
 

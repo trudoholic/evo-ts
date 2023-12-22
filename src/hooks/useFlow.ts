@@ -32,11 +32,12 @@ const useFlow = () => {
     findCard,
     getAbility,
     getParent,
-    getSlotIds,
     getDropIds,
     getZone,
     hasTrait,
     isInPack,
+    slotIdsChecked,
+    slotIdsEmpty,
   } = useCards()
 
   const nextIdx = (idx: number) => {
@@ -281,7 +282,7 @@ const useFlow = () => {
 
     const dropId = runAway? "": targetId
     const fedSlots = hasTrait(targetId, Ability.TailLoss)? 1: 2
-    const ids = runAway? []: getSlotIds(cardId, true).slice(0, fedSlots)
+    const ids = runAway? []: slotIdsEmpty(cardId).slice(0, fedSlots)
 
     const scavengers = getAbility(Ability.Scavenger, curPlayerId)
     const scvId: string = scavengers[0] || ""
@@ -314,8 +315,8 @@ const useFlow = () => {
   }
 
   const castSpellPiracy = (cardId: string, targetId: string) => {
-    const emptyIds = getSlotIds(cardId, true).slice(0, 1)
-    const checkedIds = getSlotIds(targetId, false).slice(0, 1)
+    const emptyIds = slotIdsEmpty(cardId).slice(0, 1)
+    const checkedIds = slotIdsChecked(targetId).slice(0, 1)
 
     const updCards = cards
       .map(c => emptyIds.includes(c.id)? {...c,
