@@ -3,7 +3,7 @@ import {useAppContext} from "../context"
 import {IState} from "../context/state"
 import {ICard} from "../data/cards"
 import {commonId} from "../data/players"
-import {nSlots, isEmpty, Ability, TAbility} from "../data/abilities"
+import {Ability, getKind, isEmpty, isKind, nSlots, TAbility} from "../data/abilities"
 import {Zone} from "../data/zones"
 
 const useCards = () => {
@@ -61,10 +61,16 @@ const useCards = () => {
   )
   //-------------------------------------------------------
 
+  const hasKind = (cardId: string, kind: string) => {
+    return cards
+      .filter(c => c.idCard === cardId)
+      .some(c => isKind(c.abId, kind))
+  }
+
   const hasTrait = (cardId: string, spellId: TAbility) => {
     return cards
       .filter(c => c.idCard === cardId)
-      .some(c => c.spellId === spellId)
+      .some(c => c.abId === spellId)
   }
   //-------------------------------------------------------
 
@@ -144,7 +150,8 @@ const useCards = () => {
       case 0: {
         return (
           cardActiveId ? (
-            !cardTargetId && isKeeper(idZone, idCard) && !hasTrait(id, activeCard.spellId)
+            !cardTargetId && isKeeper(idZone, idCard) && !hasTrait(id, activeCard.abId)
+            && !hasKind(id, getKind(activeCard.abId))
           ) : (
             Zone.Hand === idZone
           )
@@ -187,12 +194,12 @@ const useCards = () => {
     return ("" === card.idCard) ? card : findCard(card.idCard)
   }
 
-  const hasSlots = (c: ICard) => Zone.Keep === c.idZone && (!c.idCard || nSlots(c.spellId) > 0)
+  const hasSlots = (c: ICard) => Zone.Keep === c.idZone && (!c.idCard || nSlots(c.abId) > 0)
 
   const slotIdsChecked = (cardId: string) => {
     const card = getParent(cardId)
     const ids = getTraits(card.id)
-      .filter(c => hasSlots(c) > 0 && c.emptySlots < nSlots(c.spellId))
+      .filter(c => hasSlots(c) > 0 && c.emptySlots < nSlots(c.abId))
       .map(c => c.id)
     if (!card.emptySlots) {
       ids.unshift(card.id)

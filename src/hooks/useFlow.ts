@@ -145,7 +145,7 @@ const useFlow = () => {
       if (targetCard) {
         dispatch({type: Actions.UpdateCard, payload: {
           ...card,
-            emptySlots: nSlots(card.spellId),
+            emptySlots: nSlots(card.abId),
             idPlayer: targetCard.idPlayer,
             idZone: targetCard.idZone,
             idCard: targetCard.id,
@@ -226,7 +226,7 @@ const useFlow = () => {
     if (card) {
       dispatch({type: Actions.UpdateCard, payload: {
           ...card,
-          spellUsed: true,
+          abUsed: true,
         } as ICard})
     }
   }
@@ -289,7 +289,7 @@ const useFlow = () => {
     if (scvId) ids.push(scvId)
 
     const dropped = (c: ICard) => isInPack(dropId, c)
-      && (!hasTrait(targetId, Ability.TailLoss) || Ability.TailLoss === c.spellId)
+      && (!hasTrait(targetId, Ability.TailLoss) || Ability.TailLoss === c.abId)
 
     const updCards = cards
       .map(c => c.id === cardId? {...c,
@@ -298,7 +298,7 @@ const useFlow = () => {
       .map(c => c.id === parent.id? {...c,
         poisoned: !runAway && !hasTrait(targetId, Ability.TailLoss) && hasTrait(targetId, Ability.Poisonous),
       }: c)
-      .map(c => c.idPlayer === curPlayerId && c.spellId === Ability.Carnivore? {...c,
+      .map(c => c.idPlayer === curPlayerId && c.abId === Ability.Carnivore? {...c,
         spellUsed: true
       }: c)
       .map(c => ids.includes(c.id)? {...c,
@@ -307,7 +307,7 @@ const useFlow = () => {
       .map(c => dropped(c) ? { ...c,
         idZone: Zone.DiscardPile,
         idCard: "",
-        emptySlots: nSlots(c.spellId),
+        emptySlots: nSlots(c.abId),
       }: c)
 
     dispatch({type: Actions.UpdateCards, payload: updCards})

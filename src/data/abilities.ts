@@ -39,13 +39,14 @@ export type TAbility =
 
 interface IAbility{
   active?: boolean
+  kind?: string
   nSlots?: number
 }
 
 const abilityMap = new Map<TAbility, IAbility>([
   [Ability.Burrowing, {}],
   [Ability.Camouflage, {}],
-  [Ability.Carnivore, {active: true, nSlots: 1}],
+  [Ability.Carnivore, {active: true, kind: "feed", nSlots: 1}],
   [Ability.Fat, {active: true, nSlots: 1}],
   [Ability.Grazing, {active: true}],
   [Ability.Hibernation, {active: true}],
@@ -55,15 +56,20 @@ const abilityMap = new Map<TAbility, IAbility>([
   [Ability.Piracy, {active: true}],
   [Ability.Poisonous, {}],
   [Ability.Running, {}],
-  [Ability.Scavenger, {}],
+  [Ability.Scavenger, {kind: "feed"}],
   [Ability.SharpVision, {}],
   [Ability.Swimming, {}],
   [Ability.TailLoss, {}],
 ])
 
-export const nSlots = (ability: TAbility): number => abilityMap.get(ability)?.nSlots ?? 0
+export const getKind = (ability: TAbility) => abilityMap.get(ability)?.kind ?? ""
+
 export const isActive = (ability: TAbility) => !!abilityMap.get(ability)?.active
 export const isEmpty = (ability: TAbility) => Ability.Empty === ability
+export const isKind = (ability: TAbility, kind: string) => !!kind && kind === getKind(ability)
+
+export const nSlots = (ability: TAbility): number => abilityMap.get(ability)?.nSlots ?? 0
 
 export const getSpellId = (idx: number): TAbility =>
   [Ability.Carnivore, Ability.Parasite, Ability.Scavenger, Ability.Piracy][idx % 4]
+

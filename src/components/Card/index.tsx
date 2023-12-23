@@ -16,9 +16,9 @@ const Card = (card: ICard) => {
     idCard,
     emptySlots,
     poisoned,
-    spellId,
-    spellCooldown,
-    spellUsed,
+    abId,
+    abCooldown,
+    abUsed,
   } = card
 
   const { state } = useAppContext()
@@ -39,12 +39,11 @@ const Card = (card: ICard) => {
     isValidSlot,
   } = useCards()
 
-  // const slots = nSlots(spellId)
   const traits = getTraits(id)
-  const cardSpell = isActive(spellId) && !!idCard
+  const cardSpell = isActive(abId) && !!idCard
   const cardDisabled = disabled || !isValidCard(card)
   const slotDisabled = !tokens || !emptySlots || !isValidSlot(card)
-  const spellEnabled = !cardDisabled && cardSpell && !spellCooldown && !spellUsed && hasEmpty(id)
+  const spellEnabled = !cardDisabled && cardSpell && !abCooldown && !abUsed && hasEmpty(id)
 
   const {
     handleCastSpell,
@@ -79,15 +78,15 @@ const Card = (card: ICard) => {
       <FlexRow>
         {cardSpell ? (
           <StyledOrb
-            $disabled={cardDisabled || spellUsed || !hasEmpty(id)}
-            $ready={!spellCooldown}
-            {...(spellEnabled && { "onClick": () => handleCastSpell(id, spellId) })}
+            $disabled={cardDisabled || abUsed || !hasEmpty(id)}
+            $ready={!abCooldown}
+            {...(spellEnabled && { "onClick": () => handleCastSpell(id, abId) })}
           />
         ) : null}
 
-        <span>{`${spellCooldown || ""}`}</span>
+        <span>{`${abCooldown || ""}`}</span>
         {traits.length ? <span>{`Pack [${traits.length}] `}</span> : null}
-        <span>{`${spellId}: ${id}${poisoned? " *": ""}`}</span>
+        <span>{`${abId}: ${id}${poisoned? " *": ""}`}</span>
 
         {hasSlots(card) ? (
           <FlexRow>

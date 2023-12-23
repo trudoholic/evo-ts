@@ -76,7 +76,7 @@ export const reducer = (state: IState, action: TAction): IState => {
             idPlayer: state.players.at(getIdx(i)).id,
             idZone: Zone.Hand,
             idCard: "",
-            emptySlots: nSlots(card.spellId),
+            emptySlots: nSlots(card.abId),
           }
           : card
       )
@@ -87,7 +87,7 @@ export const reducer = (state: IState, action: TAction): IState => {
     case Actions.DropCards: {
       const dropIds = action.payload
       const dropped = (c: ICard) => dropIds.includes(c.id) || dropIds.includes(c.idCard)
-      const nEmptySlots = (c: ICard) => Zone.Keep !== c.idZone? 0: "" === c.idCard? 1: nSlots(c.spellId)
+      const nEmptySlots = (c: ICard) => Zone.Keep !== c.idZone? 0: "" === c.idCard? 1: nSlots(c.abId)
 
       return { ...state,
         cards: state.cards.map(
@@ -125,7 +125,7 @@ export const reducer = (state: IState, action: TAction): IState => {
       return { ...state,
         curHand: action.payload,
         cards: state.cards.map(c => ({...c,
-          spellCooldown: (c.spellCooldown > 0 ? c.spellCooldown - 1 : 0)
+          abCooldown: (c.abCooldown > 0 ? c.abCooldown - 1 : 0)
         }))
       }
     }
@@ -146,7 +146,7 @@ export const reducer = (state: IState, action: TAction): IState => {
     case Actions.NextTurn: {
       return { ...state,
         curTurn: action.payload,
-        cards: state.cards.map(c => ({...c, spellUsed: false}))
+        cards: state.cards.map(c => ({...c, abUsed: false}))
       }
     }
 
