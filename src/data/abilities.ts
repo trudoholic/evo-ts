@@ -39,6 +39,7 @@ export type TAbility =
 
 interface IAbility{
   active?: boolean
+  hex?: boolean
   kind?: string
   nSlots?: number
 }
@@ -52,7 +53,7 @@ const abilityMap = new Map<TAbility, IAbility>([
   [Ability.Hibernation, {active: true}],
   [Ability.HighBodyWeight, {nSlots: 1}],
   [Ability.Mimicry, {}],
-  [Ability.Parasite, {nSlots: 2}],
+  [Ability.Parasite, {hex: true, nSlots: 2}],
   [Ability.Piracy, {active: true}],
   [Ability.Poisonous, {}],
   [Ability.Running, {}],
@@ -66,6 +67,7 @@ export const getKind = (ability: TAbility) => abilityMap.get(ability)?.kind ?? "
 
 export const isActive = (ability: TAbility) => !!abilityMap.get(ability)?.active
 export const isEmpty = (ability: TAbility) => Ability.Empty === ability
+export const isHex = (ability: TAbility) => !!abilityMap.get(ability)?.hex
 export const isKind = (ability: TAbility, kind: string) => !!kind && kind === getKind(ability)
 
 export const nSlots = (ability: TAbility): number => abilityMap.get(ability)?.nSlots ?? 0

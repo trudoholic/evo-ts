@@ -3,7 +3,7 @@ import {useAppContext} from "../context"
 import {IState} from "../context/state"
 import {ICard} from "../data/cards"
 import {commonId} from "../data/players"
-import {Ability, getKind, isEmpty, isKind, nSlots, TAbility} from "../data/abilities"
+import {Ability, getKind, isEmpty, isHex, isKind, nSlots, TAbility} from "../data/abilities"
 import {Zone} from "../data/zones"
 
 const useCards = () => {
@@ -141,8 +141,10 @@ const useCards = () => {
       }
     }
 
+    const hex = !!cardActiveId && isHex(activeCard.abId)
     const curPlayer = players.at(curTurn)
-    if (curPlayer.id !== idPlayer || curPlayer.pass) {
+    const isValidPlayer = hex === (curPlayer.id !== idPlayer)
+    if (!isValidPlayer || curPlayer.pass) {
       return false
     }
 
