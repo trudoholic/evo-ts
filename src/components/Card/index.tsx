@@ -1,7 +1,6 @@
 import {useAppContext} from "../../context"
 import {IState} from "../../context/state"
 import {ICard} from "../../data/cards"
-import {isActive} from "../../data/abilities"
 import useCards from "../../hooks/useCards"
 import useFlow from "../../hooks/useFlow"
 import {FlexRow} from "./FlexRow"
@@ -11,9 +10,7 @@ import {StyledOrb} from "./StyledOrb"
 
 const Card = (card: ICard) => {
   const {
-    disabled,
     id,
-    idCard,
     emptySlots,
     poisoned,
     abId,
@@ -33,17 +30,19 @@ const Card = (card: ICard) => {
 
   const {
     getTraits,
+    hasAbility,
     hasEmpty,
     hasSlots,
-    isValidCard,
+    isAbilityEnabled,
+    isCardDisabled,
     isValidSlot,
   } = useCards()
 
   const traits = getTraits(id)
-  const cardSpell = isActive(abId) && !!idCard
-  const cardDisabled = disabled || !isValidCard(card)
   const slotDisabled = !tokens || !emptySlots || !isValidSlot(card)
-  const spellEnabled = !cardDisabled && cardSpell && !abCooldown && !abUsed && hasEmpty(id)
+  const cardAbility = hasAbility(card)
+  const cardDisabled = isCardDisabled(card)
+  const abilityEnabled = isAbilityEnabled(card)
 
   const {
     handleCastSpell,
@@ -76,15 +75,17 @@ const Card = (card: ICard) => {
       {...(!cardDisabled && { "onClick": () => handleClick(id) })}
     >
       <FlexRow>
-        {cardSpell ? (
-          <StyledOrb
-            $disabled={cardDisabled || abUsed || !hasEmpty(id)}
-            $ready={!abCooldown}
-            {...(spellEnabled && { "onClick": () => handleCastSpell(id, abId) })}
-          />
+        {cardAbility ? (
+          <FlexRow>
+            <StyledOrb
+              $disabled={cardDisabled || abUsed || !hasEmpty(id)}
+              $ready={!abCooldown}
+              {...(abilityEnabled && { "onClick": () => handleCastSpell(id, abId) })}
+            />
+            &nbsp;{abCooldown? `${abCooldown}`: null}
+          </FlexRow>
         ) : null}
 
-        <span>{`${abCooldown || ""}`}</span>
         {traits.length ? <span>{`Pack [${traits.length}] `}</span> : null}
         <span>{`${abId}: ${id}${poisoned? " *": ""}`}</span>
 

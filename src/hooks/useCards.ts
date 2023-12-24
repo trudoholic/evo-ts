@@ -3,7 +3,7 @@ import {useAppContext} from "../context"
 import {IState} from "../context/state"
 import {ICard} from "../data/cards"
 import {commonId} from "../data/players"
-import {Ability, getKind, isEmpty, isHex, isKind, nSlots, TAbility} from "../data/abilities"
+import {Ability, getKind, isActive, isEmpty, isHex, isKind, nSlots, TAbility} from "../data/abilities"
 import {Zone} from "../data/zones"
 
 const useCards = () => {
@@ -89,6 +89,21 @@ const useCards = () => {
 
   const isActiveParent = (cardId: string): boolean => {
     return activeCard?.idCard === cardId
+  }
+  //-------------------------------------------------------
+
+  const hasAbility = (card: ICard) => {
+    const {abId, idCard} = card
+    return isActive(abId) && !!idCard
+  }
+
+  const isAbilityEnabled = (card: ICard): boolean => {
+    const {abCooldown, abUsed, id} = card
+    return !isCardDisabled(card) && hasAbility(card) && !abCooldown && !abUsed && hasEmpty(id)
+  }
+
+  const isCardDisabled = (card: ICard): boolean => {
+    return card.disabled || !isValidCard(card)
   }
   //-------------------------------------------------------
 
@@ -265,10 +280,13 @@ const useCards = () => {
     getDropIds,
     getTraits,
     getZone,
+    hasAbility,
     hasChecked,
     hasEmpty,
     hasTrait,
     hasSlots,
+    isAbilityEnabled,
+    isCardDisabled,
     isEverySlotChecked,
     isInPack,
     isKeeper,
