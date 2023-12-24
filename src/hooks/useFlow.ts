@@ -324,13 +324,13 @@ const useFlow = () => {
     const updCards = cards
       .map(c => emptyIds.includes(c.id)? {...c,
         emptySlots: c.emptySlots - 1,
-      }: c)
+      } as ICard: c)
       .map(c => checkedIds.includes(c.id)? {...c,
         emptySlots: c.emptySlots + 1,
-      }: c)
+      } as ICard: c)
       .map(c => c.id === cardId? {...c,
         spellCooldown: 1
-      }: c)
+      } as ICard: c)
 
     dispatch({type: Actions.UpdateCards, payload: updCards})
     handleNextTurn()

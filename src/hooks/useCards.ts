@@ -122,7 +122,7 @@ const useCards = () => {
   }
 
   const isValidCard = (card: ICard): boolean => {
-    const {id, idPlayer, idZone, idCard} = card
+    const {id, idCard, idPlayer, idZone} = card
 
     if (!isEmpty(curSpell)) {
 
@@ -152,7 +152,8 @@ const useCards = () => {
       case 0: {
         return (
           cardActiveId ? (
-            !cardTargetId && isKeeper(idZone, idCard) && !hasTrait(id, activeCard.abId)
+            !cardTargetId && isKeeper(idZone, idCard)
+            && (!hasTrait(id, activeCard.abId) || Ability.Fat === activeCard.abId)
             && !hasKind(id, getKind(activeCard.abId))
           ) : (
             Zone.Hand === idZone
