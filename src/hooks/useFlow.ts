@@ -236,7 +236,7 @@ const useFlow = () => {
     if (card) {
       const updCards = cards
         .map(c => isInPack(card.idCard, c)? {...c, emptySlots: 0}: c)
-        .map(c => c.id === cardId? {...c, spellCooldown: 2}: c)
+        .map(c => c.id === cardId? {...c, abCooldown: 2}: c)
       dispatch({type: Actions.UpdateCards, payload: updCards})
     }
     handleNextTurn()
@@ -295,14 +295,14 @@ const useFlow = () => {
       && (!hasTrait(targetId, Ability.TailLoss) || Ability.TailLoss === c.abId)
 
     const updCards = cards
-      .map((c) => c.id === cardId? {...c,
-        spellCooldown: 1,
+      .map(c => c.id === cardId? {...c,
+        abCooldown: 1,
       } as ICard: c)
       .map(c => c.id === parent.id? {...c,
         poisoned: !runAway && !hasTrait(targetId, Ability.TailLoss) && hasTrait(targetId, Ability.Poisonous),
       } as ICard: c)
       .map(c => c.idPlayer === curPlayerId && c.abId === Ability.Carnivore? {...c,
-        spellUsed: true
+        abUsed: true
       } as ICard: c)
       .map(c => ids.includes(c.id)? {...c,
         emptySlots: feed(c.emptySlots) ,
@@ -329,7 +329,7 @@ const useFlow = () => {
         emptySlots: c.emptySlots + 1,
       } as ICard: c)
       .map(c => c.id === cardId? {...c,
-        spellCooldown: 1
+        abCooldown: 1
       } as ICard: c)
 
     dispatch({type: Actions.UpdateCards, payload: updCards})
