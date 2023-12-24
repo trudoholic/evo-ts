@@ -73,6 +73,6 @@ export const isKind = (ability: TAbility, kind: string) => !!kind && kind === ge
 export const nSlots = (ability: TAbility): number => abilityMap.get(ability)?.nSlots ?? 0
 
 export const getSpellId = (idx: number): TAbility =>
-  [Ability.Carnivore, Ability.Fat, Ability.Fat, Ability.Fat][idx % 4]
+  [Ability.Carnivore, Ability.Fat, Ability.Fat, Ability.HighBodyWeight][idx % 4]
   // [Ability.Carnivore, Ability.Parasite, Ability.Scavenger, Ability.Piracy][idx % 4]
 

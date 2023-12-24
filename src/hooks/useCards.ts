@@ -202,6 +202,7 @@ const useCards = () => {
   const slotIdsChecked = (cardId: string) => {
     const card = getParent(cardId)
     const ids = getTraits(card.id)
+      .filter(c => Ability.Fat !== c.abId)
       .filter(c => hasSlots(c) > 0 && c.emptySlots < nSlots(c.abId))
       .map(c => c.id)
     if (!card.emptySlots) {
@@ -217,6 +218,7 @@ const useCards = () => {
   const slotIdsEmpty = (cardId: string) => {
     const card = getParent(cardId)
     const ids = getTraits(card.id)
+      .filter(c => Ability.Fat !== c.abId)
       .filter(c => hasSlots(c) > 0 && c.emptySlots > 0)
       .map(c => c.id)
     if (card.emptySlots > 0) {
@@ -229,13 +231,29 @@ const useCards = () => {
     return slotIdsEmpty(cardId).length > 0
   }
 
+  const slotIdsFatEmpty = (cardId: string) => {
+    const card = getParent(cardId)
+    const ids = getTraits(card.id)
+      .filter(c => Ability.Fat === c.abId)
+      .filter(c => hasSlots(c) > 0 && c.emptySlots > 0)
+      .map(c => c.id)
+    if (card.emptySlots > 0) {
+      ids.unshift(card.id)
+    }
+    return ids
+  }
+
+  const hasFatEmpty = (cardId: string) => {
+    return slotIdsFatEmpty(cardId).length > 0
+  }
+
   //-------------------------------------------------------
 
   const isEverySlotChecked = () => {
     const keepers = cards
       .filter(c => c.idPlayer === curPlayerId && isKeeper(c.idZone, c.idCard))
     // console.log(`---> ${slots}`)
-    return (keepers.every(c => !slotIdsEmpty(c.id).length))
+    return (keepers.every(c => !hasEmpty(c.id) && !hasFatEmpty(c.id)))
   }
   //-------------------------------------------------------
 
