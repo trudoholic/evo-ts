@@ -284,6 +284,9 @@ const useFlow = () => {
     const fedSlots = hasTrait(targetId, Ability.TailLoss)? 1: 2
     const ids = runAway? []: slotIdsEmpty(cardId).slice(0, fedSlots)
 
+    const food = ids.length > 1? 1: fedSlots
+    const feed = (n: number) => n > food? n - food: 0
+
     const scavengers = getAbility(Ability.Scavenger, curPlayerId)
     const scvId: string = scavengers[0] || ""
     if (scvId) ids.push(scvId)
@@ -292,23 +295,23 @@ const useFlow = () => {
       && (!hasTrait(targetId, Ability.TailLoss) || Ability.TailLoss === c.abId)
 
     const updCards = cards
-      .map(c => c.id === cardId? {...c,
+      .map((c) => c.id === cardId? {...c,
         spellCooldown: 1,
-      }: c)
+      } as ICard: c)
       .map(c => c.id === parent.id? {...c,
         poisoned: !runAway && !hasTrait(targetId, Ability.TailLoss) && hasTrait(targetId, Ability.Poisonous),
-      }: c)
+      } as ICard: c)
       .map(c => c.idPlayer === curPlayerId && c.abId === Ability.Carnivore? {...c,
         spellUsed: true
-      }: c)
+      } as ICard: c)
       .map(c => ids.includes(c.id)? {...c,
-        emptySlots: c.emptySlots - 1,
-      }: c)
+        emptySlots: feed(c.emptySlots) ,
+      } as ICard: c)
       .map(c => dropped(c) ? { ...c,
         idZone: Zone.DiscardPile,
         idCard: "",
         emptySlots: nSlots(c.abId),
-      }: c)
+      } as ICard: c)
 
     dispatch({type: Actions.UpdateCards, payload: updCards})
     handleNextTurn()
