@@ -99,11 +99,24 @@ const useCards = () => {
 
   const isAbilityEnabled = (card: ICard): boolean => {
     const {abCooldown, abUsed, id} = card
-    return !isCardDisabled(card) && hasAbility(card) && !abCooldown && !abUsed && hasEmpty(id)
+    return !isCardDisabled(card) && hasAbility(card) && !abCooldown && !abUsed
+      && hasEmpty(id) && isAbilityExtra(card)
   }
 
   const isCardDisabled = (card: ICard): boolean => {
     return card.disabled || !isValidCard(card)
+  }
+
+  const isAbilityExtra = (card: ICard): boolean => {
+    const {abId, emptySlots} = card
+    switch (abId) {
+      case Ability.Fat: {
+        return !emptySlots
+      }
+      default: {
+        return true
+      }
+    }
   }
   //-------------------------------------------------------
 

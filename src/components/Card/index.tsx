@@ -15,7 +15,6 @@ const Card = (card: ICard) => {
     poisoned,
     abId,
     abCooldown,
-    abUsed,
   } = card
 
   const { state } = useAppContext()
@@ -31,7 +30,6 @@ const Card = (card: ICard) => {
   const {
     getTraits,
     hasAbility,
-    hasEmpty,
     hasSlots,
     isAbilityEnabled,
     isCardDisabled,
@@ -78,7 +76,7 @@ const Card = (card: ICard) => {
         {cardAbility ? (
           <FlexRow>
             <StyledOrb
-              $disabled={cardDisabled || abUsed || !hasEmpty(id)}
+              $disabled={!abilityEnabled}
               $ready={!abCooldown}
               {...(abilityEnabled && { "onClick": () => handleCastSpell(id, abId) })}
             />
