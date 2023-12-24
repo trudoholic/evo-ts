@@ -242,6 +242,23 @@ const useFlow = () => {
     handleNextTurn()
   }
 
+  const castSpellFat = (cardId: string) => {
+    const emptyIds = slotIdsEmpty(cardId).slice(0, 1)
+    const updCards = cards
+      .map(c => emptyIds.includes(c.id)? {...c,
+        emptySlots: c.emptySlots - 1,
+      } as ICard: c)
+      .map(c => c.id === cardId? {...c,
+        emptySlots: c.emptySlots + 1,
+      } as ICard: c)
+      .map(c => c.idPlayer === curPlayerId && c.abId === Ability.Fat? {...c,
+        abUsed: true
+      } as ICard: c)
+
+    dispatch({type: Actions.UpdateCards, payload: updCards})
+    handleNextTurn()
+  }
+
   const handleUncastSpell = () => {
     dispatch({type: Actions.CastSpell, payload: Ability.Empty})
     dispatch({type: Actions.SetActive, payload: ""})
@@ -253,6 +270,10 @@ const useFlow = () => {
       case Ability.Carnivore: {
         dispatch({type: Actions.CastSpell, payload: Ability.Carnivore})
         dispatch({type: Actions.SetActive, payload: cardId})
+        break
+      }
+      case Ability.Fat: {
+        castSpellFat(cardId)
         break
       }
       case Ability.Grazing: {

@@ -1,7 +1,7 @@
 import {IState} from "./state"
 import {ICard} from "../data/cards"
 import {commonId, players} from "../data/players"
-import {nSlots, TAbility} from "../data/abilities"
+import {Ability, nSlots, TAbility} from "../data/abilities"
 import {Zone} from "../data/zones"
 
 export enum Actions {
@@ -96,10 +96,10 @@ export const reducer = (state: IState, action: TAction): IState => {
             idCard: "",
             idCard2: "",
             poisoned: false,
-            emptySlots: 0,
-          }: {...c,
-            emptySlots: state.isLastHand? 0: nEmptySlots(c),
-          }
+            emptySlots: nEmptySlots(c),
+          }: Ability.Fat !== c.abId? {...c,
+            emptySlots: nEmptySlots(c),
+          }: c
         )
       }
     }

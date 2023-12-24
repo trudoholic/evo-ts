@@ -208,14 +208,26 @@ const useCards = () => {
   }
   //-------------------------------------------------------
 
+  const isSlotExtra = (card: ICard): boolean => {
+    const {abId, id} = card
+    switch (abId) {
+      case Ability.Fat: {
+        return !hasEmpty(id)
+      }
+      default: {
+        return true
+      }
+    }
+  }
+
   const isValidSlot = (card: ICard): boolean => {
     const {idPlayer, idZone} = card
     return (
       curHandPhase === 2
       && curPlayerId === idPlayer
-      // && players.at(curTurn)?.id === idPlayer
       && idZone === Zone.Keep
       && !cardActiveId
+      && isSlotExtra(card)
     )
   }
   //-------------------------------------------------------
