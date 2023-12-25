@@ -14,6 +14,7 @@ const useFlow = () => {
     cards,
     cardActiveId,
     cardTargetId,
+    cardTarget2Id,
     curHand,
     curHandPhase,
     curSpell,
@@ -139,10 +140,11 @@ const useFlow = () => {
     }
   }
 
-  const playTrait = (activeId: string, targetId: string) => {
+  const playTrait = (activeId: string, targetId: string, target2Id: string) => {
     const card = findCard(activeId)
     if (card) {
       const targetCard = findCard(targetId)
+      const target2Card = findCard(target2Id)
       if (targetCard) {
         dispatch({type: Actions.UpdateCard, payload: {
           ...card,
@@ -150,6 +152,7 @@ const useFlow = () => {
             idPlayer: targetCard.idPlayer,
             idZone: targetCard.idZone,
             idCard: targetCard.id,
+            idCard2: target2Card?.id ?? "",
         } as ICard})
       }
     }
@@ -177,7 +180,7 @@ const useFlow = () => {
 
   const handlePlayTrait = () => {
     // console.log(`- Play Trait: ${curTurn}`)
-    playTrait(cardActiveId, cardTargetId)
+    playTrait(cardActiveId, cardTargetId, cardTarget2Id)
 
     handleNextTurn()
   }

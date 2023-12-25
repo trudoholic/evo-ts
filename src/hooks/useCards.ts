@@ -52,7 +52,7 @@ const useCards = () => {
   //-------------------------------------------------------
 
   const getTraits = (cardId: string) => {
-    return cards.filter(c => c.idCard === cardId)
+    return cards.filter(c => c.idCard === cardId || c.idCard2 === cardId)
   }
   //-------------------------------------------------------
 
