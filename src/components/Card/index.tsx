@@ -21,11 +21,12 @@ const Card = (card: ICard) => {
   const {
     cardActiveId,
     cardTargetId,
+    cardTarget2Id,
     tokens,
   } = state as IState
 
   const cardActive = id === cardActiveId
-  const cardTarget = id === cardTargetId
+  const cardTarget = id === cardTargetId || id === cardTarget2Id
 
   const {
     getTraits,
@@ -47,12 +48,15 @@ const Card = (card: ICard) => {
     handlePlaySlot,
     handleSetActive,
     handleSetTarget,
+    handleSetTarget2,
     handleUpdateTokens,
   } = useFlow()
 
   const handleClick = (id: string) => {
     // console.log("Click:", id)
-    if (cardActiveId) {
+    if (cardTargetId) {
+      handleSetTarget2(id)
+    } else if (cardActiveId) {
       handleSetTarget(id)
     } else {
       handleSetActive(id)

@@ -54,6 +54,7 @@ const useFlow = () => {
   const handleNextTurn = () => {
     dispatch({type: Actions.SetActive, payload: ""})
     dispatch({type: Actions.SetTarget, payload: ""})
+    dispatch({type: Actions.SetTarget2, payload: ""})
 
     let nextTurn = nextIdx(curTurn)
     while (players.at(nextTurn).pass) {
@@ -203,6 +204,12 @@ const useFlow = () => {
       dispatch({type: Actions.SetTarget, payload: id})
     }
   }
+
+  const handleSetTarget2 = (id: string) => {
+    if (0 === curHandPhase || !isEmpty(curSpell)) {
+      dispatch({type: Actions.SetTarget2, payload: id})
+    }
+  }
   //-------------------------------------------------------
 
   const handleDrawStep = () => {
@@ -263,6 +270,7 @@ const useFlow = () => {
     dispatch({type: Actions.CastSpell, payload: Ability.Empty})
     dispatch({type: Actions.SetActive, payload: ""})
     dispatch({type: Actions.SetTarget, payload: ""})
+    dispatch({type: Actions.SetTarget2, payload: ""})
   }
 
   const handleCastSpell = (cardId: string, spellId: TAbility) => {
@@ -390,6 +398,7 @@ const useFlow = () => {
     handleReverse,
     handleSetActive,
     handleSetTarget,
+    handleSetTarget2,
     handleUncastSpell,
     handleUpdateTokens,
     nextIdx,

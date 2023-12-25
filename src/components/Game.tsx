@@ -10,6 +10,7 @@ const Game = () => {
     // cards,
     cardActiveId,
     cardTargetId,
+    cardTarget2Id,
     curHand,
     curSpell,
     isLastHand,
@@ -23,7 +24,7 @@ const Game = () => {
     <>
       <h2>
         {`Hand: ${players.at(curHand).name} (${curHand}) ${isLastHand?"Last!":""} ${isReverse?"(R)":""}`}
-        {`Spell: ${curSpell} ${cardActiveId || "--"} ${cardTargetId || "--"}`}
+        {`Spell: ${curSpell} ${cardActiveId || "--"} ${cardTargetId || "--"} ${cardTarget2Id || "--"}`}
       </h2>
       <PlayerContainer>
         <Common/>

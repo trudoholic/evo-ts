@@ -180,9 +180,13 @@ const useCards = () => {
       case 0: {
         return (
           cardActiveId ? (
-            !cardTargetId && isKeeper(idZone, idCard)
-            && (!hasTrait(id, activeCard.abId) || Ability.Fat === activeCard.abId)
-            && !hasKind(id, getKind(activeCard.abId))
+            cardTargetId ? (
+              isKeeper(idZone, idCard)
+            ) : (
+              isKeeper(idZone, idCard)
+              && (!hasTrait(id, activeCard.abId) || Ability.Fat === activeCard.abId)
+              && !hasKind(id, getKind(activeCard.abId))
+            )
           ) : (
             Zone.Hand === idZone
           )

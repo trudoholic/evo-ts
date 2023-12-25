@@ -4,6 +4,8 @@ export enum Ability {
   Camouflage = "CMF",
   Carnivore = "CRN",
   Fat = "FAT",
+  Communication = "CMN",
+  Cooperation = "CPR",
   Grazing = "GRZ",
   Hibernation = "HIB",
   HighBodyWeight = "HBW",
@@ -15,6 +17,7 @@ export enum Ability {
   Scavenger = "SCV",
   SharpVision = "SHV",
   Swimming = "SWI",
+  Symbiosis = "SYM",
   TailLoss = "TLS",
 }
 
@@ -24,6 +27,8 @@ export type TAbility =
   | Ability.Camouflage
   | Ability.Carnivore
   | Ability.Fat
+  | Ability.Communication
+  | Ability.Cooperation
   | Ability.Grazing
   | Ability.Hibernation
   | Ability.HighBodyWeight
@@ -35,6 +40,7 @@ export type TAbility =
   | Ability.Scavenger
   | Ability.SharpVision
   | Ability.Swimming
+  | Ability.Symbiosis
   | Ability.TailLoss
 
 interface IAbility{
@@ -42,12 +48,15 @@ interface IAbility{
   hex?: boolean
   kind?: string
   nSlots?: number
+  pair?: boolean
 }
 
 const abilityMap = new Map<TAbility, IAbility>([
   [Ability.Burrowing, {}],
   [Ability.Camouflage, {}],
   [Ability.Carnivore, {active: true, kind: "feed", nSlots: 1}],
+  [Ability.Communication, {pair: true}],
+  [Ability.Cooperation, {pair: true}],
   [Ability.Fat, {active: true, nSlots: 1}],
   [Ability.Grazing, {active: true}],
   [Ability.Hibernation, {active: true}],
@@ -60,6 +69,7 @@ const abilityMap = new Map<TAbility, IAbility>([
   [Ability.Scavenger, {kind: "feed"}],
   [Ability.SharpVision, {}],
   [Ability.Swimming, {}],
+  [Ability.Symbiosis, {pair: true}],
   [Ability.TailLoss, {}],
 ])
 
@@ -69,10 +79,11 @@ export const isActive = (ability: TAbility) => !!abilityMap.get(ability)?.active
 export const isEmpty = (ability: TAbility) => Ability.Empty === ability
 export const isHex = (ability: TAbility) => !!abilityMap.get(ability)?.hex
 export const isKind = (ability: TAbility, kind: string) => !!kind && kind === getKind(ability)
+export const isPair = (ability: TAbility) => !!abilityMap.get(ability)?.pair
 
 export const nSlots = (ability: TAbility): number => abilityMap.get(ability)?.nSlots ?? 0
 
 export const getSpellId = (idx: number): TAbility =>
-  [Ability.Carnivore, Ability.Fat, Ability.Fat, Ability.HighBodyWeight][idx % 4]
+  [Ability.Carnivore, Ability.Communication, Ability.Communication, Ability.HighBodyWeight][idx % 4]
   // [Ability.Carnivore, Ability.Parasite, Ability.Scavenger, Ability.Piracy][idx % 4]
 

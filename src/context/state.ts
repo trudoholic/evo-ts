@@ -5,6 +5,7 @@ import {Ability, TAbility} from "../data/abilities"
 export interface IState {
   cardActiveId: string
   cardTargetId: string
+  cardTarget2Id: string
   cards: ICard[]
   curHand: number
   curHandPhase: number
@@ -22,6 +23,7 @@ export interface IState {
 export const defaultState: IState = {
   cardActiveId: "",
   cardTargetId: "",
+  cardTarget2Id: "",
   cards: cards,
   curHand: 0,
   curHandPhase: 0,
