@@ -342,6 +342,7 @@ const useFlow = () => {
       .map(c => dropped(c) ? { ...c,
         idZone: Zone.DiscardPile,
         idCard: "",
+        idCard2: "",
         emptySlots: nSlots(c.abId),
       } as ICard: c)
 

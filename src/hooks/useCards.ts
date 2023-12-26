@@ -76,7 +76,7 @@ const useCards = () => {
 
   const isInPack = (cardId: string, card: ICard): boolean => {
     if (!cardId) return false
-    return card.id === cardId || card.idCard === cardId
+    return card.id === cardId || card.idCard === cardId || card.idCard2 === cardId
   }
   //-------------------------------------------------------
 

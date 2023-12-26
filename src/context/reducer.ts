@@ -88,7 +88,7 @@ export const reducer = (state: IState, action: TAction): IState => {
 
     case Actions.DropCards: {
       const dropIds = action.payload
-      const dropped = (c: ICard) => dropIds.includes(c.id) || dropIds.includes(c.idCard)
+      const dropped = (c: ICard) => dropIds.includes(c.id) || dropIds.includes(c.idCard) || dropIds.includes(c.idCard2)
       const nEmptySlots = (c: ICard) => Zone.Keep !== c.idZone? 0: "" === c.idCard? 1: nSlots(c.abId)
 
       return { ...state,
