@@ -1,12 +1,11 @@
 import {IState} from "./state"
 import {ICard} from "../data/cards"
 import {commonId, players} from "../data/players"
-import {Ability, nSlots, TAbility} from "../data/abilities"
+import {Ability, nSlots} from "../data/abilities"
 import {Zone} from "../data/zones"
 
 export enum Actions {
   BeginGame,
-  CastSpell,
   DrawRound,
   DropCards,
   EndGame,
@@ -18,17 +17,14 @@ export enum Actions {
   NextTurn,
   Pass,
   Reverse,
-  SetActive,
-  SetTarget,
-  SetTarget2,
   UpdateCard,
   UpdateCards,
   UpdateTokens,
+  UpdateState,
 }
 
 export type TAction =
   | { type: Actions.BeginGame, payload: number }
-  | { type: Actions.CastSpell, payload: TAbility }
   | { type: Actions.DrawRound, payload: { hand: number, nDraw: number } }
   | { type: Actions.DropCards, payload: string[] }
   | { type: Actions.EndGame }
@@ -40,15 +36,17 @@ export type TAction =
   | { type: Actions.NextTurn, payload: number }
   | { type: Actions.Pass, payload: number }
   | { type: Actions.Reverse }
-  | { type: Actions.SetActive, payload: string }
-  | { type: Actions.SetTarget, payload: string }
-  | { type: Actions.SetTarget2, payload: string }
   | { type: Actions.UpdateCard, payload: ICard }
   | { type: Actions.UpdateCards, payload: ICard[] }
   | { type: Actions.UpdateTokens, payload: number }
+  | { type: Actions.UpdateState, payload: Partial<IState> }
 
 export const reducer = (state: IState, action: TAction): IState => {
   switch (action.type) {
+
+    case Actions.UpdateState: {
+      return { ...state, ...action.payload }
+    }
 
     case Actions.BeginGame: {
       return { ...state,
@@ -58,10 +56,6 @@ export const reducer = (state: IState, action: TAction): IState => {
         cards: state.cards.map(card => ({...card, idPlayer: commonId, idZone: Zone.DrawPile, idCard: ""})),
         players: players.slice(0, action.payload),
       }
-    }
-
-    case Actions.CastSpell: {
-      return { ...state, curSpell: action.payload }
     }
 
     case Actions.DrawRound: {
@@ -163,18 +157,6 @@ export const reducer = (state: IState, action: TAction): IState => {
 
     case Actions.Reverse: {
       return { ...state, isReverse: !state.isReverse}
-    }
-
-    case Actions.SetActive: {
-      return { ...state, cardActiveId: action.payload}
-    }
-
-    case Actions.SetTarget: {
-      return { ...state, cardTargetId: action.payload}
-    }
-
-    case Actions.SetTarget2: {
-      return { ...state, cardTarget2Id: action.payload}
     }
 
     case Actions.UpdateCard: {

@@ -53,9 +53,8 @@ const useFlow = () => {
   //-------------------------------------------------------
 
   const handleNextTurn = () => {
-    dispatch({type: Actions.SetActive, payload: ""})
-    dispatch({type: Actions.SetTarget, payload: ""})
-    dispatch({type: Actions.SetTarget2, payload: ""})
+    const payload = {cardActiveId: "", cardTargetId: "", cardTarget2Id: ""}
+    dispatch({type: Actions.UpdateState, payload})
 
     let nextTurn = nextIdx(curTurn)
     while (players.at(nextTurn).pass) {
@@ -198,19 +197,22 @@ const useFlow = () => {
 
   const handleSetActive = (id: string) => {
     if (0 === curHandPhase) {
-      dispatch({type: Actions.SetActive, payload: id})
+      const payload = {cardActiveId: id}
+      dispatch({type: Actions.UpdateState, payload})
     }
   }
 
   const handleSetTarget = (id: string) => {
     if (0 === curHandPhase || !isEmpty(curSpell)) {
-      dispatch({type: Actions.SetTarget, payload: id})
+      const payload = {cardTargetId: id}
+      dispatch({type: Actions.UpdateState, payload})
     }
   }
 
   const handleSetTarget2 = (id: string) => {
     if (0 === curHandPhase || !isEmpty(curSpell)) {
-      dispatch({type: Actions.SetTarget2, payload: id})
+      const payload = {cardTarget2Id: id}
+      dispatch({type: Actions.UpdateState, payload})
     }
   }
   //-------------------------------------------------------
@@ -270,17 +272,15 @@ const useFlow = () => {
   }
 
   const handleUncastSpell = () => {
-    dispatch({type: Actions.CastSpell, payload: Ability.Empty})
-    dispatch({type: Actions.SetActive, payload: ""})
-    dispatch({type: Actions.SetTarget, payload: ""})
-    dispatch({type: Actions.SetTarget2, payload: ""})
+    const payload = {cardActiveId: "", cardTargetId: "", cardTarget2Id: "", curSpell: Ability.Empty}
+    dispatch({type: Actions.UpdateState, payload})
   }
 
   const handleCastSpell = (cardId: string, spellId: TAbility) => {
     switch (spellId) {
       case Ability.Carnivore: {
-        dispatch({type: Actions.CastSpell, payload: Ability.Carnivore})
-        dispatch({type: Actions.SetActive, payload: cardId})
+        const payload = {cardActiveId: cardId, curSpell: Ability.Carnivore}
+        dispatch({type: Actions.UpdateState, payload})
         break
       }
       case Ability.Fat: {
@@ -296,8 +296,8 @@ const useFlow = () => {
         break
       }
       case Ability.Piracy: {
-        dispatch({type: Actions.CastSpell, payload: Ability.Piracy})
-        dispatch({type: Actions.SetActive, payload: cardId})
+        const payload = {cardActiveId: cardId, curSpell: Ability.Piracy}
+        dispatch({type: Actions.UpdateState, payload})
         break
       }
       default: {
