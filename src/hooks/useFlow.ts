@@ -32,6 +32,7 @@ const useFlow = () => {
     dice,
     findCard,
     getAbility,
+    getPairId,
     getParent,
     getDropIds,
     getZone,
@@ -160,8 +161,16 @@ const useFlow = () => {
 
   const handlePlaySlot = (cardId: string) => {
     // console.log(`- Play Slot: ${cardId}`)
+    let nTokens = tokens - 1, pairId = "_"
+    const parent = getParent(cardId)
+    if (nTokens > 0 && hasTrait(parent.id, Ability.Communication)) {
+      --nTokens
+      pairId = getPairId(parent.id, Ability.Communication)
+    }
+    handleUpdateTokens(nTokens)
+
     const updCards = cards
-      .map(c => c.id === cardId ? {...c, emptySlots: c.emptySlots - 1}: c)
+      .map(c => c.id === cardId || c.id === pairId ? {...c, emptySlots: c.emptySlots - 1}: c)
     dispatch({type: Actions.UpdateCards, payload: updCards})
 
     handleNextTurn()

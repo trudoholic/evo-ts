@@ -49,7 +49,6 @@ const Card = (card: ICard) => {
     handleSetActive,
     handleSetTarget,
     handleSetTarget2,
-    handleUpdateTokens,
   } = useFlow()
 
   const handleClick = (id: string) => {
@@ -65,7 +64,6 @@ const Card = (card: ICard) => {
 
   const handleSlotClick = (cardId: string) => {
     // console.log("Slot:", cardId)
-    handleUpdateTokens(tokens - 1)
     handlePlaySlot(cardId)
   }
 

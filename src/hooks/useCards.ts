@@ -69,7 +69,7 @@ const useCards = () => {
 
   const hasTrait = (cardId: string, spellId: TAbility) => {
     return cards
-      .filter(c => c.idCard === cardId)
+      .filter(c => c.idCard === cardId || c.idCard2 === cardId)
       .some(c => c.abId === spellId)
   }
   //-------------------------------------------------------
@@ -236,6 +236,14 @@ const useCards = () => {
   }
   //-------------------------------------------------------
 
+  const getPairId = (cardId: string, ability: TAbility) => {
+    const card = cards
+      .filter(c => c.idCard === cardId || c.idCard2 === cardId)
+      .find(c => c.abId === ability)
+    if (!card) return "_"
+    return card.idCard === cardId? card.idCard2: card.idCard
+  }
+
   const getParent = (cardId: string) => {
     const card = findCard(cardId)
     return ("" === card.idCard) ? card : findCard(card.idCard)
@@ -305,6 +313,7 @@ const useCards = () => {
     dice,
     findCard,
     getAbility,
+    getPairId,
     getParent,
     getDropIds,
     getTraits,
