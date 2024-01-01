@@ -100,7 +100,7 @@ const useCards = () => {
   const isAbilityEnabled = (card: ICard): boolean => {
     const {abCooldown, abUsed, id} = card
     return !isCardDisabled(card) && hasAbility(card) && !abCooldown && !abUsed
-      && hasEmpty(id) && isAbilityExtra(card)
+      && (hasEmpty(id) || hasFatEmpty(id)) && isAbilityExtra(card)
   }
 
   const isCardDisabled = (card: ICard): boolean => {
@@ -332,6 +332,7 @@ const useCards = () => {
     isValidSlot,
     slotIdsChecked,
     slotIdsEmpty,
+    slotIdsFatEmpty,
   }
 }
 
