@@ -216,7 +216,7 @@ const useCards = () => {
     const {abId, id} = card
     switch (abId) {
       case Ability.Fat: {
-        return !hasEmpty(id)
+        return !card.idCard || !hasEmpty(id)
       }
       default: {
         return true
@@ -285,14 +285,10 @@ const useCards = () => {
 
   const slotIdsFatEmpty = (cardId: string) => {
     const card = getParent(cardId)
-    const ids = getTraits(card.id)
+    return getTraits(card.id)
       .filter(c => Ability.Fat === c.abId)
       .filter(c => hasSlots(c) > 0 && c.emptySlots > 0)
       .map(c => c.id)
-    if (card.emptySlots > 0) {
-      ids.unshift(card.id)
-    }
-    return ids
   }
 
   const hasFatEmpty = (cardId: string) => {

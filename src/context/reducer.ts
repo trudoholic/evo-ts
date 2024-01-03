@@ -83,6 +83,7 @@ export const reducer = (state: IState, action: TAction): IState => {
     case Actions.DropCards: {
       const dropIds = action.payload
       const dropped = (c: ICard) => dropIds.includes(c.id) || dropIds.includes(c.idCard) || dropIds.includes(c.idCard2)
+      const hpSlot = (c: ICard) => "" === c.idCard || Ability.Fat !== c.abId
       const nEmptySlots = (c: ICard) => Zone.Keep !== c.idZone? 0: "" === c.idCard? 1: nSlots(c.abId)
 
       return { ...state,
@@ -93,7 +94,7 @@ export const reducer = (state: IState, action: TAction): IState => {
             idCard2: "",
             poisoned: false,
             emptySlots: nEmptySlots(c),
-          }: Ability.Fat !== c.abId? {...c,
+          }: hpSlot(c) ? {...c,
             emptySlots: nEmptySlots(c),
           }: c
         )

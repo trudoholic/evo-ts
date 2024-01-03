@@ -171,9 +171,9 @@ const useFlow = () => {
     }
     handleUpdateTokens(nTokens)
 
-    let updCards = getBlueTokens(cards, cardId, 1)
+    let updCards = getExtraTokens(cards, cardId, 1)
     if (pairId) {
-      updCards = getBlueTokens(updCards, pairId, 1)
+      updCards = getExtraTokens(updCards, pairId, 1)
     }
     dispatch({type: Actions.UpdateCards, payload: updCards})
 
@@ -363,35 +363,37 @@ const useFlow = () => {
     handleNextTurn()
   }
 
-  const getBlueTokens = (prevCards: ICard[], cardId: string, n: number): ICard[] => {
+  const getExtraTokens = (prevCards: ICard[], cardId: string, n: number): ICard[] => {
     console.log(n)
-    return getBlueToken(prevCards, cardId)
+    return getExtraToken(prevCards, cardId)
   }
 
-  const getBlueToken = (prevCards: ICard[], cardId: string): ICard[] => {
+  const getExtraToken = (prevCards: ICard[], cardId: string): ICard[] => {
+    let updCards = prevCards
+
     const emptyIds = slotIdsEmpty(cardId)
     if (emptyIds.length) {
-      return prevCards
+      updCards = prevCards
         .map(c => c.id === emptyIds.at(0)? {...c,
           emptySlots: c.emptySlots - 1,
         } as ICard: c)
     } else {
       const emptyFatIds = slotIdsFatEmpty(cardId)
       if (emptyFatIds.length) {
-        return prevCards
+        updCards = prevCards
           .map(c => c.id === emptyFatIds.at(0)? {...c,
             emptySlots: c.emptySlots - 1,
           } as ICard: c)
-      } else {
-        return prevCards
       }
     }
+
+    return updCards
   }
 
   const castSpellPiracy = (cardId: string, targetId: string) => {
     const checkedIds = slotIdsChecked(targetId).slice(0, 1)
 
-    const updCards = getBlueTokens(cards, cardId, 1)
+    const updCards = getExtraTokens(cards, cardId, 1)
       .map(c => checkedIds.includes(c.id)? {...c,
         emptySlots: c.emptySlots + 1,
       } as ICard: c)
