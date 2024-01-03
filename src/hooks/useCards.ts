@@ -240,7 +240,7 @@ const useCards = () => {
     const card = cards
       .filter(c => c.idCard === cardId || c.idCard2 === cardId)
       .find(c => c.abId === ability)
-    if (!card) return "_"
+    if (!card) return ""
     return card.idCard === cardId? card.idCard2: card.idCard
   }
 

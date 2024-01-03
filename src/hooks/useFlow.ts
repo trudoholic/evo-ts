@@ -364,12 +364,12 @@ const useFlow = () => {
   }
 
   const getExtraTokens = (prevCards: ICard[], cardId: string, n: number): ICard[] => {
-    console.log(n)
+    console.log("n =", n)
     return getExtraToken(prevCards, cardId)
   }
 
   const getExtraToken = (prevCards: ICard[], cardId: string): ICard[] => {
-    let updCards = prevCards
+    let updCards = prevCards, pairId = ""
 
     const emptyIds = slotIdsEmpty(cardId)
     if (emptyIds.length) {
@@ -384,6 +384,21 @@ const useFlow = () => {
           .map(c => c.id === emptyFatIds.at(0)? {...c,
             emptySlots: c.emptySlots - 1,
           } as ICard: c)
+      }
+    }
+
+    const parent = getParent(cardId)
+    if (hasTrait(parent.id, Ability.Cooperation)) {
+      const pairAbilityCard = updCards
+        .filter(c => c.idCard === parent.id || c.idCard2 === parent.id)
+        .find(c => c.abId === Ability.Cooperation)
+
+      if (!pairAbilityCard.abUsed) {
+        pairAbilityCard.abUsed = true
+        pairId = getPairId(parent.id, Ability.Cooperation)
+        if (pairId) {
+          updCards = getExtraTokens(updCards, pairId, 1)
+        }
       }
     }
 
