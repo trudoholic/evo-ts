@@ -19,6 +19,7 @@ const useCards = () => {
     curSpell,
     // isReverse,
     // nPlayers,
+    isLastHand,
     players,
   } = state as IState
 
@@ -118,6 +119,9 @@ const useCards = () => {
     switch (abId) {
       case Ability.Fat: {
         return !emptySlots
+      }
+      case Ability.Hibernation: {
+        return !isLastHand
       }
       default: {
         return true

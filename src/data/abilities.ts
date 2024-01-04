@@ -90,7 +90,7 @@ export const getSpellId = (idx: number): TAbility => [
   Ability.Fat,
   Ability.HighBodyWeight,
   Ability.HighBodyWeight,
-  Ability.Piracy,
-  Ability.Piracy,
+  Ability.Hibernation,
+  Ability.Hibernation,
 ][idx % 8]
 
