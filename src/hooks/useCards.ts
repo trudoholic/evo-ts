@@ -72,6 +72,12 @@ const useCards = () => {
       .filter(c => c.idCard === cardId || c.idCard2 === cardId)
       .some(c => c.abId === spellId)
   }
+
+  const isHost = (cardId: string) => {
+    return cards
+      .filter(c => c.idCard2 === cardId)
+      .some(c => c.abId === Ability.Symbiosis)
+  }
   //-------------------------------------------------------
 
   const isInPack = (cardId: string, card: ICard): boolean => {
@@ -142,8 +148,10 @@ const useCards = () => {
     else if (hasTrait(id, Ability.Swimming) && !hasTrait(activeParent.id, Ability.Swimming)) {
       return false
     }
-    else if (!hasTrait(id, Ability.Swimming) && hasTrait(activeParent.id, Ability.Swimming)
-    ) {
+    else if (!hasTrait(id, Ability.Swimming) && hasTrait(activeParent.id, Ability.Swimming)) {
+      return false
+    }
+    else if (isHost(id)) {
       return false
     }
     return true
@@ -322,6 +330,7 @@ const useCards = () => {
     isAbilityEnabled,
     isCardDisabled,
     isEverySlotChecked,
+    isHost,
     isInPack,
     isKeeper,
     isValidCard,

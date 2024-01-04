@@ -34,9 +34,11 @@ const Card = (card: ICard) => {
     hasSlots,
     isAbilityEnabled,
     isCardDisabled,
+    isHost,
     isValidSlot,
   } = useCards()
 
+  const host = isHost(id)
   const traits = getTraits(id)
   const slotDisabled = !tokens || !emptySlots || !isValidSlot(card)
   const cardAbility = hasAbility(card)
@@ -87,7 +89,7 @@ const Card = (card: ICard) => {
         ) : null}
 
         {traits.length ? <span>{`Pack [${traits.length}] `}</span> : null}
-        <span>{`${abId}: ${id}${poisoned? " *": ""}`}</span>
+        <span>{`${host? "#": ""}${abId}: ${id}${poisoned? " *": ""}`}</span>
 
         {hasSlots(card) ? (
           <FlexRow>
