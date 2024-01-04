@@ -171,7 +171,7 @@ const useFlow = () => {
     }
     handleUpdateTokens(nTokens)
 
-    let updCards = getExtraTokens(cards, cardId, 1)
+    let updCards = getToken(cards, cardId)
     if (pairId) {
       updCards = getExtraTokens(updCards, pairId, 1)
     }
@@ -368,10 +368,17 @@ const useFlow = () => {
     return getExtraToken(prevCards, cardId)
   }
 
-  const getExtraToken = (prevCards: ICard[], cardId: string): ICard[] => {
-    let updCards = prevCards, pairId = ""
+  const getToken = (prevCards: ICard[], cardId: string): ICard[] => {
+    let updCards = prevCards
+      .map(c => c.id === cardId? {...c, emptySlots: c.emptySlots - 1}: c)
+    updCards = handleCooperation(updCards, cardId)
+    return updCards
+  }
 
+  const getExtraToken = (prevCards: ICard[], cardId: string): ICard[] => {
+    let updCards = prevCards
     const emptyIds = slotIdsEmpty(cardId)
+
     if (emptyIds.length) {
       updCards = prevCards
         .map(c => c.id === emptyIds.at(0)? {...c,
@@ -386,8 +393,14 @@ const useFlow = () => {
           } as ICard: c)
       }
     }
+    updCards = handleCooperation(updCards, cardId)
+    return updCards
+  }
 
+  const handleCooperation = (prevCards: ICard[], cardId: string): ICard[] => {
+    let updCards = prevCards, pairId = ""
     const parent = getParent(cardId)
+
     if (hasTrait(parent.id, Ability.Cooperation)) {
       const pairAbilityCard = updCards
         .filter(c => c.idCard === parent.id || c.idCard2 === parent.id)
@@ -401,7 +414,6 @@ const useFlow = () => {
         }
       }
     }
-
     return updCards
   }
 
