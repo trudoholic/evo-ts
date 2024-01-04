@@ -222,6 +222,15 @@ const useCards = () => {
 
   const isSlotExtra = (card: ICard): boolean => {
     const {abId, id} = card
+
+    const parent = getParent(id)
+    if (isHost(parent.id)) {
+      const pairId = getPairId(parent.id, Ability.Symbiosis)
+      if (hasEmpty(pairId)) {
+        return false
+      }
+    }
+
     switch (abId) {
       case Ability.Fat: {
         return !card.idCard || !hasEmpty(id)
