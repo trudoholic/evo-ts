@@ -220,16 +220,18 @@ const useCards = () => {
   }
   //-------------------------------------------------------
 
-  const isSlotExtra = (card: ICard): boolean => {
-    const {abId, id} = card
-
+  const pairHasEmpty = (id: string): boolean => {
     const parent = getParent(id)
     if (isHost(parent.id)) {
       const pairId = getPairId(parent.id, Ability.Symbiosis)
-      if (hasEmpty(pairId)) {
-        return false
-      }
+      return hasEmpty(pairId)
     }
+    return false
+  }
+
+  const isSlotExtra = (card: ICard): boolean => {
+    const {abId, id} = card
+    if (pairHasEmpty(id)) return false
 
     switch (abId) {
       case Ability.Fat: {
@@ -344,6 +346,7 @@ const useCards = () => {
     isKeeper,
     isValidCard,
     isValidSlot,
+    pairHasEmpty,
     slotIdsChecked,
     slotIdsEmpty,
     slotIdsFatEmpty,

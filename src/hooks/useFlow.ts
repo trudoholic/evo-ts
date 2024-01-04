@@ -38,6 +38,7 @@ const useFlow = () => {
     getZone,
     hasTrait,
     isInPack,
+    pairHasEmpty,
     slotIdsChecked,
     slotIdsEmpty,
     slotIdsFatEmpty,
@@ -364,6 +365,10 @@ const useFlow = () => {
   }
 
   const getExtraTokens = (prevCards: ICard[], cardId: string, n: number): ICard[] => {
+    if (pairHasEmpty(cardId)) {
+      console.log("--- Ability.Symbiosis ---")
+      return prevCards
+    }
     console.log("n =", n)
     return getExtraToken(prevCards, cardId)
   }
