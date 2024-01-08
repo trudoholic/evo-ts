@@ -321,44 +321,55 @@ const useFlow = () => {
   }
 
   const castSpellCarnivore = (cardId: string, targetId: string) => {
-    const parent = getParent(cardId)
-    const d = dice(6)
-    const runAway: boolean = hasTrait(targetId, Ability.Running)? (d > 3): false
-    console.log("Runaway:", runAway, '(', d, ')')
-
-    const dropId = runAway? "": targetId
-    const fedSlots = hasTrait(targetId, Ability.TailLoss)? 1: 2
-    const ids = runAway? []: slotIdsEmpty(cardId).slice(0, fedSlots)
-
-    const food = ids.length > 1? 1: fedSlots
-    const feed = (n: number) => n > food? n - food: 0
-
-    const scavengers = getAbility(Ability.Scavenger, curPlayerId)
-    const scvId: string = scavengers[0] || ""
-    if (scvId) ids.push(scvId)
-
-    const dropped = (c: ICard) => isInPack(dropId, c)
-      && (!hasTrait(targetId, Ability.TailLoss) || Ability.TailLoss === c.abId)
-
-    const updCards = cards
+    let updCards = cards
       .map(c => c.id === cardId? {...c,
         abCooldown: 1,
-      } as ICard: c)
-      .map(c => c.id === parent.id? {...c,
-        poisoned: !runAway && !hasTrait(targetId, Ability.TailLoss) && hasTrait(targetId, Ability.Poisonous),
       } as ICard: c)
       .map(c => c.idPlayer === curPlayerId && c.abId === Ability.Carnivore? {...c,
         abUsed: true
       } as ICard: c)
-      .map(c => ids.includes(c.id)? {...c,
-        emptySlots: feed(c.emptySlots) ,
-      } as ICard: c)
-      .map(c => dropped(c) ? { ...c,
-        idZone: Zone.DiscardPile,
-        idCard: "",
-        idCard2: "",
-        emptySlots: nSlots(c.abId),
-      } as ICard: c)
+
+    if (hasTrait(targetId, Ability.Running)) {
+      const diceRoll = dice(6)
+      console.log("Runaway: [", diceRoll, "]", diceRoll > 3)
+      if (diceRoll > 3) {
+        dispatch({type: Actions.UpdateCards, payload: updCards})
+        handleNextTurn()
+        return
+      }
+    }
+
+    const parent = getParent(cardId)
+
+    if (hasTrait(targetId, Ability.TailLoss)) {
+
+      updCards = updCards
+        .map(c => isInPack(targetId, c) && Ability.TailLoss === c.abId ? { ...c,
+          idZone: Zone.DiscardPile, idCard: "", idCard2: "",
+        } as ICard: c)
+
+      updCards = getExtraTokens(updCards, parent.id, 1)
+
+    } else {
+
+      updCards = updCards
+        .map(c => isInPack(targetId, c) ? { ...c,
+          idZone: Zone.DiscardPile, idCard: "", idCard2: "",
+          emptySlots: nSlots(c.abId),
+        } as ICard: c)
+
+      updCards = getExtraTokens(updCards, parent.id, 2)
+
+      if (hasTrait(targetId, Ability.Poisonous)) {
+        updCards = updCards.map(c => c.id === parent.id? {...c, poisoned: true } as ICard: c)
+      }
+
+      const scavengers = getAbility(Ability.Scavenger, curPlayerId)
+      const scvId: string = scavengers[0] || ""
+      if (scvId) {
+        updCards = getExtraTokens(updCards, scvId, 1)
+      }
+    }
 
     dispatch({type: Actions.UpdateCards, payload: updCards})
     handleNextTurn()
@@ -369,35 +380,27 @@ const useFlow = () => {
       console.log("--- Ability.Symbiosis ---")
       return prevCards
     }
-    console.log("n =", n)
-    return getExtraToken(prevCards, cardId)
+
+    const ids = [...slotIdsEmpty(cardId), ...slotIdsFatEmpty(cardId)]
+    let updCards = prevCards
+    for (let i = 0; i < n; ++i) {
+      updCards = getExtraToken(updCards, cardId, ids, i)
+    }
+    return updCards
+  }
+
+  const getExtraToken = (prevCards: ICard[], cardId: string, ids: string[], idx: number): ICard[] => {
+    let updCards = prevCards
+      .map(c => c.id === ids.at(idx)? {...c,
+        emptySlots: c.emptySlots - 1,
+      } as ICard: c)
+    updCards = handleCooperation(updCards, cardId)
+    return updCards
   }
 
   const getToken = (prevCards: ICard[], cardId: string): ICard[] => {
     let updCards = prevCards
       .map(c => c.id === cardId? {...c, emptySlots: c.emptySlots - 1}: c)
-    updCards = handleCooperation(updCards, cardId)
-    return updCards
-  }
-
-  const getExtraToken = (prevCards: ICard[], cardId: string): ICard[] => {
-    let updCards = prevCards
-    const emptyIds = slotIdsEmpty(cardId)
-
-    if (emptyIds.length) {
-      updCards = prevCards
-        .map(c => c.id === emptyIds.at(0)? {...c,
-          emptySlots: c.emptySlots - 1,
-        } as ICard: c)
-    } else {
-      const emptyFatIds = slotIdsFatEmpty(cardId)
-      if (emptyFatIds.length) {
-        updCards = prevCards
-          .map(c => c.id === emptyFatIds.at(0)? {...c,
-            emptySlots: c.emptySlots - 1,
-          } as ICard: c)
-      }
-    }
     updCards = handleCooperation(updCards, cardId)
     return updCards
   }

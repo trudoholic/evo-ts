@@ -84,13 +84,13 @@ export const isPair = (ability: TAbility) => !!abilityMap.get(ability)?.pair
 export const nSlots = (ability: TAbility): number => abilityMap.get(ability)?.nSlots ?? 0
 
 export const getSpellId = (idx: number): TAbility => [
-  Ability.Symbiosis,
-  Ability.Symbiosis,
-  Ability.Fat,
-  Ability.Fat,
-  Ability.HighBodyWeight,
-  Ability.HighBodyWeight,
-  Ability.Hibernation,
-  Ability.Hibernation,
+  Ability.Scavenger,
+  Ability.Scavenger,
+  Ability.TailLoss,
+  Ability.TailLoss,
+  Ability.Cooperation,
+  Ability.Cooperation,
+  Ability.Carnivore,
+  Ability.Carnivore,
 ][idx % 8]
 
