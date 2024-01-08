@@ -41,6 +41,7 @@ const useFlow = () => {
     pairHasEmpty,
     slotIdsChecked,
     slotIdsEmpty,
+    slotIdsEmpty2,
     slotIdsFatEmpty,
   } = useCards()
 
@@ -343,8 +344,10 @@ const useFlow = () => {
 
     if (hasTrait(targetId, Ability.TailLoss)) {
 
+      const ability = hasTrait(targetId, Ability.Parasite) ? Ability.Parasite : Ability.TailLoss
+
       updCards = updCards
-        .map(c => isInPack(targetId, c) && Ability.TailLoss === c.abId ? { ...c,
+        .map(c => isInPack(targetId, c) && ability === c.abId ? { ...c,
           idZone: Zone.DiscardPile, idCard: "", idCard2: "",
         } as ICard: c)
 
@@ -381,7 +384,8 @@ const useFlow = () => {
       return prevCards
     }
 
-    const ids = [...slotIdsEmpty(cardId), ...slotIdsFatEmpty(cardId)]
+    const ids = [...slotIdsEmpty(cardId), ...slotIdsEmpty2(cardId), ...slotIdsFatEmpty(cardId)]
+    console.log("--->", ids)
     let updCards = prevCards
     for (let i = 0; i < n; ++i) {
       updCards = getExtraToken(updCards, cardId, ids, i)

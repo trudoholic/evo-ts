@@ -306,6 +306,14 @@ const useCards = () => {
     return slotIdsEmpty(cardId).length > 0
   }
 
+  const slotIdsEmpty2 = (cardId: string) => {
+    const card = getParent(cardId)
+    const ids = getTraits(card.id)
+      .filter(c => hasSlots(c) > 0 && c.emptySlots > 1)
+      .map(c => c.id)
+    return ids
+  }
+
   const slotIdsFatEmpty = (cardId: string) => {
     const card = getParent(cardId)
     return getTraits(card.id)
@@ -353,6 +361,7 @@ const useCards = () => {
     pairHasEmpty,
     slotIdsChecked,
     slotIdsEmpty,
+    slotIdsEmpty2,
     slotIdsFatEmpty,
   }
 }
