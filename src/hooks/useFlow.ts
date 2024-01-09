@@ -370,8 +370,16 @@ const useFlow = () => {
         updCards = updCards.map(c => c.id === parent.id? {...c, poisoned: true } as ICard: c)
       }
 
-      const scavengers = getAbility(Ability.Scavenger, curPlayerId)
-      const scvId: string = scavengers[0] || ""
+      let scvId = ""
+      for (let i = 0; i < nPlayers; ++i) {
+        const player = (curTurn + i) % nPlayers
+        const playerId = players.at(player)?.id
+        const scavengers = getAbility(Ability.Scavenger, playerId)
+        if (scavengers.length) {
+          scvId = scavengers[0]
+          break
+        }
+      }
       if (scvId) {
         updCards = getExtraTokens(updCards, scvId, 1)
       }
@@ -388,7 +396,6 @@ const useFlow = () => {
     }
 
     const ids = [...slotIdsEmpty(cardId), ...slotIdsEmpty2(cardId), ...slotIdsFatEmpty(cardId)]
-    console.log("--->", ids)
     let updCards = prevCards
     for (let i = 0; i < n; ++i) {
       updCards = getExtraToken(updCards, cardId, ids, i)

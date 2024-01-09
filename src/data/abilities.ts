@@ -88,8 +88,8 @@ export const getSpellId = (idx: number): TAbility => [
   Ability.TailLoss,
   Ability.Parasite,
   Ability.Parasite,
-  Ability.Cooperation,
-  Ability.Cooperation,
+  Ability.Scavenger,
+  Ability.Scavenger,
   Ability.Carnivore,
   Ability.Carnivore,
 ][idx % 8]

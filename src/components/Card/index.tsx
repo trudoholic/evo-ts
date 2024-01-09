@@ -90,8 +90,8 @@ const Card = (card: ICard) => {
           </FlexRow>
         ) : null}
 
-        {traits.length ? <span>{`Pack [${traits.length}] `}</span> : null}
-        <span>{`${host? "#": ""}${abId}: ${id}${poisoned? " *": ""}`}</span>
+        {traits.length ? <span>{`[${traits.length}] `}</span> : null}
+        <span>{`${host? "#": ""}${abId}:${id}${poisoned? " *": ""}`}</span>
 
         {hasSlots(card) ? (
           <FlexRow $paddingX={0}>
