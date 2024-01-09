@@ -1,9 +1,15 @@
+import {useState} from "react"
 import {IState} from "../../context/state"
 import {useAppContext} from "../../context"
 import useCards from "../../hooks/useCards"
 import useFlow from "../../hooks/useFlow"
+import Dice from "../Dice"
+import {FlexRow, FlexRowContainer} from "../FlexRow"
 
 const Phase1 = () => {
+  const [diceRoll1, setDiceRoll1] = useState(0)
+  const [diceRoll2, setDiceRoll2] = useState(0)
+
   const { state } = useAppContext()
   const {
     tokens,
@@ -21,6 +27,8 @@ const Phase1 = () => {
   const getTokens = () => {
     const d1 = dice(6)
     const d2 = dice(6)
+    setDiceRoll1(d1)
+    setDiceRoll2(d2)
     const c = 10
     console.log("RND", d1, d2, c)
     handleUpdateTokens(d1 + d2 + c)
@@ -31,12 +39,17 @@ const Phase1 = () => {
       {
         tokens?
           <>
-            <h2>{`[${tokens}]`}</h2>
+            <FlexRowContainer $widthPercentage={25}>
+              <FlexRow $paddingX={0}>
+                <Dice diceRoll={diceRoll1} />
+                <Dice diceRoll={diceRoll2} />
+              </FlexRow>
+            </FlexRowContainer>
+            <h2>{`Tokens: ${tokens}`}</h2>
             <button onClick={() => handleNextHandPhase(2)}>
               Next Phase
             </button>
           </>:<>
-            <h2>&#9856;&#9857;&#9858;&#9859;&#9860;&#9861;</h2>
             <button onClick={getTokens}>
               Get Tokens
             </button>

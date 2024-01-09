@@ -1,9 +1,10 @@
 import {useAppContext} from "../../context"
 import {IState} from "../../context/state"
 import {ICard} from "../../data/cards"
+import {Zone} from "../../data/zones"
 import useCards from "../../hooks/useCards"
 import useFlow from "../../hooks/useFlow"
-import {FlexRow} from "./FlexRow"
+import {FlexRow} from "../FlexRow"
 import {StyledBox} from "./StyledBox"
 import {StyledCard} from "./StyledCard"
 import {StyledOrb} from "./StyledOrb"
@@ -15,6 +16,7 @@ const Card = (card: ICard) => {
     poisoned,
     abId,
     abCooldown,
+    idZone,
   } = card
 
   const { state } = useAppContext()
@@ -76,9 +78,9 @@ const Card = (card: ICard) => {
       $disabled={cardDisabled}
       {...(!cardDisabled && { "onClick": () => handleClick(id) })}
     >
-      <FlexRow>
+      <FlexRow $paddingX={Zone.Keep === idZone ? 16: 0}>
         {cardAbility ? (
-          <FlexRow>
+          <FlexRow $paddingX={0}>
             <StyledOrb
               $disabled={!abilityEnabled}
               $ready={!abCooldown}
@@ -92,7 +94,7 @@ const Card = (card: ICard) => {
         <span>{`${host? "#": ""}${abId}: ${id}${poisoned? " *": ""}`}</span>
 
         {hasSlots(card) ? (
-          <FlexRow>
+          <FlexRow $paddingX={0}>
             {emptySlots > 1? `[${emptySlots}]`: null}&nbsp;
             <StyledBox
               $disabled={slotDisabled}

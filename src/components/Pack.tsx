@@ -14,7 +14,7 @@ export const PackContainer = styled.div`
 `
 
 interface IPackProps {
-  $someEmpty: boolean;
+  $someEmpty: boolean
 }
 
 export const StyledPack = styled.div<IPackProps>`
