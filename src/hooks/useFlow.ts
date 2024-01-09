@@ -75,6 +75,7 @@ const useFlow = () => {
   }
 
   const onEndHandPhase = () => {
+    // console.log('=== End Phase ===')
     dispatch({type: Actions.NextStep, payload: 0})
     console.groupEnd()
   }
@@ -99,10 +100,12 @@ const useFlow = () => {
   }
 
   const onEndHand = () => {
+    // console.log('### End Hand ###')
     console.groupEnd()
   }
 
   const handleNextHand = () => {
+    onEndHandPhase()
     onEndHand()
     const nextHand = nextIdx(curHand)
     onBeginHand(nextHand)

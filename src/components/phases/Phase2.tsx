@@ -4,6 +4,7 @@ import useCards from "../../hooks/useCards"
 import useFlow from "../../hooks/useFlow"
 import {Zone} from "../../data/zones"
 
+/* Feed */
 const Phase2 = () => {
   const { state } = useAppContext()
   const {
@@ -32,7 +33,7 @@ const Phase2 = () => {
         tokens && !phaseEnd ?
           <>
             <h2>{`Turn: ${players.at(curTurn).name} (${curTurn})`}</h2>
-            <h2>{`Token Pool: [ ${tokens} ]`}</h2>
+            <h2>{`Tokens: ${tokens}`}</h2>
             {
               noKeep || isEverySlotChecked() ?
                 <button onClick={handlePass}>

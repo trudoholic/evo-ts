@@ -2,6 +2,7 @@ import {useAppContext} from "../../context"
 import {IState} from "../../context/state"
 import useFlow from "../../hooks/useFlow"
 
+/* Drop */
 const Phase3 = () => {
   const { state } = useAppContext()
   const {

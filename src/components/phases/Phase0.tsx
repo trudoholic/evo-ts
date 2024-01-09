@@ -5,6 +5,7 @@ import useFlow from "../../hooks/useFlow"
 import {isPair} from "../../data/abilities"
 import {Zone} from "../../data/zones"
 
+/* Play */
 const Phase0 = () => {
   const { state } = useAppContext()
   const {
@@ -52,8 +53,7 @@ const Phase0 = () => {
   return (
     <>
       <h2>{`Turn: ${players.at(curTurn).name} (${curTurn})`}</h2>
-      <h2>{`${phaseEnd?"All Players Have Passed":"*"}`}</h2>
-      <h2>{`Pair: ${pair}`}</h2>
+      {phaseEnd && <h2>All Players Have Passed</h2>}
       {
         phaseEnd?
           <>
