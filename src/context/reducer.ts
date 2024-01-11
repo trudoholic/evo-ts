@@ -25,7 +25,7 @@ export enum Actions {
 
 export type TAction =
   | { type: Actions.BeginGame, payload: number }
-  | { type: Actions.DrawRound, payload: { hand: number, nDraw: number } }
+  | { type: Actions.DrawRound, payload: number }
   | { type: Actions.DropCards, payload: string[] }
   | { type: Actions.EndGame }
   | { type: Actions.IncValue, payload: { idx: number, value: number } }
@@ -59,25 +59,23 @@ export const reducer = (state: IState, action: TAction): IState => {
     }
 
     case Actions.DrawRound: {
-      const nDraw = action.payload.nDraw
-      const getIdx = (i: number) => (action.payload.hand + Math.floor(i / nDraw)) % state.nPlayers
       const isDeck = (c: ICard) => c.idPlayer === commonId && c.idZone === Zone.DrawPile && c.idCard === ""
       const deck = state.cards.filter(card => isDeck(card))
       const rest = state.cards.filter(card => !isDeck(card))
+      const playerIds = getPlayerIds(state, action.payload)
 
-      const newDeck = deck.map(
-        (card, i) => i < nDraw * state.nPlayers ?
+      const updDeck = deck.map(
+        (card, i) => i < playerIds.length ?
           {
             ...card,
-            idPlayer: state.players.at(getIdx(i)).id,
+            idPlayer: playerIds[i],
             idZone: Zone.Hand,
             idCard: "",
             emptySlots: nSlots(card.abId),
           }
           : card
       )
-
-      return { ...state, cards: [...rest, ...newDeck] }
+      return { ...state, cards: [...rest, ...updDeck] }
     }
 
     case Actions.DropCards: {
@@ -179,4 +177,31 @@ export const reducer = (state: IState, action: TAction): IState => {
     }
 
   }
+}
+
+const getPlayerIds = (state: IState, hand: number) => {
+  const isKeep = (c: ICard, id: string) => c.idPlayer === id && c.idZone === Zone.Keep && c.idCard === ""
+  const nKeep = state.players.map(
+    player => state.cards.filter(card => isKeep(card, player.id)).length
+  )
+
+  const isHand = (c: ICard, id: string) => c.idPlayer === id && c.idZone === Zone.Hand && c.idCard === ""
+  const nHand = state.players.map(
+    player => state.cards.filter(card => isHand(card, player.id)).length
+  )
+
+  const defaultDraw = 6
+  const nDraw = nKeep.map(
+    (n, i) => !n && !nHand[i] ? defaultDraw: n + 1
+  )
+
+  let playerIds: string[] = []
+  const n = state.nPlayers
+  for (let i = 0; i < n; ++i) {
+    const idx = (hand + i) % n
+    const playerId = state.players.at(idx).id
+    playerIds = [...playerIds, ...Array(nDraw[idx]).fill(playerId)]
+  }
+
+  return playerIds
 }

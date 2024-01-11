@@ -6,8 +6,6 @@ import {ICard} from "../data/cards"
 import {Zone} from "../data/zones"
 import useCards from "../hooks/useCards"
 
-const nDraw = 8
-
 const useFlow = () => {
   const { state, dispatch } = useAppContext()
   const {
@@ -119,7 +117,7 @@ const useFlow = () => {
 
     const  eldestHand = Math.floor(Math.random() * n)
     console.log(`* Eldest Hand: ${eldestHand} *`)
-    dispatch({type: Actions.DrawRound, payload: {hand: eldestHand, nDraw}})
+    dispatch({type: Actions.DrawRound, payload: eldestHand})
     onBeginHand(eldestHand)
   }
 
@@ -236,7 +234,7 @@ const useFlow = () => {
   //-------------------------------------------------------
 
   const handleDrawStep = () => {
-    dispatch({type: Actions.DrawRound, payload: {hand: curHand, nDraw}})
+    dispatch({type: Actions.DrawRound, payload: curHand})
     dispatch({type: Actions.NextStep, payload: 2})
   }
 
