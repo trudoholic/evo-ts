@@ -47,6 +47,7 @@ interface IAbility{
   active?: boolean
   hex?: boolean
   kind?: string
+  nCards?: number
   nSlots?: number
   pair?: boolean
 }
@@ -54,21 +55,21 @@ interface IAbility{
 const abilityMap = new Map<TAbility, IAbility>([
   [Ability.Burrowing, {}],
   [Ability.Camouflage, {}],
-  [Ability.Carnivore, {active: true, kind: "feed", nSlots: 1}],
+  [Ability.Carnivore, {active: true, kind: "feed", nCards: 3, nSlots: 1}],
   [Ability.Communication, {pair: true}],
-  [Ability.Cooperation, {pair: true}],
-  [Ability.Fat, {active: true, nSlots: 1}],
+  [Ability.Cooperation, {nCards: 2, pair: true}],
+  [Ability.Fat, {active: true, nCards: 3, nSlots: 1}],
   [Ability.Grazing, {active: true}],
   [Ability.Hibernation, {active: true}],
-  [Ability.HighBodyWeight, {nSlots: 1}],
+  [Ability.HighBodyWeight, {nCards: 2, nSlots: 1}],
   [Ability.Mimicry, {}],
-  [Ability.Parasite, {hex: true, nSlots: 2}],
+  [Ability.Parasite, {hex: true, nCards: 2, nSlots: 2}],
   [Ability.Piracy, {active: true}],
   [Ability.Poisonous, {}],
   [Ability.Running, {}],
   [Ability.Scavenger, {kind: "feed"}],
   [Ability.SharpVision, {}],
-  [Ability.Swimming, {}],
+  [Ability.Swimming, {nCards: 2}],
   [Ability.Symbiosis, {pair: true}],
   [Ability.TailLoss, {}],
 ])
@@ -83,4 +84,5 @@ export const isHex = (ability: TAbility) => !!abilityMap.get(ability)?.hex
 export const isKind = (ability: TAbility, kind: string) => !!kind && kind === getKind(ability)
 export const isPair = (ability: TAbility) => !!abilityMap.get(ability)?.pair
 
+export const nCards = (ability: TAbility): number => abilityMap.get(ability)?.nCards ?? 1
 export const nSlots = (ability: TAbility): number => abilityMap.get(ability)?.nSlots ?? 0

@@ -1,4 +1,4 @@
-import {abilityList, TAbility} from "./abilities"
+import {abilityList, nCards, TAbility} from "./abilities"
 import {commonId} from "./players"
 import {Zone} from "./zones"
 
@@ -17,9 +17,9 @@ export interface ICard  {
 }
 
 const rawList = abilityList.reduce((list: TAbility[], a) =>
-  [...list, ...Array(4).fill(a)], []
+  [...list, ...Array(4 * nCards(a)).fill(a)], []
 )
-console.log(rawList)
+// console.log(rawList)
 
 const shuffle = (n: number, debug = false) => {
   const src = [...Array(n).keys()]
@@ -38,7 +38,7 @@ const rndList = shuffle(rawList.length)
 // const rndList = shuffle(rawList.length, true)
 console.log(rndList)
 
-const getId = (n: number) => `${('0' + n).slice(-2)}`
+const getId = (n: number) => `${('00' + n).slice(-3)}`
 
 const getCard = (i: number): ICard => ({
   id: getId(i + 1),
