@@ -1,5 +1,5 @@
+import {abilityList, TAbility} from "./abilities"
 import {commonId} from "./players"
-import {getSpellId, TAbility} from "./abilities"
 import {Zone} from "./zones"
 
 export interface ICard  {
@@ -16,19 +16,43 @@ export interface ICard  {
   poisoned: boolean
 }
 
-export const cards: ICard[] = [...Array(50)]
-  .map((_, i) => ({
-    id: `${('0' + (i + 1)).slice(-2)}`,
-    abId: getSpellId(i),
-    abCooldown: 0,
-    abUsed: false,
-    disabled: false,
-    idCard: "",
-    idCard2: "",
-    idPlayer: commonId,
-    idZone: Zone.DrawPile,
-    emptySlots: 0,
-    poisoned: false,
-  }))
+const rawList = abilityList.reduce((list: TAbility[], a) =>
+  [...list, ...Array(4).fill(a)], []
+)
+console.log(rawList)
 
+const shuffle = (n: number, debug = false) => {
+  const src = [...Array(n).keys()]
+  if (debug) return src
+
+  const result: number[] = []
+  while (src.length) {
+    const rnd = Math.floor(Math.random() * src.length)
+    const item = src.splice(rnd, 1)[0]
+    result.push(item)
+  }
+  return result
+}
+
+const rndList = shuffle(rawList.length)
+// const rndList = shuffle(rawList.length, true)
+console.log(rndList)
+
+const getId = (n: number) => `${('0' + n).slice(-2)}`
+
+const getCard = (i: number): ICard => ({
+  id: getId(i + 1),
+  abId: rawList[i],
+  abCooldown: 0,
+  abUsed: false,
+  disabled: false,
+  idCard: "",
+  idCard2: "",
+  idPlayer: commonId,
+  idZone: Zone.DrawPile,
+  emptySlots: 0,
+  poisoned: false,
+})
+
+export const cards: ICard[] = rndList.map((i) => getCard(i))
 // console.log(cards)

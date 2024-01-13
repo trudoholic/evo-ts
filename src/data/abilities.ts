@@ -73,6 +73,8 @@ const abilityMap = new Map<TAbility, IAbility>([
   [Ability.TailLoss, {}],
 ])
 
+export const abilityList = [...abilityMap.keys()]
+
 export const getKind = (ability: TAbility) => abilityMap.get(ability)?.kind ?? ""
 
 export const isActive = (ability: TAbility) => !!abilityMap.get(ability)?.active
@@ -82,15 +84,3 @@ export const isKind = (ability: TAbility, kind: string) => !!kind && kind === ge
 export const isPair = (ability: TAbility) => !!abilityMap.get(ability)?.pair
 
 export const nSlots = (ability: TAbility): number => abilityMap.get(ability)?.nSlots ?? 0
-
-export const getSpellId = (idx: number): TAbility => [
-  Ability.TailLoss,
-  Ability.TailLoss,
-  Ability.Parasite,
-  Ability.Parasite,
-  Ability.Scavenger,
-  Ability.Scavenger,
-  Ability.Carnivore,
-  Ability.Carnivore,
-][idx % 8]
-
