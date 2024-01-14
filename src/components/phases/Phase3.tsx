@@ -1,5 +1,6 @@
 import {useAppContext} from "../../context"
 import {IState} from "../../context/state"
+import useCards from "../../hooks/useCards"
 import useFlow from "../../hooks/useFlow"
 
 /* Drop */
@@ -9,6 +10,11 @@ const Phase3 = () => {
     curStep,
     isLastHand,
   } = state as IState
+
+  const {
+    getDropIds,
+    isDeckEmpty,
+  } = useCards()
 
   const {
     handleDrawStep,
@@ -21,7 +27,7 @@ const Phase3 = () => {
     <>
       {
         0 === curStep? <>
-            <button onClick={handleDropStep}>
+            <button onClick={() => handleDropStep(getDropIds())}>
               Drop Step
             </button>
           </>:
@@ -38,7 +44,7 @@ const Phase3 = () => {
                   End Game
                 </button>
               </>:<>
-                <button onClick={handleNextHand}>
+                <button onClick={() => handleNextHand(isDeckEmpty())}>
                   Next Hand
                 </button>
               </>

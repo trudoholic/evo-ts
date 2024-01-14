@@ -1,18 +1,19 @@
 import {useAppContext} from "../context"
-// import {Actions} from "../context/reducer"
+import {Actions} from "../context/reducer"
 import {IState} from "../context/state"
 import {ICard} from "../data/cards"
 import {commonId} from "../data/players"
 import {Ability, getKind, isActive, isEmpty, isHex, isKind, nSlots, TAbility} from "../data/abilities"
 import {Zone} from "../data/zones"
+import useFlow from "./useFlow"
 
 const useCards = () => {
-  const { state } = useAppContext()
-  // const { state, dispatch } = useAppContext()
+  const { state, dispatch } = useAppContext()
   const {
     cards,
     cardActiveId,
     cardTargetId,
+    cardTarget2Id,
     curHandPhase,
     // curHand,
     curTurn,
@@ -22,6 +23,10 @@ const useCards = () => {
     isLastHand,
     players,
   } = state as IState
+
+  const {
+    handleNextTurn,
+  } = useFlow()
 
   const curPlayerId = players.at(curTurn)?.id ?? ""
   //-------------------------------------------------------
@@ -60,6 +65,9 @@ const useCards = () => {
   const getZone = (zoneId: string, playerId: string = commonId) => (
     cards.filter(({idPlayer, idZone, idCard}) => idPlayer === playerId && idZone === zoneId && idCard === "")
   )
+  //-------------------------------------------------------
+
+  const isDeckEmpty = () => !getZone(Zone.DrawPile).length
   //-------------------------------------------------------
 
   const hasKind = (cardId: string, kind: string) => {
@@ -335,6 +343,55 @@ const useCards = () => {
   }
   //-------------------------------------------------------
 
+  const playCard = (activeId: string) => {
+    const card = findCard(activeId)
+    if (card) {
+      dispatch({type: Actions.UpdateCard, payload: {
+          ...card,
+          emptySlots: 1,
+          // idPlayer: players.at(curTurn).id,
+          idZone: Zone.Keep,
+          idCard: "",
+        } as ICard})
+    }
+  }
+
+  const handlePlayCard = () => {
+    // console.log(`- Play Card: ${curTurn}`)
+    playCard(cardActiveId)
+
+    const rnd = Math.floor(Math.random() * 25 + 1)
+    dispatch({type: Actions.IncValue, payload: {idx: curTurn, value: rnd}})
+
+    handleNextTurn()
+  }
+
+  const playTrait = (activeId: string, targetId: string, target2Id: string) => {
+    const card = findCard(activeId)
+    if (card) {
+      const targetCard = findCard(targetId)
+      const target2Card = findCard(target2Id)
+      if (targetCard) {
+        dispatch({type: Actions.UpdateCard, payload: {
+            ...card,
+            emptySlots: nSlots(card.abId),
+            idPlayer: targetCard.idPlayer,
+            idZone: targetCard.idZone,
+            idCard: targetCard.id,
+            idCard2: target2Card?.id ?? "",
+          } as ICard})
+      }
+    }
+  }
+
+  const handlePlayTrait = () => {
+    // console.log(`- Play Trait: ${curTurn}`)
+    playTrait(cardActiveId, cardTargetId, cardTarget2Id)
+
+    handleNextTurn()
+  }
+  //-------------------------------------------------------
+
   return {
     dice,
     findCard,
@@ -344,6 +401,8 @@ const useCards = () => {
     getDropIds,
     getTraits,
     getZone,
+    handlePlayCard,
+    handlePlayTrait,
     hasAbility,
     hasChecked,
     hasEmpty,
@@ -351,6 +410,7 @@ const useCards = () => {
     hasSlots,
     isAbilityEnabled,
     isCardDisabled,
+    isDeckEmpty,
     isEverySlotChecked,
     isHost,
     isInPack,

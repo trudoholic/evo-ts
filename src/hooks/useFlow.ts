@@ -1,17 +1,11 @@
 import {useAppContext} from "../context"
 import {Actions} from "../context/reducer"
 import {IState} from "../context/state"
-import {isEmpty, nSlots} from "../data/abilities"
-import {ICard} from "../data/cards"
-import {Zone} from "../data/zones"
-import useCards from "../hooks/useCards"
+import {isEmpty} from "../data/abilities"
 
 const useFlow = () => {
   const { state, dispatch } = useAppContext()
   const {
-    cardActiveId,
-    cardTargetId,
-    cardTarget2Id,
     curHand,
     curHandPhase,
     curSpell,
@@ -21,12 +15,6 @@ const useFlow = () => {
     nPlayers,
     players,
   } = state as IState
-
-  const {
-    findCard,
-    getDropIds,
-    getZone,
-  } = useCards()
 
   const nextIdx = (idx: number) => {
     return isReverse?
@@ -72,12 +60,6 @@ const useFlow = () => {
   const onBeginHand = (hand: number) => {
     console.group(`Hand: ${hand}`)
     dispatch({type: Actions.NextHand, payload: hand})
-
-    const deck = getZone(Zone.DrawPile)
-    if (!deck.length) {
-      dispatch({type: Actions.LastHand})
-    }
-
     onBeginHandPhase(0, hand)
   }
 
@@ -86,11 +68,15 @@ const useFlow = () => {
     console.groupEnd()
   }
 
-  const handleNextHand = () => {
+  const handleNextHand = (isDeckEmpty: boolean) => {
     onEndHandPhase()
     onEndHand()
     const nextHand = nextIdx(curHand)
     onBeginHand(nextHand)
+
+    if (isDeckEmpty) {
+      dispatch({type: Actions.LastHand})
+    }
   }
   //-------------------------------------------------------
 
@@ -114,55 +100,6 @@ const useFlow = () => {
     console.log()
   }
   //-------------------------------------------------------
-
-  const playCard = (activeId: string) => {
-    const card = findCard(activeId)
-    if (card) {
-      dispatch({type: Actions.UpdateCard, payload: {
-        ...card,
-          emptySlots: 1,
-          // idPlayer: players.at(curTurn).id,
-          idZone: Zone.Keep,
-          idCard: "",
-      } as ICard})
-    }
-  }
-
-  const playTrait = (activeId: string, targetId: string, target2Id: string) => {
-    const card = findCard(activeId)
-    if (card) {
-      const targetCard = findCard(targetId)
-      const target2Card = findCard(target2Id)
-      if (targetCard) {
-        dispatch({type: Actions.UpdateCard, payload: {
-          ...card,
-            emptySlots: nSlots(card.abId),
-            idPlayer: targetCard.idPlayer,
-            idZone: targetCard.idZone,
-            idCard: targetCard.id,
-            idCard2: target2Card?.id ?? "",
-        } as ICard})
-      }
-    }
-  }
-  //-------------------------------------------------------
-
-  const handlePlayCard = () => {
-    // console.log(`- Play Card: ${curTurn}`)
-    playCard(cardActiveId)
-
-    const rnd = Math.floor(Math.random() * 25 + 1)
-    dispatch({type: Actions.IncValue, payload: {idx: curTurn, value: rnd}})
-
-    handleNextTurn()
-  }
-
-  const handlePlayTrait = () => {
-    // console.log(`- Play Trait: ${curTurn}`)
-    playTrait(cardActiveId, cardTargetId, cardTarget2Id)
-
-    handleNextTurn()
-  }
 
   const handlePass = () => {
     // console.log(`--- Pass: ${curTurn}`)
@@ -198,8 +135,8 @@ const useFlow = () => {
     dispatch({type: Actions.NextStep, payload: 2})
   }
 
-  const handleDropStep = () => {
-    dispatch({type: Actions.DropCards, payload: getDropIds()})
+  const handleDropStep = (dropIds: string[]) => {
+    dispatch({type: Actions.DropCards, payload: dropIds})
     dispatch({type: Actions.UpdateTokens, payload: 0})
     dispatch({type: Actions.NextStep, payload: isLastHand? 2: 1})
   }
@@ -214,8 +151,6 @@ const useFlow = () => {
     handleNextHand,
     handleNextTurn,
     handlePass,
-    handlePlayCard,
-    handlePlayTrait,
     handleReverse,
     handleSetActive,
     handleSetTarget,
