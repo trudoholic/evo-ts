@@ -3,6 +3,7 @@ import {IState} from "../../context/state"
 import {ICard} from "../../data/cards"
 import {Zone} from "../../data/zones"
 import useCards from "../../hooks/useCards"
+import useAbility from "../../hooks/useAbility"
 import useFlow from "../../hooks/useFlow"
 import {FlexRow} from "../FlexRow"
 import {StyledBox} from "./StyledBox"
@@ -50,6 +51,9 @@ const Card = (card: ICard) => {
   const {
     handleCastSpell,
     handlePlaySlot,
+  } = useAbility()
+
+  const {
     handleSetActive,
     handleSetTarget,
     handleSetTarget2,

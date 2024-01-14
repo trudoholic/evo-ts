@@ -1,6 +1,6 @@
 import {IState} from "../../context/state"
 import {useAppContext} from "../../context"
-import useFlow from "../../hooks/useFlow"
+import useAbility from "../../hooks/useAbility"
 
 const TargetMode = () => {
   const { state } = useAppContext()
@@ -13,12 +13,12 @@ const TargetMode = () => {
   const {
     handlePutSpellOn,
     handleUncastSpell,
-  } = useFlow()
+  } = useAbility()
 
   return (
     <>
       <button onClick={handleUncastSpell}>
-        X
+        Undo
       </button>
       {
         cardActiveId && cardTargetId?

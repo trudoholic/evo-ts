@@ -2,6 +2,7 @@ import {useState} from "react"
 import {IState} from "../../context/state"
 import {useAppContext} from "../../context"
 import useCards from "../../hooks/useCards"
+import useAbility from "../../hooks/useAbility"
 import useFlow from "../../hooks/useFlow"
 import Dice from "../Dice"
 import {FlexRow, FlexRowContainer} from "../FlexRow"
@@ -18,8 +19,11 @@ const Phase1 = () => {
   } = state as IState
 
   const {
-    handleNextHandPhase,
     handleUpdateTokens,
+  } = useAbility()
+
+  const {
+    handleNextHandPhase,
   } = useFlow()
 
   const {
