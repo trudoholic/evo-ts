@@ -20,6 +20,7 @@ export enum Actions {
   UpdateCard,
   UpdateCards,
   UpdateTokens,
+  UpdateScores,
   UpdateState,
 }
 
@@ -39,6 +40,7 @@ export type TAction =
   | { type: Actions.UpdateCard, payload: ICard }
   | { type: Actions.UpdateCards, payload: ICard[] }
   | { type: Actions.UpdateTokens, payload: number }
+  | { type: Actions.UpdateScores, payload: number[] }
   | { type: Actions.UpdateState, payload: Partial<IState> }
 
 export const reducer = (state: IState, action: TAction): IState => {
@@ -166,6 +168,14 @@ export const reducer = (state: IState, action: TAction): IState => {
 
     case Actions.UpdateCards: {
       return { ...state, cards: action.payload}
+    }
+
+    case Actions.UpdateScores: {
+      return { ...state,
+        players: state.players.map(
+          (p, i) => ({...p, value: action.payload[i]})
+        )
+      }
     }
 
     case Actions.UpdateTokens: {

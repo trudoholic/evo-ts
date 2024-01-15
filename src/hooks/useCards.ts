@@ -45,11 +45,34 @@ const useCards = () => {
   )
   //-------------------------------------------------------
 
+  const updateScore = (dropIds: string[]) => {
+    const cardCost = 2, traitCost = 1
+    const points = (a: Ability) => traitCost + (Ability.Fat === a? 0: nSlots(a))
+
+    const scorePoints = (keepers: ICard[]) => keepers.map(c => c.id)
+      .reduce((keeperAcc: number, id) => {
+        const traits = cards.filter(c => c.idCard === id)
+        const totalPoints = traits.reduce(
+          (traitAcc: number, trait) => traitAcc + points(trait.abId), 0
+        )
+        return keeperAcc + cardCost + totalPoints
+      }, 0)
+
+    const playerScores = players
+      .map(p => scorePoints(
+        getZone(Zone.Keep, p.id)
+          .filter(c => !dropIds.includes(c.id))
+      ))
+    dispatch({type: Actions.UpdateScores, payload: playerScores})
+  }
+
   const getDropIds = () => {
-    return cards
+    const dropIds = cards
       .filter(c => isKeeper(c.idZone, c.idCard))
       .filter(c => hasEmpty(c.id) || c.poisoned)
       .map(c => c.id)
+    updateScore(dropIds)
+    return dropIds
   }
   //-------------------------------------------------------
 
@@ -271,8 +294,8 @@ const useCards = () => {
     // console.log(`- Play Card: ${curTurn}`)
     playCard(cardActiveId)
 
-    const rnd = Math.floor(Math.random() * 25 + 1)
-    dispatch({type: Actions.IncValue, payload: {idx: curTurn, value: rnd}})
+    // const rnd = Math.floor(Math.random() * 25 + 1)
+    // dispatch({type: Actions.IncValue, payload: {idx: curTurn, value: rnd}})
 
     handleNextTurn()
   }
