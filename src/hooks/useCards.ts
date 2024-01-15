@@ -392,6 +392,28 @@ const useCards = () => {
   }
   //-------------------------------------------------------
 
+  const handleSetActive = (id: string) => {
+    if (0 === curHandPhase) {
+      const payload = {cardActiveId: id}
+      dispatch({type: Actions.UpdateState, payload})
+    }
+  }
+
+  const handleSetTarget = (id: string) => {
+    if (0 === curHandPhase || curSpell) {
+      const payload = {cardTargetId: id}
+      dispatch({type: Actions.UpdateState, payload})
+    }
+  }
+
+  const handleSetTarget2 = (id: string) => {
+    if (0 === curHandPhase || curSpell) {
+      const payload = {cardTarget2Id: id}
+      dispatch({type: Actions.UpdateState, payload})
+    }
+  }
+  //-------------------------------------------------------
+
   return {
     dice,
     findCard,
@@ -403,6 +425,9 @@ const useCards = () => {
     getZone,
     handlePlayCard,
     handlePlayTrait,
+    handleSetActive,
+    handleSetTarget,
+    handleSetTarget2,
     hasAbility,
     hasChecked,
     hasEmpty,

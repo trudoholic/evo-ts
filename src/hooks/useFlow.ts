@@ -6,8 +6,6 @@ const useFlow = () => {
   const { state, dispatch } = useAppContext()
   const {
     curHand,
-    curHandPhase,
-    curSpell,
     curTurn,
     isLastHand,
     isReverse,
@@ -107,28 +105,6 @@ const useFlow = () => {
   }
   //-------------------------------------------------------
 
-  const handleSetActive = (id: string) => {
-    if (0 === curHandPhase) {
-      const payload = {cardActiveId: id}
-      dispatch({type: Actions.UpdateState, payload})
-    }
-  }
-
-  const handleSetTarget = (id: string) => {
-    if (0 === curHandPhase || curSpell) {
-      const payload = {cardTargetId: id}
-      dispatch({type: Actions.UpdateState, payload})
-    }
-  }
-
-  const handleSetTarget2 = (id: string) => {
-    if (0 === curHandPhase || curSpell) {
-      const payload = {cardTarget2Id: id}
-      dispatch({type: Actions.UpdateState, payload})
-    }
-  }
-  //-------------------------------------------------------
-
   const handleDrawStep = () => {
     dispatch({type: Actions.DrawRound, payload: curHand})
     dispatch({type: Actions.NextStep, payload: 2})
@@ -151,9 +127,6 @@ const useFlow = () => {
     handleNextTurn,
     handlePass,
     handleReverse,
-    handleSetActive,
-    handleSetTarget,
-    handleSetTarget2,
     nextIdx,
   }
 }

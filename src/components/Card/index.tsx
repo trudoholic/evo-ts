@@ -4,7 +4,6 @@ import {ICard} from "../../data/cards"
 import {Zone} from "../../data/zones"
 import useCards from "../../hooks/useCards"
 import useAbility from "../../hooks/useAbility"
-import useFlow from "../../hooks/useFlow"
 import {FlexRow} from "../FlexRow"
 import {StyledBox} from "./StyledBox"
 import {StyledCard} from "./StyledCard"
@@ -33,6 +32,9 @@ const Card = (card: ICard) => {
 
   const {
     getTraits,
+    handleSetActive,
+    handleSetTarget,
+    handleSetTarget2,
     hasAbility,
     hasSlots,
     isAbilityEnabled,
@@ -52,12 +54,6 @@ const Card = (card: ICard) => {
     handleCastSpell,
     handlePlaySlot,
   } = useAbility()
-
-  const {
-    handleSetActive,
-    handleSetTarget,
-    handleSetTarget2,
-  } = useFlow()
 
   const handleClick = (id: string) => {
     // console.log("Click:", id)

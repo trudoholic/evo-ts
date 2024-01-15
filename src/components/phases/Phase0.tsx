@@ -24,6 +24,9 @@ const Phase0 = () => {
     getZone,
     handlePlayCard,
     handlePlayTrait,
+    handleSetActive,
+    handleSetTarget,
+    handleSetTarget2,
   } = useCards()
 
   const activeCard = findCard(cardActiveId)
@@ -33,9 +36,6 @@ const Phase0 = () => {
   const {
     handleNextHandPhase,
     handlePass,
-    handleSetActive,
-    handleSetTarget,
-    handleSetTarget2,
   } = useFlow()
 
   const handleUndo = () => {
