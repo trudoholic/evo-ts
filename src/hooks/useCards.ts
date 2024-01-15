@@ -98,67 +98,8 @@ const useCards = () => {
   }
   //-------------------------------------------------------
 
-  const isActiveParent = (cardId: string): boolean => {
-    return activeCard?.idCard === cardId
-  }
-  //-------------------------------------------------------
-
-  const isCardDisabled = (card: ICard): boolean => {
-    return card.disabled || !isValidCard(card)
-  }
-  //-------------------------------------------------------
-
-  const isValidAbility = (card: ICard): boolean => {
-    if (!activeCard) return false
-    const activeParent = ("" === activeCard.idCard) ? activeCard : findCard(activeCard.idCard)
-    const {id} = card
-
-    if (hasTrait(id, Ability.Burrowing) && !hasEmpty(id)) {
-      return false
-    }
-    else if (hasTrait(id, Ability.Camouflage) && !hasTrait(activeParent.id, Ability.SharpVision)) {
-      return false
-    }
-    else if (hasTrait(id, Ability.HighBodyWeight) && !hasTrait(activeParent.id, Ability.HighBodyWeight)) {
-      return false
-    }
-    else if (hasTrait(id, Ability.Mimicry)) {
-      const t = getZone(Zone.Keep, card.idPlayer)
-        .filter(c => !hasTrait(c.id, Ability.Mimicry))
-      if (t.length) return false
-    }
-    else if (hasTrait(id, Ability.Swimming) && !hasTrait(activeParent.id, Ability.Swimming)) {
-      return false
-    }
-    else if (!hasTrait(id, Ability.Swimming) && hasTrait(activeParent.id, Ability.Swimming)) {
-      return false
-    }
-    else if (isHost(id)) {
-      return false
-    }
-    return true
-  }
-
   const isValidCard = (card: ICard): boolean => {
     const {id, idCard, idPlayer, idZone} = card
-
-    if (curSpell) {
-
-      switch (curSpell) {
-        case Ability.Carnivore: {
-          return isKeeper(idZone, idCard) && !isActiveParent(id) && isValidAbility(card)
-        }
-
-        case Ability.Piracy: {
-          return isKeeper(idZone, idCard) && !isActiveParent(id) && hasChecked(id) && hasEmpty(id)
-        }
-
-        default: {
-          return false
-        }
-      }
-    }
-
     const hex = !!cardActiveId && isHex(activeCard.abId)
     const curPlayer = players.at(curTurn)
     const isValidPlayer = hex === (curPlayer.id !== idPlayer)
@@ -403,7 +344,6 @@ const useCards = () => {
     hasFatEmpty,
     hasTrait,
     hasSlots,
-    isCardDisabled,
     isDeckEmpty,
     isEverySlotChecked,
     isHost,

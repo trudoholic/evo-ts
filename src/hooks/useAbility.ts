@@ -11,6 +11,8 @@ const useAbility = () => {
   const { state, dispatch } = useAppContext()
   const {
     cards,
+    cardActiveId,
+    curSpell,
     curTurn,
     isLastHand,
     isReverse,
@@ -27,11 +29,15 @@ const useAbility = () => {
     getAbility,
     getPairId,
     getParent,
+    getZone,
+    hasChecked,
     hasEmpty,
     hasFatEmpty,
     hasTrait,
-    isCardDisabled,
+    isHost,
     isInPack,
+    isKeeper,
+    isValidCard,
     pairHasEmpty,
     slotIdsChecked,
     slotIdsEmpty,
@@ -303,6 +309,10 @@ const useAbility = () => {
     return isActive(abId) && !!idCard
   }
 
+  const isCardDisabled = (card: ICard): boolean => {
+    return card.disabled || !(curSpell? isValidTarget(card): isValidCard(card))
+  }
+
   const isAbilityEnabled = (card: ICard): boolean => {
     const {abCooldown, abUsed, id} = card
     return !isCardDisabled(card) && hasAbility(card) && !abCooldown && !abUsed
@@ -325,6 +335,61 @@ const useAbility = () => {
   }
   //-------------------------------------------------------
 
+  const activeCard = findCard(cardActiveId)
+
+  const isActiveParent = (cardId: string): boolean => {
+    return activeCard?.idCard === cardId
+  }
+
+  const isValidAbility = (card: ICard): boolean => {
+    if (!activeCard) return false
+    const activeParent = ("" === activeCard.idCard) ? activeCard : findCard(activeCard.idCard)
+    const {id} = card
+
+    if (hasTrait(id, Ability.Burrowing) && !hasEmpty(id)) {
+      return false
+    }
+    else if (hasTrait(id, Ability.Camouflage) && !hasTrait(activeParent.id, Ability.SharpVision)) {
+      return false
+    }
+    else if (hasTrait(id, Ability.HighBodyWeight) && !hasTrait(activeParent.id, Ability.HighBodyWeight)) {
+      return false
+    }
+    else if (hasTrait(id, Ability.Mimicry)) {
+      const t = getZone(Zone.Keep, card.idPlayer)
+        .filter(c => !hasTrait(c.id, Ability.Mimicry))
+      if (t.length) return false
+    }
+    else if (hasTrait(id, Ability.Swimming) && !hasTrait(activeParent.id, Ability.Swimming)) {
+      return false
+    }
+    else if (!hasTrait(id, Ability.Swimming) && hasTrait(activeParent.id, Ability.Swimming)) {
+      return false
+    }
+    else if (isHost(id)) {
+      return false
+    }
+    return true
+  }
+
+  const isValidTarget = (card: ICard): boolean => {
+    const {id, idCard, idZone} = card
+    switch (curSpell) {
+      case Ability.Carnivore: {
+        return isKeeper(idZone, idCard) && !isActiveParent(id) && isValidAbility(card)
+      }
+
+      case Ability.Piracy: {
+        return isKeeper(idZone, idCard) && !isActiveParent(id) && hasChecked(id) && hasEmpty(id)
+      }
+
+      default: {
+        return false
+      }
+    }
+  }
+  //-------------------------------------------------------
+
   return {
     handleCastSpell,
     handlePlaySlot,
@@ -333,6 +398,7 @@ const useAbility = () => {
     handleUpdateTokens,
     hasAbility,
     isAbilityEnabled,
+    isCardDisabled,
     nextIdx,
   }
 }

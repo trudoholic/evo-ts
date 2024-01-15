@@ -36,7 +36,6 @@ const Card = (card: ICard) => {
     handleSetTarget,
     handleSetTarget2,
     hasSlots,
-    isCardDisabled,
     isHost,
     isValidSlot,
   } = useCards()
@@ -46,6 +45,7 @@ const Card = (card: ICard) => {
     handlePlaySlot,
     hasAbility,
     isAbilityEnabled,
+    isCardDisabled,
   } = useAbility()
 
   const host = isHost(id)
