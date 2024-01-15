@@ -3,7 +3,7 @@ import {Actions} from "../context/reducer"
 import {IState} from "../context/state"
 import {ICard} from "../data/cards"
 import {commonId} from "../data/players"
-import {Ability, getKind, isActive, isEmpty, isHex, isKind, nSlots, TAbility} from "../data/abilities"
+import {Ability, getKind, isActive, isHex, isKind, nSlots, TAbility} from "../data/abilities"
 import {Zone} from "../data/zones"
 import useFlow from "./useFlow"
 
@@ -172,7 +172,7 @@ const useCards = () => {
   const isValidCard = (card: ICard): boolean => {
     const {id, idCard, idPlayer, idZone} = card
 
-    if (!isEmpty(curSpell)) {
+    if (curSpell) {
 
       switch (curSpell) {
         case Ability.Carnivore: {

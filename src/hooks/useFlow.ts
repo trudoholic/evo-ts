@@ -1,7 +1,6 @@
 import {useAppContext} from "../context"
 import {Actions} from "../context/reducer"
 import {IState} from "../context/state"
-import {isEmpty} from "../data/abilities"
 
 const useFlow = () => {
   const { state, dispatch } = useAppContext()
@@ -116,14 +115,14 @@ const useFlow = () => {
   }
 
   const handleSetTarget = (id: string) => {
-    if (0 === curHandPhase || !isEmpty(curSpell)) {
+    if (0 === curHandPhase || curSpell) {
       const payload = {cardTargetId: id}
       dispatch({type: Actions.UpdateState, payload})
     }
   }
 
   const handleSetTarget2 = (id: string) => {
-    if (0 === curHandPhase || !isEmpty(curSpell)) {
+    if (0 === curHandPhase || curSpell) {
       const payload = {cardTarget2Id: id}
       dispatch({type: Actions.UpdateState, payload})
     }

@@ -5,7 +5,6 @@ import Phase2 from "./Phase2"
 import Phase3 from "./Phase3"
 import TargetMode from "./TargetMode"
 import GameActions from "./GameActions"
-import {isEmpty} from "../../data/abilities"
 
 const phases = ["Play", "Dice", "Feed", "Drop"]
 
@@ -19,10 +18,10 @@ const Phases = () => {
   return (
     <>
       <h2>
-        {isEmpty(curSpell)? `${phases[curHandPhase]} Phase`: "Target Mode"}
+        {!curSpell? `${phases[curHandPhase]} Phase`: "Target Mode"}
       </h2>
       {
-        !isEmpty(curSpell)? <TargetMode/>:
+        curSpell? <TargetMode/>:
         0 === curHandPhase? <Phase0/>:
         1 === curHandPhase? <Phase1/>:
         2 === curHandPhase? <Phase2/>:

@@ -1,5 +1,5 @@
 export enum Ability {
-  Empty = "_",
+  Empty = "",
   Burrowing = "BUR",
   Camouflage = "CMF",
   Carnivore = "CRN",
@@ -79,7 +79,6 @@ export const abilityList = [...abilityMap.keys()]
 export const getKind = (ability: TAbility) => abilityMap.get(ability)?.kind ?? ""
 
 export const isActive = (ability: TAbility) => !!abilityMap.get(ability)?.active
-export const isEmpty = (ability: TAbility) => Ability.Empty === ability
 export const isHex = (ability: TAbility) => !!abilityMap.get(ability)?.hex
 export const isKind = (ability: TAbility, kind: string) => !!kind && kind === getKind(ability)
 export const isPair = (ability: TAbility) => !!abilityMap.get(ability)?.pair
