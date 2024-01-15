@@ -3,7 +3,7 @@ import {Actions} from "../context/reducer"
 import {IState} from "../context/state"
 import {ICard} from "../data/cards"
 import {commonId} from "../data/players"
-import {Ability, getKind, isActive, isHex, isKind, nSlots, TAbility} from "../data/abilities"
+import {Ability, getKind, isHex, isKind, nSlots, TAbility} from "../data/abilities"
 import {Zone} from "../data/zones"
 import useFlow from "./useFlow"
 
@@ -15,12 +15,8 @@ const useCards = () => {
     cardTargetId,
     cardTarget2Id,
     curHandPhase,
-    // curHand,
     curTurn,
     curSpell,
-    // isReverse,
-    // nPlayers,
-    isLastHand,
     players,
   } = state as IState
 
@@ -107,34 +103,8 @@ const useCards = () => {
   }
   //-------------------------------------------------------
 
-  const hasAbility = (card: ICard) => {
-    const {abId, idCard} = card
-    return isActive(abId) && !!idCard
-  }
-
-  const isAbilityEnabled = (card: ICard): boolean => {
-    const {abCooldown, abUsed, id} = card
-    return !isCardDisabled(card) && hasAbility(card) && !abCooldown && !abUsed
-      && (hasEmpty(id) || hasFatEmpty(id)) && isAbilityExtra(card)
-  }
-
   const isCardDisabled = (card: ICard): boolean => {
     return card.disabled || !isValidCard(card)
-  }
-
-  const isAbilityExtra = (card: ICard): boolean => {
-    const {abId, emptySlots} = card
-    switch (abId) {
-      case Ability.Fat: {
-        return !emptySlots
-      }
-      case Ability.Hibernation: {
-        return !isLastHand
-      }
-      default: {
-        return true
-      }
-    }
   }
   //-------------------------------------------------------
 
@@ -428,12 +398,11 @@ const useCards = () => {
     handleSetActive,
     handleSetTarget,
     handleSetTarget2,
-    hasAbility,
     hasChecked,
     hasEmpty,
+    hasFatEmpty,
     hasTrait,
     hasSlots,
-    isAbilityEnabled,
     isCardDisabled,
     isDeckEmpty,
     isEverySlotChecked,

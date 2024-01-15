@@ -35,13 +35,18 @@ const Card = (card: ICard) => {
     handleSetActive,
     handleSetTarget,
     handleSetTarget2,
-    hasAbility,
     hasSlots,
-    isAbilityEnabled,
     isCardDisabled,
     isHost,
     isValidSlot,
   } = useCards()
+
+  const {
+    handleCastSpell,
+    handlePlaySlot,
+    hasAbility,
+    isAbilityEnabled,
+  } = useAbility()
 
   const host = isHost(id)
   const traits = getTraits(id)
@@ -49,11 +54,6 @@ const Card = (card: ICard) => {
   const cardAbility = hasAbility(card)
   const cardDisabled = isCardDisabled(card)
   const abilityEnabled = isAbilityEnabled(card)
-
-  const {
-    handleCastSpell,
-    handlePlaySlot,
-  } = useAbility()
 
   const handleClick = (id: string) => {
     // console.log("Click:", id)

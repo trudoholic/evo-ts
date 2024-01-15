@@ -1,7 +1,7 @@
 import {useAppContext} from "../context"
 import {Actions} from "../context/reducer"
 import {IState} from "../context/state"
-import {nSlots, Ability, TAbility} from "../data/abilities"
+import {nSlots, Ability, TAbility, isActive} from "../data/abilities"
 import {ICard} from "../data/cards"
 import {Zone} from "../data/zones"
 import useCards from "./useCards"
@@ -12,6 +12,7 @@ const useAbility = () => {
   const {
     cards,
     curTurn,
+    isLastHand,
     isReverse,
     nPlayers,
     players,
@@ -26,7 +27,10 @@ const useAbility = () => {
     getAbility,
     getPairId,
     getParent,
+    hasEmpty,
+    hasFatEmpty,
     hasTrait,
+    isCardDisabled,
     isInPack,
     pairHasEmpty,
     slotIdsChecked,
@@ -294,12 +298,41 @@ const useAbility = () => {
   }
   //-------------------------------------------------------
 
+  const hasAbility = (card: ICard) => {
+    const {abId, idCard} = card
+    return isActive(abId) && !!idCard
+  }
+
+  const isAbilityEnabled = (card: ICard): boolean => {
+    const {abCooldown, abUsed, id} = card
+    return !isCardDisabled(card) && hasAbility(card) && !abCooldown && !abUsed
+      && (hasEmpty(id) || hasFatEmpty(id)) && isAbilityExtra(card)
+  }
+
+  const isAbilityExtra = (card: ICard): boolean => {
+    const {abId, emptySlots} = card
+    switch (abId) {
+      case Ability.Fat: {
+        return !emptySlots
+      }
+      case Ability.Hibernation: {
+        return !isLastHand
+      }
+      default: {
+        return true
+      }
+    }
+  }
+  //-------------------------------------------------------
+
   return {
     handleCastSpell,
     handlePlaySlot,
     handlePutSpellOn,
     handleUncastSpell,
     handleUpdateTokens,
+    hasAbility,
+    isAbilityEnabled,
     nextIdx,
   }
 }
